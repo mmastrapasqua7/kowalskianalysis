@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"net/url"
 	"log"
-	"fmt"
 	"io/ioutil"
 )
 
@@ -26,5 +25,5 @@ func Get(url string, header http.Header, params url.Values) string {
 	}
 	response.Body.Close()
 
-	return fmt.Sprint(responseText)
+	return string(responseText)
 }
