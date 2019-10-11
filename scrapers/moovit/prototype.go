@@ -3,10 +3,9 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 	"net/url"
-	"log"
-	"io/ioutil"
+	"net/http"
+	"../../src/httpwrap"
 )
 
 func main() {
@@ -30,8 +29,6 @@ func main() {
 	params.Add("toLocation_type", "5")
 	params.Add("tripPlanPref", "2")
 
-	request, _ := http.NewRequest("GET", urlAPI + params.Encode(), nil)
-
 	header := http.Header{}
 	header.Add("Host", "moovitapp.com")
 	header.Add("User-Agent", "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:69.0) Gecko/20100101 Firefox/69.0")
@@ -48,20 +45,6 @@ func main() {
 	header.Add("Cookie", "rbzid=y9fwVNoAQIfpUjn4V4EOVHDJf1j/wMFIcpFnlA3jMK5ltUkP6yXSKC/bNJzsqo8Gru9QI6+IPzmryyos6H/6NOJi5TqIbBN+/OVVnDrYillIiH+Vb/lHkoKx1dlTKNPkyyoUvqgfCJ/JPX+cmXbgMSRQAFIH8IEREkLAUnlQe1Q=")
 	header.Add("TE", "Trailers")
 
-	request.Header = header
-
-	client := &http.Client{}
-
-	response, err := client.Do(request)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	responseText, err := ioutil.ReadAll(response.Body)
-	response.Body.Close()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Printf("%s", responseText)
+	responseText := httpwrap.Get(urlAPI, header, params)
+	fmt.Println(responseText)
 }
