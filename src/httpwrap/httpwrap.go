@@ -2,14 +2,13 @@
 package httpwrap
 
 import (
+	"log"
 	"net/http"
 	"net/url"
-	"log"
-	"io/ioutil"
 )
 
-func Get(url string, header http.Header, params url.Values) string {
-	request, _ := http.NewRequest("GET", url + params.Encode(), nil)
+func Get(url string, header http.Header, params url.Values) *http.Response {
+	request, _ := http.NewRequest("GET", url+params.Encode(), nil)
 	request.Header = header
 
 	client := &http.Client{}
@@ -19,11 +18,5 @@ func Get(url string, header http.Header, params url.Values) string {
 		log.Fatal(err)
 	}
 
-	responseText, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
-	response.Body.Close()
-
-	return string(responseText)
+	return response
 }
