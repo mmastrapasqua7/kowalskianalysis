@@ -1,4 +1,4 @@
-// HTTP POST request to scrap moovit
+// HTTP GET request to scrap moovit
 package main
 
 import (
