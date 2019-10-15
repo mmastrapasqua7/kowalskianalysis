@@ -3,6 +3,10 @@
 - tentare lo scraping dei dati del traffico su Google
 
 ##### Diary
+- **15/10/'19**
+
+lo scraper non funziona coi parametri hard-coded di header, params e cookies. Da ritentare dinamicamente, simulando alla perfezione tutto lo scambio dati che avviene nel browser.
+
 - **11/10/'19**
 
 il sito web di Moovit (moovitapp.com) e' un endpoint per le API, possibile scrapare. L'acquisizione dati avviene in 4 step:
