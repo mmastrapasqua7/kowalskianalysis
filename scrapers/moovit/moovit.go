@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"time"
 )
 
 type Token struct {
@@ -162,21 +163,72 @@ type JsonResponse struct {
 }
 
 func main() {
-	urlAPI := "https://moovitapp.com/api/route/search?"
-	header := generateHeader()
-	params := generateParams()
+	requestUrlAPI := "https://moovitapp.com/api/route/search?"
+	header := generateRequestHeader()
+	params := generateRequestParams()
 
-	response := httpwrap.Get(urlAPI, header, params)
+	response := httpwrap.Get(requestUrlAPI, header, params)
 
 	var token Token
 	if err := json.NewDecoder(response.Body).Decode(&token); err != nil {
 		log.Fatal(err)
 	}
+	response.Body.Close()
 
-	fmt.Println(token.Token)
+	// con offset=0 ottengo solo i metadati (come la prima riga di un file csv)
+	responseUrlAPI := "https://moovitapp.com/api/route/result?offset=1&"
+	header = generateResponseHeader()
+	params = generateResponseParams(url.Values{"token": []string{token.Token}})
+
+	response = httpwrap.Get(responseUrlAPI, header, params)
+
+	var result JsonResponse
+	if err := json.NewDecoder(response.Body).Decode(&result); err != nil {
+		log.Fatal(err)
+	}
+	response.Body.Close()
+
+	json, err := json.MarshalIndent(result, "", "  ")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(string(json))
 }
 
-func generateHeader() http.Header {
+func generateResponseHeader() http.Header {
+	header := http.Header{}
+	header.Add("Host", "moovitapp.com")
+	header.Add("User-Agent", "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:69.0) Gecko/20100101 Firefox/69.0")
+	header.Add("Accept", "application/json, text/plain, */*")
+	header.Add("Accept-Language", "en-US,en;q=0.5")
+	header.Add("Accept-Encoding", "gzip, deflate, br")
+	header.Add("MOOVIT_USER_KEY", "F36562")
+	header.Add("MOOVIT_METRO_ID", "223")
+	header.Add("MOOVIT_CLIENT_VERSION", "5.5.0.1/V567")
+	header.Add("MOOVIT_APP_TYPE", "WEB_TRIP_PLANNER")
+	header.Add("rbzid", "y9fwVNoAQIfpUjn4V4EOVHDJf1j/wMFIcpFnlA3jMK5ltUkP6yXSKC/bNJzsqo8Gru9QI6+IPzmryyos6H/6NOJi5TqIbBN+/OVVnDrYillIiH+Vb/lHkoKx1dlTKNPkyyoUvqgfCJ/JPX+cmXbgMSRQAFIH8IEREkLAUnlQe1Q=")
+	header.Add("DNT", "1")
+	header.Add("Connection", "keep-alive")
+	header.Add("Referer", "https//moovitapp.com/?from=Viale%20Umbria&to=Corso%20Como&fll=45.45391_9.21526&tll=45.48238_9.18735&customerId=4908&ref=5&poiType=Index&metroId=223&lang=it")
+	header.Add("Cookie", "cookieconsent_status=dismiss; rbzid=y9fwVNoAQIfpUjn4V4EOVHDJf1j/wMFIcpFnlA3jMK5ltUkP6yXSKC/bNJzsqo8Gru9QI6+IPzmryyos6H/6NOJi5TqIbBN+/OVVnDrYillIiH+Vb/lHkoKx1dlTKNPkyyoUvqgfCJ/JPX+cmXbgMSRQAFIH8IEREkLAUnlQe1Q=")
+	header.Add("TE", "Trailers")
+
+	return header
+}
+
+func generateResponseParams(param url.Values) url.Values {
+	params := url.Values{}
+	for key, stringSlice := range param {
+		for _, string := range stringSlice {
+			params.Add(key, string)
+		}
+	}
+
+	return params
+}
+
+func generateRequestHeader() http.Header {
 	header := http.Header{}
 	header.Add("Referer", "https://moovitapp.com/?tll=45.483811_9.187194&metroId=223&lang=en") // da modificare
 	header.Add("MOOVIT_USER_KEY", "F36562")
@@ -196,7 +248,7 @@ func generateHeader() http.Header {
 	return header
 }
 
-func generateParams() url.Values {
+func generateRequestParams() url.Values {
 	params := url.Values{}
 	// params.Add("fromLocation_caption", "Via Tagliamento")
 	// params.Add("fromLocation_id", "7818045")
@@ -206,7 +258,7 @@ func generateParams() url.Values {
 	params.Add("isCurrentTime", "true")
 	params.Add("multiModal", "false")
 	params.Add("routeTypes", "3,2,1,0,7,6,4")
-	params.Add("time", "1570806596714")
+	params.Add("time", string(time.Now().UnixNano()))
 	params.Add("timeType", "2")
 	// params.Add("toLocation_caption", "Garibaldi FS")
 	// params.Add("toLocation_id", "10825992")
@@ -216,4 +268,14 @@ func generateParams() url.Values {
 	params.Add("tripPlanPref", "2")
 
 	return params
+}
+
+func printParams(response http.Response) {
+	for key, value := range response.Header {
+		fmt.Printf("%v: %v\n", key, value)
+	}
+
+	for _, cookie := range response.Cookies() {
+		fmt.Printf("%v: %v\n", cookie.Name, cookie.Value)
+	}
 }
