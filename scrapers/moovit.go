@@ -5,11 +5,8 @@ import (
 	"../src/moovit"
 
 	"bytes"
-	"compress/gzip"
 	"encoding/json"
 	"fmt"
-	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
@@ -38,6 +35,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	response.Body.Close()
 	/////////////////////////////////////////
 	// Second: http post search startPoint //
@@ -64,7 +62,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// fmt.Println(bytes.NewBuffer(params).String())
 
 	response, err = httpwrap.Post(urlMoovit, header, bytes.NewBuffer(params), []*http.Cookie{})
 	if err != nil {
@@ -107,7 +104,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// fmt.Println(bytes.NewBuffer(params).String())
 
 	response, err = httpwrap.Post(urlMoovit, header, bytes.NewBuffer(params), []*http.Cookie{})
 	if err != nil {
@@ -123,7 +119,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// fmt.Println(string(json))
 
 	response.Body.Close()
 	////////////////////////////////////////
@@ -143,10 +138,6 @@ func main() {
 	header.Add("Cookie", "cookieconsent_status=dismiss")
 	header.Add("Upgrade-Insecure-Requests", "1")
 
-	// NB: Lasciando alla libreria di fare l'encoding dei parametri, l'ordine
-	// viene rimescolato. Se moovit non dovesse rispondere correttamente, e'
-	// probabile che per questioni di efficienza moovit faccia
-	// un parsing in sequenza hard-coded
 	params1 := url.Values{}
 	params1.Add("metroId", "223")
 	params1.Add("lang", "it")
@@ -162,6 +153,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	response.Body.Close()
 	//////////////////////////////////////////
 	// Fifth: http get magic cookie (rbzid) //
@@ -192,10 +184,9 @@ func main() {
 			break
 		}
 	}
-
 	fmt.Println(rbzidCookie.Name, rbzidCookie.Value)
-	response.Body.Close()
 
+	response.Body.Close()
 	////////////////////////////////
 	// Sixth: http post something //
 	////////////////////////////////
@@ -237,7 +228,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// fmt.Println(string(jsonSomeKey))
+
 	response.Body.Close()
 	/////////////////////////////////////////////
 	// Seventh: http get token to read results //
@@ -256,7 +247,7 @@ func main() {
 	params3.Add("isCurrentTime", "true")
 	params3.Add("multiModal", "false")
 	params3.Add("routeTypes", "3,2,1,0,7,6,4")
-	params3.Add("time", timeNow) // "1571649590057")
+	params3.Add("time", timeNow)
 	params3.Add("timeType", "2")
 	params3.Add("toLocation_caption", "Largo La Foppa")
 	params3.Add("toLocation_id", "7814269") // TODO: fetchare dato
@@ -291,7 +282,6 @@ func main() {
 	if err := json.NewDecoder(response.Body).Decode(&token); err != nil {
 		log.Fatal(err)
 	}
-	// fmt.Println(token.Value)
 
 	response.Body.Close()
 	/////////////////////////////////////////////////
@@ -316,15 +306,15 @@ func main() {
 	header.Add("Cookie", "cookieconsent_status=dismiss; rbzid=" + rbzidCookie.Value)
 	header.Add("TE", "Trailers")
 
+	time.Sleep(2) // let moovit compute routes
 	response, err = httpwrap.Get(urlMoovit, header, url.Values{}, []*http.Cookie{rbzidCookie})
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	magicHeader := response.Header.Get("If-None-Match")
-	printBody(response)
+	httpwrap.PrintBody(response)
 	response.Body.Close()
-	time.Sleep(2)
 
 	urlMoovit = "https://moovitapp.com/api/route/result?offset=0&token=" + token.Value
 
@@ -346,44 +336,12 @@ func main() {
 	header.Add("If-None-Match", magicHeader)
 	header.Add("TE", "Trailers")
 
+	time.Sleep(2) // let moovit compute routes
 	response, err = httpwrap.Get(urlMoovit, header, url.Values{}, []*http.Cookie{rbzidCookie})
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	printBody(response)
+	httpwrap.PrintBody(response)
 	response.Body.Close()
-}
-
-func printParams(response *http.Response) {
-	fmt.Println("***** HEADERS *****")
-	for headerName, headerValue := range response.Header {
-		fmt.Printf("%v: %v\n", headerName, headerValue)
-	}
-	fmt.Println()
-
-	fmt.Println("***** PARAMS *****")
-	for _, cookie := range response.Cookies() {
-		fmt.Printf("%v: %v\n", cookie.Name, cookie.Value)
-	}
-	fmt.Println()
-}
-
-func printBody(response *http.Response) {
-	fmt.Println("***** BODY *****")
-
-	var reader io.ReadCloser
-	switch response.Header.Get("Content-Encoding") {
-	case "gzip":
-	    reader, _ = gzip.NewReader(response.Body)
-	    defer reader.Close()
-	default:
-	    reader = response.Body
-	}
-
-	bodyBytes, err := ioutil.ReadAll(reader)
-	if err != nil {
-			log.Fatal(err)
-	}
-	fmt.Printf("%s\n\n", bodyBytes)
 }
