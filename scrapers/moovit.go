@@ -59,8 +59,6 @@ func main() {
 	token := moovit.GetMagicToken(startPointMetadata, endPointMetadata, headerParams, cookie)
 	fmt.Println("7 done")
 
-	fmt.Println(startPointMetadata, endPointMetadata)
-
 	// 8
 	moovit.PrintTripPlans(startPointMetadata, endPointMetadata, token, cookie)
 	fmt.Println("8 done")
