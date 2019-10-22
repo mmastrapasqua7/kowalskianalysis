@@ -6,12 +6,10 @@ import (
 	"bytes"
 	"compress/gzip"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"net/url"
 	"strconv"
-	// "strings"
 	"time"
 )
 
