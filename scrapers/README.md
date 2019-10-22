@@ -2,7 +2,7 @@
 ### 1. Moovit
 ```bash
 $ go build -a moovit.go
-$ ./moovit startLatitude startLongitude endLatitude
+$ ./moovit startLatitude startLongitude endLatitude endLongitude
 ```
 #### Esempio
 ```bash
