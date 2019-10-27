@@ -1,7 +1,11 @@
+// Date 2 coordinate (latitudine, longitudine) di partenza e arrivo,
+// lo scraper chiede a Moovit di calcolare in tempo reale il miglior percorso
+// coi mezzi pubblici per percorrere la tratta
 package main
 
 import (
 	"../src/moovit"
+
 	"fmt"
 	"os"
 )
