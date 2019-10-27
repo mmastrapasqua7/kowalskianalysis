@@ -1,9 +1,7 @@
 package httpwrap
 
 import (
-	"compress/gzip"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -26,16 +24,7 @@ func PrintParams(response *http.Response) {
 func PrintBody(response *http.Response) {
 	fmt.Println("***** BODY *****")
 
-	var reader io.ReadCloser
-	switch response.Header.Get("Content-Encoding") {
-	case "gzip":
-	    reader, _ = gzip.NewReader(response.Body)
-	    defer reader.Close()
-	default:
-	    reader = response.Body
-	}
-
-	bodyBytes, err := ioutil.ReadAll(reader)
+	bodyBytes, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 			log.Fatal(err)
 	}
