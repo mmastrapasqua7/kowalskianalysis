@@ -214,13 +214,13 @@ func GetLocationInfo(locationName string, refererHeaderParams url.Values, rbzidC
 		log.Fatalf("GetLocationInfo: unzip: ", err)
 	}
 
-	var location LocationResult
+	var location Location
 	err = json.NewDecoder(reader).Decode(&location)
 	if err != nil {
 		log.Fatalf("GetLocationInfo: jsonUnmarshal", err)
 	}
 
-	return location
+	return location.Results[0]
 }
 
 func GetMagicToken(startLocation, endLocation LocationResult, referHeaderParams url.Values, rbzidCookie *http.Cookie) Token {
@@ -230,21 +230,21 @@ func GetMagicToken(startLocation, endLocation LocationResult, referHeaderParams 
 	timeNow = timeNow[0:len(timeNow)-6]
 
 	params := url.Values{}
-	params.Add("fromLocation_caption", startLocation.Results[0].Title)
-	params.Add("fromLocation_id", strconv.Itoa(startLocation.Results[0].ID))
-	params.Add("fromLocation_latitude", strconv.Itoa(startLocation.Results[0].LatLon.Latitude))
-	params.Add("fromLocation_longitude", strconv.Itoa(startLocation.Results[0].LatLon.Longitude))
-	params.Add("fromLocation_type", strconv.Itoa(startLocation.Results[0].Type))
+	params.Add("fromLocation_caption", startLocation.Title)
+	params.Add("fromLocation_id", strconv.Itoa(startLocation.ID))
+	params.Add("fromLocation_latitude", strconv.Itoa(startLocation.LatLon.Latitude))
+	params.Add("fromLocation_longitude", strconv.Itoa(startLocation.LatLon.Longitude))
+	params.Add("fromLocation_type", strconv.Itoa(startLocation.Type))
 	params.Add("isCurrentTime", "true")
 	params.Add("multiModal", "false")
 	params.Add("routeTypes", "3,2,1,0,7,6,4")
 	params.Add("time", timeNow)
 	params.Add("timeType", "2")
-	params.Add("toLocation_caption", endLocation.Results[0].Title)
-	params.Add("toLocation_id", strconv.Itoa(endLocation.Results[0].ID))
-	params.Add("toLocation_latitude", strconv.Itoa(endLocation.Results[0].LatLon.Latitude))
-	params.Add("toLocation_longitude", strconv.Itoa(endLocation.Results[0].LatLon.Longitude))
-	params.Add("toLocation_type", strconv.Itoa(endLocation.Results[0].Type))
+	params.Add("toLocation_caption", endLocation.Title)
+	params.Add("toLocation_id", strconv.Itoa(endLocation.ID))
+	params.Add("toLocation_latitude", strconv.Itoa(endLocation.LatLon.Latitude))
+	params.Add("toLocation_longitude", strconv.Itoa(endLocation.LatLon.Longitude))
+	params.Add("toLocation_type", strconv.Itoa(endLocation.Type))
 	params.Add("tripPlanPref", "2")
 
 	header := http.Header{}
@@ -282,19 +282,19 @@ func PrintTripPlans(startLocation, endLocation LocationResult, token Token, rbzi
 	urlMoovit := "https://moovitapp.com/api/route/result?offset=0&token=" + token.Value
 
 	// TODO
-	startLatitude := strconv.Itoa(startLocation.Results[0].LatLon.Latitude)
-	startLongitude := strconv.Itoa(startLocation.Results[0].LatLon.Longitude)
+	startLatitude := strconv.Itoa(startLocation.LatLon.Latitude)
+	startLongitude := strconv.Itoa(startLocation.LatLon.Longitude)
 	startLatitude = startLatitude[0:2] + "." + startLatitude[2:7]
 	startLongitude = startLongitude[0:1] + "." + startLongitude[1:6]
 
-	endLatitude := strconv.Itoa(endLocation.Results[0].LatLon.Latitude)
-	endLongitude := strconv.Itoa(endLocation.Results[0].LatLon.Longitude)
+	endLatitude := strconv.Itoa(endLocation.LatLon.Latitude)
+	endLongitude := strconv.Itoa(endLocation.LatLon.Longitude)
 	endLatitude = endLatitude[0:2] + "." + endLatitude[2:7]
 	endLongitude = endLongitude[0:1] + "." + endLongitude[1:6]
 
 	headerParams := url.Values{}
-	headerParams.Add("from", startLocation.Results[0].Title)
-	headerParams.Add("to", endLocation.Results[0].Title)
+	headerParams.Add("from", startLocation.Title)
+	headerParams.Add("to", endLocation.Title)
 	headerParams.Add("fll", startLatitude + "_" + startLongitude)
 	headerParams.Add("tll", endLatitude + "_" + endLongitude)
 	headerParams.Add("customerId", "4908")

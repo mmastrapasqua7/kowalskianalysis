@@ -42,31 +42,33 @@ type SomeKey struct {
 	GtfsLanguage      interface{} `json:"gtfsLanguage"`
 }
 
-type LocationResult struct {
+type Location struct {
 	EndIndex int `json:"endIndex"`
-	Results  []struct {
-		Type  int `json:"type"`
-		ID    int `json:"id"`
-		Image struct {
-			ImageID    int         `json:"imageId"`
-			Parameters interface{} `json:"parameters"`
-		} `json:"image"`
-		Title    string `json:"title"`
-		SubTitle []struct {
-			Text  string      `json:"text"`
-			Image interface{} `json:"image"`
-		} `json:"subTitle"`
-		LatLon struct {
-			Latitude  int `json:"latitude"`
-			Longitude int `json:"longitude"`
-		} `json:"latLon"`
-		SortingInfo      interface{} `json:"sortingInfo"`
-		UID              interface{} `json:"uid"`
-		InaccurateLatLon bool        `json:"inaccurateLatLon"`
-		GeocoderID       interface{} `json:"geocoderId"`
-		AirDistance      int         `json:"airDistance"`
-		Source           int         `json:"source"`
-	} `json:"results"`
+	Results  []LocationResult `json:"results"`
+}
+
+type LocationResult struct {
+	Type  int `json:"type"`
+	ID    int `json:"id"`
+	Image struct {
+		ImageID    int         `json:"imageId"`
+		Parameters interface{} `json:"parameters"`
+	} `json:"image"`
+	Title    string `json:"title"`
+	SubTitle []struct {
+		Text  string      `json:"text"`
+		Image interface{} `json:"image"`
+	} `json:"subTitle"`
+	LatLon struct {
+		Latitude  int `json:"latitude"`
+		Longitude int `json:"longitude"`
+	} `json:"latLon"`
+	SortingInfo      interface{} `json:"sortingInfo"`
+	UID              interface{} `json:"uid"`
+	InaccurateLatLon bool        `json:"inaccurateLatLon"`
+	GeocoderID       interface{} `json:"geocoderId"`
+	AirDistance      int         `json:"airDistance"`
+	Source           int         `json:"source"`
 }
 
 type Token struct {
