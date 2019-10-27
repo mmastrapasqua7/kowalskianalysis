@@ -284,25 +284,28 @@ func PrintTripPlans(startLocation, endLocation LocationResult, token Token, rbzi
 	var tripPlans TripResult
 	json.Unmarshal(bodyBytes, &tripPlans)
 
-	magicHeader := response.Header.Get("If-None-Match")
-	header.Add("If-None-Match", magicHeader)
-	params.Set("offset", strconv.Itoa(len(tripPlans.Results)))
-
-	response, err = httpwrap.Get(urlMoovit, header, params, []*http.Cookie{rbzidCookie})
-	if err != nil {
-		log.Fatalf("PrintTripPlans1: morePlans: ", err)
-	}
-	defer response.Body.Close()
-
-	bodyBytes, err = ioutil.ReadAll(response.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
 	var moreTripPlans TripResult
-	json.Unmarshal(bodyBytes, &moreTripPlans)
+	for offset := len(tripPlans.Results); moreTripPlans.Completed != true; offset += len(moreTripPlans.Results) {
+		magicHeader := response.Header.Get("If-None-Match")
+		header.Set("If-None-Match", magicHeader)
+		params.Set("offset", strconv.Itoa(offset))
 
-	for _, result := range moreTripPlans.Results {
-		tripPlans.Results = append(tripPlans.Results, result)
+		response1, err := httpwrap.Get(urlMoovit, header, params, []*http.Cookie{rbzidCookie})
+		if err != nil {
+			log.Fatalf("PrintTripPlans1: morePlans: ", err)
+		}
+		defer response1.Body.Close()
+
+		bodyBytes, err = ioutil.ReadAll(response1.Body)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		json.Unmarshal(bodyBytes, &moreTripPlans)
+
+		for _, plan := range moreTripPlans.Results {
+			tripPlans.Results = append(tripPlans.Results, plan)
+		}
 	}
 
 	emp, _ := json.MarshalIndent(tripPlans, "", "  ")
