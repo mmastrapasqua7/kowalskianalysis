@@ -22,11 +22,17 @@ func PrintParams(response *http.Response) {
 }
 
 func PrintBody(response *http.Response) {
-	fmt.Println("***** BODY *****")
-
 	bodyBytes, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 			log.Fatal(err)
 	}
 	fmt.Printf("%s\n\n", bodyBytes)
+}
+
+func GetBodyBytes(response *http.Response) []byte {
+	bodyBytes, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+			log.Fatal(err)
+	}
+	return bodyBytes
 }
