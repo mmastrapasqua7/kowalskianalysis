@@ -12,8 +12,14 @@ import (
 
 func Get(url string, header http.Header, params url.Values, cookies []*http.Cookie) (*http.Response, error) {
 	time.Sleep(300 * time.Millisecond)
-	request, _ := http.NewRequest("GET", url+params.Encode(), nil)
-	request.Header = header
+	request, err := http.NewRequest("GET", url + params.Encode(), nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for key, value := range header {
+		request.Header.Add(key, value[0])
+	}
 
 	for _, cookie := range cookies {
 		request.AddCookie(cookie)

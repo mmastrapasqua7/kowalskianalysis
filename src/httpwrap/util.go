@@ -36,3 +36,13 @@ func GetBodyBytes(response *http.Response) []byte {
 	}
 	return bodyBytes
 }
+
+func GetCookie(cookies []*http.Cookie, name string) *http.Cookie {
+	for _, cookie := range cookies {
+		if cookie.Name == name {
+			return cookie
+		}
+	}
+
+	return &http.Cookie{}
+}
