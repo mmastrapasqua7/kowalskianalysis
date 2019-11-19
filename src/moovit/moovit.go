@@ -17,7 +17,7 @@ import (
 func GetWebPage() {
 	urlMoovit := "https://moovitapp.com/index/it/mezzi_pubblici-Milano_e_Lombardia-223"
 
-	header := newCommonHeaders()
+	header := newCommonHeader()
 	header.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
 	header.Add("Referer", "https://www.google.it/")
 	header.Add("Upgrade-Insecure-Requests", "1")
@@ -32,7 +32,7 @@ func GetWebPage() {
 func GetLocationName(latitude, longitude string) string {
 	urlMoovit := "https://moovitapp.com/index/api/location/search"
 
-	header := newCommonHeaders()
+	header := newCommonHeader()
 	header.Add("Accept", "*/*")
 	header.Add("Content-Type", "application/json")
 	header.Add("Content-Length", "93")
@@ -64,7 +64,7 @@ func GetLocationName(latitude, longitude string) string {
 func GetParamsNeededForHeader(startPointName, endPointName string) url.Values {
 	urlMoovit := "https://moovitapp.com/?"
 
-	header := newCommonHeaders()
+	header := newCommonHeader()
 	header.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
 	header.Add("Referer", "https://moovitapp.com/index/it/mezzi_pubblici-Milano_e_Lombardia-223")
 	header.Add("Cookie", "cookieconsent_status=dismiss")
@@ -93,7 +93,7 @@ func GetParamsNeededForHeader(startPointName, endPointName string) url.Values {
 func GetMagicCookie(refererHeaderParams url.Values) *http.Cookie {
 	urlMoovit := "https://moovitapp.com/c3650cdf-216a-4ba2-80b0-9d6c540b105e58d2670b-ea0f-484e-b88c-0e2c1499ec9bd71e4b42-8570-44e3-89b6-845326fa43b6"
 
-	header := newCommonHeaders()
+	header := newCommonHeader()
 	header.Add("Accept", "*/*")
 	header.Add("Referer", "https://moovitapp.com/?" + refererHeaderParams.Encode()) // NB: NB precedente
 	header.Add("Cookie", "cookieconsent_status=dismiss")
@@ -119,7 +119,7 @@ func GetMagicCookie(refererHeaderParams url.Values) *http.Cookie {
 func GetMagicKey(refererHeaderParams url.Values, rbzidCookie *http.Cookie) string {
 	urlMoovit := "https://moovitapp.com/api/user?customerId=4908&langId=77&metroId=223" // hardcoded
 
-	header := newCommonHeaders()
+	header := newCommonHeader()
 	header.Add("Accept", "application/json, text/plain, */*")
 	header.Add("Referer", "https://moovitapp.com/?" + refererHeaderParams.Encode())
 	header.Add("MOOVIT_CLIENT_VERSION", "5.5.0.1/V567")
@@ -157,7 +157,7 @@ func GetLocationInfo(locationName string, refererHeaderParams url.Values, rbzidC
 	params.Add("longitude", "9186787") // hard-coded
 	params.Add("query", locationName)
 
-	header := newCommonHeaders()
+	header := newCommonHeader()
 	header.Add("Accept", "application/json, text/plain, */*")
 	header.Add("Referer", "https://moovitapp.com/?" + refererHeaderParams.Encode())
 	header.Add("MOOVIT_USER_KEY", "F36562")
@@ -207,7 +207,7 @@ func GetMagicToken(startLocation, endLocation LocationResult, referHeaderParams 
 	params.Add("toLocation_type", strconv.Itoa(endLocation.Type))
 	params.Add("tripPlanPref", "2")
 
-	header := newCommonHeaders()
+	header := newCommonHeader()
 	header.Add("Accept", "application/json, text/plain, */*")
 	header.Add("Referer", "https://moovitapp.com/?" + referHeaderParams.Encode())
 	header.Add("MOOVIT_USER_KEY", "F36562")
@@ -256,7 +256,7 @@ func PrintTripPlans(startLocation, endLocation LocationResult, token Token, rbzi
 	headerParams.Add("metroId", "223")
 	headerParams.Add("lang", "it")
 
-	header := newCommonHeaders()
+	header := newCommonHeader()
 	header.Add("Accept", "application/json, text/plain, */*")
 	header.Add("Referer", "https://moovitapp.com/?" + headerParams.Encode())
 	header.Add("MOOVIT_USER_KEY", "F36562")
