@@ -1,16 +1,20 @@
 # Scrapers
 
 ## A disposizione
+
+`$REPODIR/tesi-traffico/codice/scraper/module/`
+
 - Car2Go
 - Enjoy
 - SharenGo
 
-> $REPODIR/tesi-traffico/codice/scraper/module
+`$REPODIR/kowalskyanalysis/scrapers/`
+
+- Moovit
 
 ## Da trovare...
-- Google (tutto)
-- Moovit (mezzi pubblici real-time)
-- MyTaxi (taxi)
-- BikeMi (bici ATM)
+- ~~Google~~ Waze
+- MyTaxi
+- BikeMi (Gia fatto?)
 - MiMoto
 - DriveNow
