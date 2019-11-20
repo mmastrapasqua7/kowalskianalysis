@@ -4,19 +4,24 @@ import (
 	"../src/waze"
 
 	"fmt"
+	"os"
 )
 
 func main() {
-	// 1
+	if len(os.Args) < 5 {
+		fmt.Println("usage:\n\t waze <startLat> <startLon> <endLat> <endLon>")
+		return
+	}
+	startLat := os.Args[1]
+	startLon := os.Args[2]
+	endLat := os.Args[3]
+	endLon := os.Args[4]
+
 	waze.GetWebPage()
 
-	// 2
 	cookies := waze.GetCookies()
-	fmt.Println(cookies)
 
-	// 3
 	waze.SetCookieConsent()
 
-	// 4
-	waze.GetTripPlans(cookies)
+	waze.GetTripPlans(startLat, startLon, endLat, endLon, cookies)
 }

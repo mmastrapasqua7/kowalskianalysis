@@ -5,6 +5,7 @@ import (
 
 	"log"
 	"net/http"
+	"net/url"
 )
 
 func GetWebPage() {
@@ -50,8 +51,8 @@ func SetCookieConsent() {
 	httpwrap.PrintBody(response)
 }
 
-func GetTripPlans(cookies []*http.Cookie) {
-	urlWaze := "https://www.waze.com/row-RoutingManager/routingRequest?at=0&clientVersion=4.0.0&from=x%3A9.155227600000002%20y%3A45.46849100000001&nPaths=3&options=AVOID_TRAILS%3At%2CALLOW_UTURNS%3At&returnGeometries=true&returnInstructions=true&returnJSON=true&timeout=60000&to=x%3A9.2129635%20y%3A45.458389"
+func GetTripPlans(startLat, startLon, endLat, endLon string, cookies []*http.Cookie) {
+	urlWaze := "https://www.waze.com/row-RoutingManager/routingRequest?"
 
 	header := http.Header{}
 	header.Add("Host", "www.waze.com")
@@ -62,11 +63,23 @@ func GetTripPlans(cookies []*http.Cookie) {
 	header.Add("Referer", "https://www.waze.com/it/livemap")
 	// header.Add("Connection", "keep-alive")
 	// header.Add("TE", "Trailers")
-	
+
 	// NB: Queste due entry causano errore di protocollo,
 	// da togliere in tutte le richieste
 
-	response, err := httpwrap.Get(urlWaze, header, nil, cookies)
+	params := url.Values{}
+	params.Add("at", "0")
+	params.Add("clientVersion", "4.0.0")
+	params.Add("from", "x:" + startLon + " y:" + startLat) // invertiti
+	params.Add("nPaths", "3")
+	params.Add("options", "AVOID_TRAILS:t,ALLOW_UTURNS:t")
+	params.Add("returnGeometries", "true")
+	params.Add("returnInstructions", "true")
+	params.Add("returnJSON", "true")
+	params.Add("timeout", "60000")
+	params.Add("to", "x:" + endLon + " y:" + endLat)
+
+	response, err := httpwrap.Get(urlWaze, header, params, cookies)
 	if err != nil {
 		log.Fatalf("GetTripPlans: ", err)
 	}
