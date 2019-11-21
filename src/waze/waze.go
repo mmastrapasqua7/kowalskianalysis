@@ -3,6 +3,9 @@ package waze
 import (
 	"../../src/httpwrap"
 
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
@@ -47,8 +50,6 @@ func SetCookieConsent() {
 		log.Fatalf("SetCookieConsent: ", err)
 	}
 	defer response.Body.Close()
-
-	httpwrap.PrintBody(response)
 }
 
 func GetTripPlans(startLat, startLon, endLat, endLon string, cookies []*http.Cookie) {
@@ -71,7 +72,7 @@ func GetTripPlans(startLat, startLon, endLat, endLon string, cookies []*http.Coo
 	params.Add("at", "0")
 	params.Add("clientVersion", "4.0.0")
 	params.Add("from", "x:" + startLon + " y:" + startLat) // invertiti
-	params.Add("nPaths", "3")
+	params.Add("nPaths", "2")
 	params.Add("options", "AVOID_TRAILS:t,ALLOW_UTURNS:t")
 	params.Add("returnGeometries", "true")
 	params.Add("returnInstructions", "true")
@@ -85,5 +86,13 @@ func GetTripPlans(startLat, startLon, endLat, endLon string, cookies []*http.Coo
 	}
 	defer response.Body.Close()
 
-	httpwrap.PrintBody(response)
+	bodyBytes, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	var tripPlans TripResult
+	json.Unmarshal(bodyBytes, &tripPlans)
+
+	emp, _ := json.MarshalIndent(tripPlans, "", "  ")
+	fmt.Println(string(emp))
 }
