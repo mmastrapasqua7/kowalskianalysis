@@ -11,10 +11,11 @@
 `$REPODIR/kowalskyanalysis/scrapers/`
 
 - Moovit
+- Waze
 
 ## Da trovare...
-- ~~Google~~ Waze
 - MyTaxi
 - BikeMi (Gia fatto?)
 - MiMoto
 - DriveNow
+- Google (overcomplicated)

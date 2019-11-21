@@ -5,12 +5,16 @@
 
 ### Diary
 
+#### 21/11/'19
+
+lo scraper di Waze e' completato. Inizio analisi dei dati restituiti per creazione di struttura dati comune per normalizzare tutte le informazioni provenienti dai diversi scraper.
+
 #### 08/11/'19
 
 scraping di Google abbandonato perche' eccessivamente complicato. Waze.com vanta pari affidabilita' nel calcolo delle rotte e restituisce i risultati con un unico JSON di risposta contenente il tempo di percorrenza per ogni tratta suggerita. Come Moovit non ha endpoint statici ma la richiesta va costruita per step successivi con scambi di cookie e tokens.
 
 Problemi da risolvere:
-- Waze restituisce un JSON di risultati molto pesante (~0.5MB). Fare attenzione a non venire bloccati o trovare un modo per limitare la risposta
+- ~~Waze restituisce un JSON di risultati molto pesante (0.5MB). Fare attenzione a non venire bloccati o trovare un modo per limitare la risposta~~ **Risolto il 21/11/'19: attributo "nPaths" e "include*" nel json**
 - Studiare il protocollo dello scambio dei dati
 
 #### 27/10/'19
