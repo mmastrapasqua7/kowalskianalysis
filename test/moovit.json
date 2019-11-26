@@ -217,7 +217,7 @@
         "lineGroupSummaryList": [
           {
             "groupId": 373144,
-            "lineNumber": "16",
+            "lineNumber": "16", // INFORMATION
             "agencyId": 6929,
             "color": -39916,
             "imageRefSet": {
@@ -275,8 +275,8 @@
                 }
               ]
             },
-            "caption1": "Via Monte Velino - San Siro M5",
-            "caption2": "16 Via Monte Velino - San Siro M5",
+            "caption1": "Via Monte Velino - San Siro M5", // INFORMATION
+            "caption2": "16 Via Monte Velino - San Siro M5", // INFORMATION
             "type": 2
           },
           {
@@ -344,11 +344,11 @@
             "type": 2
           }
         ],
-        "mVStopSyncedMetaDataList": [
+        "mVStopSyncedMetaDataList": [ // // INFORMATION lista delle fermate
           {
             "stopId": 2407438,
-            "stopName": "Via Del Turchino Via Maspero",
-            "stopLocation": {
+            "stopName": "Via Del Turchino Via Maspero", // INFORMATION
+            "stopLocation": { // INFORMATION coordinate fermata
               "latitude": 45451827,
               "longitude": 9227114
             },
