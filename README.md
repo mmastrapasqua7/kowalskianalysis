@@ -1,7 +1,21 @@
 # Kowalski, analysis!
 
-## Confronto tra mezzi pubblici e privati nell'area di Milano basato su dati estratti da varie App
+## Confronto tra mezzi pubblici e privati nell'area di Milano basato su dati estratti da servizi
 #### (Università degli Studi di Milano. Tesi di Mauro Mastrapasqua)
+
+### 0. Domande a cui voglio rispondere
+
+- Qual e' il mezzo piu' economico per spostarsi nella citta' di Milano?
+	- nei giorni feriali
+	- nel weekend
+- Qual e' il mezzo piu' veloce per spostarsi nella citta' di Milano?
+	- nei giorni feriali
+	- nel weekend
+- Esistono orari con eccezioni?
+- Esistono giorni con eccezioni?
+- Esistono aree con eccezioni?
+- Qual e' il mezzo migliore in rapporto soldi/velocita'?
+- Qual e' il mezzo migliore in rapporto (soldi/velocita')/inquinamento?
 
 ### 1. Dati a disposizione (da Losacco Federico)
 
@@ -14,7 +28,7 @@
 |Car2Go|luglio 2015|-|Si|Auto|
 |Twistcar|?|dismesso|?|Auto|
 
-#### Struttura finale (MongoDB)
+#### Normalizzazione (MongoDB)
 
 |Attributi|Descrizione|
 |-|-|
@@ -28,3 +42,22 @@
 |engine|tipo di motore (combustione o elettrico)|
 |type_v|tipo di vettura (auto o motorino)|
 |id|numero sequenziale inserimento|
+
+### 2 Pre-elaborazione
+
+1. Decifrare i parametri inviati nelle richieste dai servizi con piu' opzioni (tipo: Moovit ti fa scegliere una combinazione tra tram, metro, bici, piedi, passante ecc...)
+1. Dividere Milano in aree come Area C, centro, semicentro e periferia per ulteriori analisi a posteriori
+1. Decodificare i JSON derivanti dai vari servizi in una struttura dati comune che comprenda:
+	- coordinate di partenza
+	- coordinate di arrivo
+	- tempo tragitto
+	- costo tragitto
+	- coordinate di ogni step del percorso (se possibile)
+	- aree attraversate
+1. Creare un programma che date delle coordinate di partenza e di arrivo, lanci in parallelo le richieste di quel tragitto su ogni scraper a disposizione a intervalli regolari di tot minuti (nb: usare vpn per evitare blacklist ip)
+
+### 3 Flusso di elaborazione dei dati
+
+1. Cercare nel database delle tratte molto gettonate (ovvero tratte con le stesse o simili coordinate di partenza e stesse o simili cordinate di arrivo) e profilarle (tempo, costo, variazioni nel tempo...)
+1. Lanciare il programma per raccogliere i dati dei vari tragitti effettuati su diversi mezzi/servizi scegliendo un intervallo di campionamento regolare (10-15 min) (evitare richieste nelle ore notturne perche' i servizi di sharing ridistribuiscono equamente i mezzi)
+1. Estrazione delle informazioni
