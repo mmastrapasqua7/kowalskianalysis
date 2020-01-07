@@ -19,7 +19,7 @@
 
 ### 1. Piano di elaborazione dati
 
-1. Cercare nel database le tratte piu' frequentemente percorse (ovvero tratte con le stesse o simili coordinate di partenza e stesse o simili cordinate di arrivo), salvarle in un database e profilarle (tempo, costo, variazioni nel tempo...)
+1. Cercare nel database le tratte piu' frequentemente percorse nel passato, salvarle in un database e profilarle (per passato intendo i dati raccolti dal 2014 a oggi del car sharing, per le tratte intendo tragitti percorsi con le stesse/simili coordinate di partenza e di arrivo)
 1. Lanciare lo scraper multiservizio che, per ogni tratta salvata precedentemente, chiede contemporaneamente a tutti i servizi di trasporto (Waze, Moovit, car sharing vari...) di simulare la percorrenza della tratta, ripetutamente a intervalli di campionamento regolari (10-15 min) lungo l'arco della giornata, per diversi mesi (evitare richieste nelle ore notturne perche' i servizi di sharing ridistribuiscono equamente i mezzi)
 1. Estrarre le informazioni dai dati raccolti
 
