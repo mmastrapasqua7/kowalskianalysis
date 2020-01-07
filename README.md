@@ -23,7 +23,7 @@
 1. Lanciare lo scraper multiservizio che, per ogni tratta salvata precedentemente, chiede contemporaneamente a tutti i servizi di trasporto (Waze, Moovit, car sharing vari...) di simulare la percorrenza della tratta, ripetutamente a intervalli di campionamento regolari (10-15 min) lungo l'arco della giornata, per diversi mesi (evitare richieste nelle ore notturne perche' i servizi di sharing ridistribuiscono equamente i mezzi)
 1. Estrarre le informazioni dai dati raccolti
 
-### 1. Dati a disposizione (da Losacco Federico)
+### 2. Dati a disposizione (da Losacco Federico)
 
 #### Elenco dati raccolti
 
@@ -49,7 +49,7 @@
 |type_v|tipo di vettura (auto o motorino)|
 |id|numero sequenziale inserimento|
 
-### 2 TODO
+### 3. TODO
 
 1. Decifrare i parametri inviati nelle richieste dai servizi con piu' opzioni (tipo: Moovit ti fa scegliere una combinazione tra tram, metro, bici, piedi, passante ecc...)
 1. Dividere Milano in aree come Area C, centro, semicentro e periferia per ulteriori analisi a posteriori
