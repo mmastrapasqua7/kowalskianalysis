@@ -1,9 +1,13 @@
 ### TODO
+- ~~tentare lo scraping di Waze~~ **Finito il 21/11/'19**
 - ~~finire lo scraper di Moovit~~ **Finito il 27/10/'19**
 - ~~tentare lo scraping dei dati del traffico su Google~~ **Abbandonato perche' overcomplicated**
-- tentare lo scraping di Waze
 
 ### Diary
+
+#### 10/10/'20
+
+modularizzazione effettuata per consentire a un programma di effettuare richieste multiple. Manca normalizzazione dei dati a una struttura dati comune.
 
 #### 21/11/'19
 
