@@ -1,7 +1,8 @@
 package waze
 
 import (
-	"../../src/httpwrap"
+	"../httpwrap"
+	"../geoloc"
 
 	"encoding/json"
 	"fmt"
@@ -11,7 +12,19 @@ import (
 	"net/url"
 )
 
-func GetWebPage() {
+func init() {
+	getWebPage()
+}
+
+func GetRealTimeRoutes(from, to geoloc.Location) {
+	cookies := getCookies()
+
+	setCookieConsent()
+
+	getTripPlans(from, to, cookies)
+}
+
+func getWebPage() {
 	urlWaze := "https://www.waze.com/it/livemap"
 
 	header := http.Header{}
@@ -25,34 +38,34 @@ func GetWebPage() {
 
 	response, err := httpwrap.Get(urlWaze, header, nil, nil)
 	if err != nil {
-		log.Fatalf("GetWebPage: ", err)
+		log.Fatalf("getWebPage: ", err)
 	}
 	response.Body.Close()
 }
 
-func GetCookies() []*http.Cookie {
+func getCookies() []*http.Cookie {
 	urlWaze := "https://www.waze.com/login/get"
 
 	response, err := http.Get(urlWaze)
 	if err != nil {
-		log.Fatalf("GetCookies: ", err)
+		log.Fatalf("getCookies: ", err)
 	}
 	defer response.Body.Close()
 
 	return response.Cookies()
 }
 
-func SetCookieConsent() {
+func setCookieConsent() {
 	urlWaze := "https://www.waze.com/web_api/request_info?source=cookie_consent"
 
 	response, err := http.Get(urlWaze)
 	if err != nil {
-		log.Fatalf("SetCookieConsent: ", err)
+		log.Fatalf("setCookieConsent: ", err)
 	}
 	defer response.Body.Close()
 }
 
-func GetTripPlans(startLat, startLon, endLat, endLon string, cookies []*http.Cookie) {
+func getTripPlans(from, to geoloc.Location, cookies []*http.Cookie) {
 	urlWaze := "https://www.waze.com/row-RoutingManager/routingRequest?"
 
 	header := http.Header{}
@@ -71,18 +84,18 @@ func GetTripPlans(startLat, startLon, endLat, endLon string, cookies []*http.Coo
 	params := url.Values{}
 	params.Add("at", "0")
 	params.Add("clientVersion", "4.0.0")
-	params.Add("from", "x:" + startLon + " y:" + startLat) // invertiti
+	params.Add("from", "x:" + from.Longitude + " y:" + from.Latitude) // invertiti
 	params.Add("nPaths", "2")
 	params.Add("options", "AVOID_TRAILS:t,ALLOW_UTURNS:t")
 	params.Add("returnGeometries", "true")
 	params.Add("returnInstructions", "true")
 	params.Add("returnJSON", "true")
 	params.Add("timeout", "60000")
-	params.Add("to", "x:" + endLon + " y:" + endLat)
+	params.Add("to", "x:" + to.Longitude + " y:" + to.Latitude)
 
 	response, err := httpwrap.Get(urlWaze, header, params, cookies)
 	if err != nil {
-		log.Fatalf("GetTripPlans: ", err)
+		log.Fatalf("getTripPlans: ", err)
 	}
 	defer response.Body.Close()
 

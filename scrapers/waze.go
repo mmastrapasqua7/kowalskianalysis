@@ -5,6 +5,7 @@ package main
 
 import (
 	"../src/waze"
+	"../src/geoloc"
 
 	"fmt"
 	"os"
@@ -12,25 +13,12 @@ import (
 
 func main() {
 	if len(os.Args) < 5 {
-		fmt.Println("usage:\n\t waze <startLat> <startLon> <endLat> <endLon>")
+		fmt.Println("usage:\n\t waze <fromLat> <fromLon> <toLat> <toLon>")
 		return
 	}
 
-	startLat := os.Args[1]
-	startLon := os.Args[2]
-	endLat := os.Args[3]
-	endLon := os.Args[4]
+	from := geoloc.Location{os.Args[1], os.Args[2], ""}
+	to := geoloc.Location{os.Args[3], os.Args[4], ""}
 
-	// Scraping sequence
-	// 1
-	waze.GetWebPage()
-
-	// 2
-	cookies := waze.GetCookies()
-
-	// 3
-	waze.SetCookieConsent()
-
-	// 4
-	waze.GetTripPlans(startLat, startLon, endLat, endLon, cookies)
+	waze.GetRealTimeRoutes(from, to)
 }

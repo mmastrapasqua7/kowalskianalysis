@@ -1,7 +1,8 @@
 package moovit
 
 import (
-	"../../src/httpwrap"
+	"../httpwrap"
+	"../geoloc"
 
 	"bytes"
 	"encoding/json"
@@ -14,7 +15,30 @@ import (
 	"time"
 )
 
-func GetWebPage() {
+func init() {
+	// 1
+	getWebPage()
+}
+
+func GetRealTimeRoutes(from, to geoloc.Location) {
+	from.Name = getLocationName(from.Latitude, from.Longitude)
+	to.Name = getLocationName(to.Latitude, to.Longitude)
+
+	headerParams := getParamsNeededForHeader(from.Name, to.Name)
+
+	cookie := getMagicCookie(headerParams)
+
+	_ = getMagicKey(headerParams, cookie) // not needed (?)
+
+	fromMetadata := getLocationInfo(from.Name, headerParams, cookie)
+	toMetadata := getLocationInfo(to.Name, headerParams, cookie)
+
+	token := getMagicToken(fromMetadata, toMetadata, headerParams, cookie)
+
+	printTripPlans(fromMetadata, toMetadata, token, cookie)
+}
+
+func getWebPage() {
 	urlMoovit := "https://moovitapp.com/index/it/mezzi_pubblici-Milano_e_Lombardia-223"
 
 	header := newCommonHeader()
@@ -29,7 +53,7 @@ func GetWebPage() {
 	defer response.Body.Close()
 }
 
-func GetLocationName(latitude, longitude string) string {
+func getLocationName(latitude, longitude string) string {
 	urlMoovit := "https://moovitapp.com/index/api/location/search"
 
 	header := newCommonHeader()
@@ -43,25 +67,25 @@ func GetLocationName(latitude, longitude string) string {
 	requestPayload := InlineSuggestion{"F36562", latitude + ", " + longitude, 223, 45464720, 9186787}
 	requestJsonPayload, err := json.Marshal(requestPayload)
 	if err != nil {
-		log.Fatalf("GetLocationName: jsonMarshal: ", err)
+		log.Fatalf("getLocationName: jsonMarshal: ", err)
 	}
 
 	response, err := httpwrap.Post(urlMoovit, header, bytes.NewBuffer(requestJsonPayload), nil)
 	if err != nil {
-		log.Fatalf("GetLocationName: ", err)
+		log.Fatalf("getLocationName: ", err)
 	}
 	defer response.Body.Close()
 
 	var result InlineSuggestionResult
 	if err := json.NewDecoder(response.Body).Decode(&result); err != nil {
-		log.Fatalf("GetLocationName: jsonUnmarshal", err)
+		log.Fatalf("getLocationName: jsonUnmarshal", err)
 	}
 	locationName := result[0].Title
 
 	return locationName
 }
 
-func GetParamsNeededForHeader(startPointName, endPointName string) url.Values {
+func getParamsNeededForHeader(fromName, toName string) url.Values {
 	urlMoovit := "https://moovitapp.com/?"
 
 	header := newCommonHeader()
@@ -76,21 +100,21 @@ func GetParamsNeededForHeader(startPointName, endPointName string) url.Values {
 	params.Add("customerId", "4908")
 	params.Add("ref", "5")
 	params.Add("poiType", "index")
-	params.Add("from", startPointName)
-	params.Add("to", endPointName)
+	params.Add("from", fromName)
+	params.Add("to", toName)
 	params.Add("fll", "")
 	params.Add("tll", "")
 
 	response, err := httpwrap.Get(urlMoovit, header, params, nil)
 	if err != nil {
-		log.Fatalf("GetParamsNeededForHeader: ", err)
+		log.Fatalf("getParamsNeededForHeader: ", err)
 	}
 	defer response.Body.Close()
 
 	return params
 }
 
-func GetMagicCookie(refererHeaderParams url.Values) *http.Cookie {
+func getMagicCookie(refererHeaderParams url.Values) *http.Cookie {
 	urlMoovit := "https://moovitapp.com/c3650cdf-216a-4ba2-80b0-9d6c540b105e58d2670b-ea0f-484e-b88c-0e2c1499ec9bd71e4b42-8570-44e3-89b6-845326fa43b6"
 
 	header := newCommonHeader()
@@ -101,7 +125,7 @@ func GetMagicCookie(refererHeaderParams url.Values) *http.Cookie {
 
 	response, err := httpwrap.Get(urlMoovit, header, nil, nil)
 	if err != nil {
-		log.Fatalf("GetMagicCookie: ", err)
+		log.Fatalf("getMagicCookie: ", err)
 	}
 	defer response.Body.Close()
 
@@ -116,7 +140,7 @@ func GetMagicCookie(refererHeaderParams url.Values) *http.Cookie {
 	return rbzidCookie
 }
 
-func GetMagicKey(refererHeaderParams url.Values, rbzidCookie *http.Cookie) string {
+func getMagicKey(refererHeaderParams url.Values, rbzidCookie *http.Cookie) string {
 	urlMoovit := "https://moovitapp.com/api/user?customerId=4908&langId=77&metroId=223" // hardcoded
 
 	header := newCommonHeader()
@@ -132,24 +156,24 @@ func GetMagicKey(refererHeaderParams url.Values, rbzidCookie *http.Cookie) strin
 
 	requestJsonPayload, err := json.Marshal(struct{}{}) // empty
 	if err != nil {
-		log.Fatalf("GetMagicKey: jsonMarshal: ", err)
+		log.Fatalf("getMagicKey: jsonMarshal: ", err)
 	}
 
 	response, err := httpwrap.Post(urlMoovit, header, bytes.NewBuffer(requestJsonPayload), []*http.Cookie{rbzidCookie})
 	if err != nil {
-		log.Fatalf("GetMagicKey: ", err)
+		log.Fatalf("getMagicKey: ", err)
 	}
 	defer response.Body.Close()
 
 	var key SomeKey
 	if err := json.NewDecoder(response.Body).Decode(&key); err != nil {
-		log.Fatalf("GetMagicKey: jsonUnmarshal", err)
+		log.Fatalf("getMagicKey: jsonUnmarshal", err)
 	}
 
 	return key.UserKey
 }
 
-func GetLocationInfo(locationName string, refererHeaderParams url.Values, rbzidCookie *http.Cookie) LocationResult {
+func getLocationInfo(locationName string, refererHeaderParams url.Values, rbzidCookie *http.Cookie) LocationResult {
 	urlMoovit := "https://moovitapp.com/api/location?"
 
 	params := url.Values{}
@@ -170,31 +194,31 @@ func GetLocationInfo(locationName string, refererHeaderParams url.Values, rbzidC
 
 	response, err := httpwrap.Get(urlMoovit, header, params, []*http.Cookie{rbzidCookie})
 	if err != nil {
-		log.Fatalf("GetLocationInfo: ", err)
+		log.Fatalf("getLocationInfo: ", err)
 	}
 	defer response.Body.Close() // response Body is gzipped!
 
 	var location Location
 	err = json.NewDecoder(response.Body).Decode(&location)
 	if err != nil {
-		log.Fatalf("GetLocationInfo: jsonUnmarshal", err)
+		log.Fatalf("getLocationInfo: jsonUnmarshal", err)
 	}
 
 	return location.Results[0]
 }
 
-func GetMagicToken(startLocation, endLocation LocationResult, referHeaderParams url.Values, rbzidCookie *http.Cookie) Token {
+func getMagicToken(fromLocation, endLocation LocationResult, referHeaderParams url.Values, rbzidCookie *http.Cookie) Token {
 	urlMoovit := "https://moovitapp.com/api/route/search?"
 
 	timeNow := strconv.FormatInt(time.Now().UnixNano(), 10)
 	timeNow = timeNow[0:len(timeNow)-6]
 
 	params := url.Values{}
-	params.Add("fromLocation_caption", startLocation.Title)
-	params.Add("fromLocation_id", strconv.Itoa(startLocation.ID))
-	params.Add("fromLocation_latitude", strconv.Itoa(startLocation.LatLon.Latitude))
-	params.Add("fromLocation_longitude", strconv.Itoa(startLocation.LatLon.Longitude))
-	params.Add("fromLocation_type", strconv.Itoa(startLocation.Type))
+	params.Add("fromLocation_caption", fromLocation.Title)
+	params.Add("fromLocation_id", strconv.Itoa(fromLocation.ID))
+	params.Add("fromLocation_latitude", strconv.Itoa(fromLocation.LatLon.Latitude))
+	params.Add("fromLocation_longitude", strconv.Itoa(fromLocation.LatLon.Longitude))
+	params.Add("fromLocation_type", strconv.Itoa(fromLocation.Type))
 	params.Add("isCurrentTime", "true")
 	params.Add("multiModal", "false")
 	params.Add("routeTypes", "3,2,1,0,7,6,4")
@@ -220,36 +244,36 @@ func GetMagicToken(startLocation, endLocation LocationResult, referHeaderParams 
 
 	response, err := httpwrap.Get(urlMoovit, header, params, []*http.Cookie{rbzidCookie})
 	if err != nil {
-		log.Fatalf("GetMagicToken: ", err)
+		log.Fatalf("getMagicToken: ", err)
 	}
 	defer response.Body.Close()
 
 	var token Token
 	if err := json.NewDecoder(response.Body).Decode(&token); err != nil {
-		log.Fatalf("GetMagicToken: jsonUnmarshal: ", err)
+		log.Fatalf("getMagicToken: jsonUnmarshal: ", err)
 	}
 
 	return token
 }
 
-func PrintTripPlans(startLocation, endLocation LocationResult, token Token, rbzidCookie *http.Cookie) {
+func printTripPlans(fromLocation, toLocation LocationResult, token Token, rbzidCookie *http.Cookie) {
 	urlMoovit := "https://moovitapp.com/api/route/result?"
 
-	startLatitude := strconv.Itoa(startLocation.LatLon.Latitude)
-	startLongitude := strconv.Itoa(startLocation.LatLon.Longitude)
-	startLatitude = startLatitude[0:2] + "." + startLatitude[2:7]
-	startLongitude = startLongitude[0:1] + "." + startLongitude[1:6]
+	fromLatitude := strconv.Itoa(fromLocation.LatLon.Latitude)
+	fromLongitude := strconv.Itoa(fromLocation.LatLon.Longitude)
+	fromLatitude = fromLatitude[0:2] + "." + fromLatitude[2:7]
+	fromLongitude = fromLongitude[0:1] + "." + fromLongitude[1:6]
 
-	endLatitude := strconv.Itoa(endLocation.LatLon.Latitude)
-	endLongitude := strconv.Itoa(endLocation.LatLon.Longitude)
-	endLatitude = endLatitude[0:2] + "." + endLatitude[2:7]
-	endLongitude = endLongitude[0:1] + "." + endLongitude[1:6]
+	toLatitude := strconv.Itoa(toLocation.LatLon.Latitude)
+	toLongitude := strconv.Itoa(toLocation.LatLon.Longitude)
+	toLatitude = toLatitude[0:2] + "." + toLatitude[2:7]
+	toLongitude = toLongitude[0:1] + "." + toLongitude[1:6]
 
 	headerParams := url.Values{}
-	headerParams.Add("from", startLocation.Title)
-	headerParams.Add("to", endLocation.Title)
-	headerParams.Add("fll", startLatitude + "_" + startLongitude)
-	headerParams.Add("tll", endLatitude + "_" + endLongitude)
+	headerParams.Add("from", fromLocation.Title)
+	headerParams.Add("to", toLocation.Title)
+	headerParams.Add("fll", fromLatitude + "_" + fromLongitude)
+	headerParams.Add("tll", toLatitude + "_" + toLongitude)
 	headerParams.Add("customerId", "4908")
 	headerParams.Add("ref", "5")
 	headerParams.Add("poiType", "Index")
@@ -273,7 +297,7 @@ func PrintTripPlans(startLocation, endLocation LocationResult, token Token, rbzi
 
 	response, err := httpwrap.Get(urlMoovit, header, params, []*http.Cookie{rbzidCookie})
 	if err != nil {
-		log.Fatalf("PrintTripPlans1: ", err)
+		log.Fatalf("printTripPlans1: ", err)
 	}
 	defer response.Body.Close()
 
@@ -292,7 +316,7 @@ func PrintTripPlans(startLocation, endLocation LocationResult, token Token, rbzi
 
 		response1, err := httpwrap.Get(urlMoovit, header, params, []*http.Cookie{rbzidCookie})
 		if err != nil {
-			log.Fatalf("PrintTripPlans1: morePlans: ", err)
+			log.Fatalf("printTripPlans1: morePlans: ", err)
 		}
 		defer response1.Body.Close()
 
