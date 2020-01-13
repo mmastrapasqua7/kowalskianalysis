@@ -146,7 +146,7 @@ Problemi da risolvere:
 - Enjoy
 - SharenGo
 
-`$REPODIR/kowalskyanalysis/scrapers/`
+`$REPODIR/kowalskyanalysis/src/scrapers/`
 
 - Moovit
 - Waze
