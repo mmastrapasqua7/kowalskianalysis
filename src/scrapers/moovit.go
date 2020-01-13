@@ -4,8 +4,8 @@
 package main
 
 import (
-	"../src/moovit"
-	"../src/geoloc"
+	"../lib/moovit"
+	"../lib/geoloc"
 
 	"fmt"
 	"os"

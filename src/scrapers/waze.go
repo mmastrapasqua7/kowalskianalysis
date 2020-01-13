@@ -4,8 +4,8 @@
 package main
 
 import (
-	"../src/waze"
-	"../src/geoloc"
+	"../lib/waze"
+	"../lib/geoloc"
 
 	"fmt"
 	"os"
