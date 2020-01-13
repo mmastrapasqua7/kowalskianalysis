@@ -3,10 +3,10 @@ package moovit
 import (
 	"../httpwrap"
 	"../geoloc"
+	"../trip"
 
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -16,11 +16,10 @@ import (
 )
 
 func init() {
-	// 1
 	getWebPage()
 }
 
-func GetRealTimeRoutes(from, to geoloc.Location) {
+func GetRealTimeRoutes(from, to geoloc.Location) TripResult {
 	from.Name = getLocationName(from.Latitude, from.Longitude)
 	to.Name = getLocationName(to.Latitude, to.Longitude)
 
@@ -35,7 +34,33 @@ func GetRealTimeRoutes(from, to geoloc.Location) {
 
 	token := getMagicToken(fromMetadata, toMetadata, headerParams, cookie)
 
-	printTripPlans(fromMetadata, toMetadata, token, cookie)
+	return getTripPlans(fromMetadata, toMetadata, token, cookie)
+}
+
+func (t TripResult) ToTrips() []trip.Trip {
+	trips := make([]trip.Trip, 0)
+
+	for _, result := range t.Results[1:] { // Results[0] is metadata
+		var trip trip.Trip
+		travels := make([]travel, 0)
+
+		for _, step := range result.Result.Itinerary.Legs[:] {
+			if timestamp := step.WalkLeg.Time; timestamp.StartTime != 0 && timestamp.EndTime != 0 {
+				var travel travel
+				travel.start = time.Unix(0, timestamp.StartTime * int64(time.Millisecond))
+				travel.end = time.Unix(0, timestamp.EndTime * int64(time.Millisecond))
+				travels = append(travels, travel)
+			}
+		}
+
+		trip.StartTime = timeIn(travels[0].start, "Europe/London")
+		trip.EndTime = timeIn(travels[len(travels)-1].end, "Europe/London")
+		trip.Duration = trip.EndTime.Sub(trip.StartTime)
+		trip.ScrapedApp = "MOOVIT"
+		trips = append(trips, trip)
+	}
+
+	return trips
 }
 
 func getWebPage() {
@@ -256,7 +281,7 @@ func getMagicToken(fromLocation, endLocation LocationResult, referHeaderParams u
 	return token
 }
 
-func printTripPlans(fromLocation, toLocation LocationResult, token Token, rbzidCookie *http.Cookie) {
+func getTripPlans(fromLocation, toLocation LocationResult, token Token, rbzidCookie *http.Cookie) TripResult {
 	urlMoovit := "https://moovitapp.com/api/route/result?"
 
 	fromLatitude := strconv.Itoa(fromLocation.LatLon.Latitude)
@@ -332,6 +357,7 @@ func printTripPlans(fromLocation, toLocation LocationResult, token Token, rbzidC
 		}
 	}
 
-	emp, _ := json.MarshalIndent(tripPlans, "", "  ")
-	fmt.Println(string(emp))
+	return tripPlans
+	// emp, _ := json.MarshalIndent(tripPlans, "", "  ")
+	// fmt.Println(string(emp))
 }

@@ -3,25 +3,41 @@ package waze
 import (
 	"../httpwrap"
 	"../geoloc"
+	"../trip"
 
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
+	"time"
 )
 
 func init() {
 	getWebPage()
 }
 
-func GetRealTimeRoutes(from, to geoloc.Location) {
+func GetRealTimeRoutes(from, to geoloc.Location) TripResult {
 	cookies := getCookies()
 
 	setCookieConsent()
 
-	getTripPlans(from, to, cookies)
+	return getTripPlans(from, to, cookies)
+}
+
+func (t TripResult) ToTrips() []trip.Trip {
+	trips := make([]trip.Trip, 0)
+
+	for _, alternative := range t.Alternatives[:] {
+		var trip trip.Trip
+		trip.StartTime = time.Now()
+		trip.EndTime = time.Now().Add(time.Duration(alternative.Response.TotalRouteTime) * time.Second)
+		trip.Duration = trip.EndTime.Sub(trip.StartTime)
+		trip.ScrapedApp = "WAZE"
+		trips = append(trips, trip)
+	}
+
+	return trips
 }
 
 func getWebPage() {
@@ -65,7 +81,7 @@ func setCookieConsent() {
 	defer response.Body.Close()
 }
 
-func getTripPlans(from, to geoloc.Location, cookies []*http.Cookie) {
+func getTripPlans(from, to geoloc.Location, cookies []*http.Cookie) TripResult {
 	urlWaze := "https://www.waze.com/row-RoutingManager/routingRequest?"
 
 	header := http.Header{}
@@ -106,6 +122,7 @@ func getTripPlans(from, to geoloc.Location, cookies []*http.Cookie) {
 	var tripPlans TripResult
 	json.Unmarshal(bodyBytes, &tripPlans)
 
-	emp, _ := json.MarshalIndent(tripPlans, "", "  ")
-	fmt.Println(string(emp))
+	// emp, _ := json.MarshalIndent(tripPlans, "", "  ")
+	// fmt.Println(string(emp))
+	return tripPlans
 }

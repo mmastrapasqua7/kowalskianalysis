@@ -1,6 +1,7 @@
 // Date 2 coordinate (latitudine, longitudine) di partenza e arrivo,
 // lo scraper chiede a Waze di calcolare in tempo reale il miglior percorso
 // in automobile per percorrere la tratta
+
 package main
 
 import (
@@ -20,5 +21,5 @@ func main() {
 	from := geoloc.Location{os.Args[1], os.Args[2], ""}
 	to := geoloc.Location{os.Args[3], os.Args[4], ""}
 
-	waze.GetRealTimeRoutes(from, to)
+	_ = waze.GetRealTimeRoutes(from, to)
 }

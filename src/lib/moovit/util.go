@@ -2,7 +2,12 @@ package moovit
 
 import (
 	"net/http"
+	"time"
 )
+
+type travel struct {
+	start, end time.Time
+}
 
 func newCommonHeader() http.Header {
 	header := http.Header{}
@@ -13,4 +18,12 @@ func newCommonHeader() http.Header {
 	header.Add("Accept-Language", "en-US,en;q=0.5")
 	header.Add("Accept-Encoding", "gzip, deflate, br")
 	return header
+}
+
+func timeIn(t time.Time, name string) time.Time {
+	loc, err := time.LoadLocation(name)
+	if err == nil {
+		t = t.In(loc)
+	}
+	return t
 }
