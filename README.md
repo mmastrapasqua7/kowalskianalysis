@@ -19,13 +19,17 @@
 
 ### 1. Piano di elaborazione dati
 
-1. Cercare nel database le tratte piu' frequentemente percorse nel passato, salvarle in un database e profilarle (per passato intendo i dati raccolti dal 2014 a oggi del car sharing, per le tratte intendo tragitti percorsi con le stesse/simili coordinate di partenza e di arrivo)
-1. Lanciare lo scraper multiservizio che, per ogni tratta salvata precedentemente, chiede contemporaneamente a tutti i servizi di trasporto (Waze, Moovit, car sharing vari...) di simulare la percorrenza della tratta, ripetutamente a intervalli di campionamento regolari (10-15 min) lungo l'arco della giornata, per diversi mesi (evitare richieste nelle ore notturne perche' i servizi di sharing ridistribuiscono equamente i mezzi)
-1. Estrarre le informazioni dai dati raccolti
+Per effettuare questo studio ho deciso di usare **2 METODI** che eseguiro' parallelamente per diversi mesi, ovvero:
 
-### 2. Dati a disposizione (da Losacco Federico)
+1. **Dati a confronto col passato**: partendo dalle tratte piu' frequentemente percorse estratte dai dati di Losacco, instrumento il multiscraper per richiedere a tutti i servizi di calcolare il tempo di percorrenza di tutte le tratte frequenti a intervalli regolari di 15 minuti, dalle ore 06:00 alle ore 23:00 di ogni giorno feriale, dalle ore 06:00 alle 01:00 nei giorni festivi, per mesi
+1. **Dati a confronto in tempo reale**: creero' un programma per generare tratte casuali ben studiate (da semicentro a centro e periferia, da periferia a semicentro e centro ecc...). Una volta create le tratte, usando i miei scraper e gli scraper di Losacco con l'aggiungenta del calcolo di percorso a piedi per raggiungere la macchina piu' vicina, andro' a fare lo stesso lavoro di scraping su tutti i servizi (stesso intervallo, stessi orari, per mesi, parallelamente al primo).
 
-#### Elenco dati raccolti
+**Motivazione**: (1) Dai dati di Losacco non posso sapere quanto ci mette l'utente in media a raggiungere la macchina. (2) ridondanza, confronto passato-presente, garanzia e qualita' dei dati. I risultati dei due metodi li confrontero' per avere la certezza e per accorgermi di eventuali incongruenze.
+
+### 2. (1° METODO) Dati a confronto col passato
+#### 2.1 Dati a disposizione (da Losacco Federico)
+
+##### 2.1.1 Elenco dati raccolti
 
 |Nome|Inizio|Fine|Pause|Veicoli|
 |-|-|-|-|-|
@@ -34,7 +38,7 @@
 |Car2Go|luglio 2015|-|Si|Auto|
 |Twistcar|?|dismesso|?|Auto|
 
-#### Normalizzazione (MongoDB)
+##### 2.1.2 Normalizzazione (MongoDB)
 
 |Attributi|Descrizione|
 |-|-|
@@ -49,18 +53,57 @@
 |type_v|tipo di vettura (auto o motorino)|
 |id|numero sequenziale inserimento|
 
-### 3. TODO
+#### 2.2 Estrazione delle tratte piu' frequenti
+
+##### 2.2.1 Estrazione tratte (gia fatto?)
+
+I dati raccolti da Federico Losacco sono rilevazioni di macchine sulla mappa nel tempo, quindi ogni record comprende coordinate geografiche e data. Dato che, nelle ore diurne, le macchine vengono prese esclusivamente dagli utenti del servizio, **ogni coordinata di rilevazione della macchina (macchina libera) corrisponde con la fine del tragitto dell'utente precedente**, almeno in termini di spazio (ma non di tempo per possibili ritardi o gap nel campionamento). Per risalire al tragitto percorso dall'utente precedente, basta cancellare tutte le rilevazioni ridondanti, come nell'esempio:
+
+1. ~~Macchina M a coordinate 1,1 alle 15:05~~ inutile, stesse coordinate
+1. ~~Macchina M a coordinate 1,1 alle 15:10~~ inutile, stesse coordinate
+1. Macchina M a coordinate 1,1 alle 15:15 **utente U prende macchina**
+1. Macchina M a coordinate 2,2 alle 15:55 **utente U rilascia macchina**
+1. ~~Macchina M a coordinate 2,2 alle 16:00~~ inutile, stesse coordinate
+1. ~~Macchina M a coordinate 2,2 alle 16:05~~ inutile, stesse coordinate
+
+eliminando i record inutili posso capire che l'utente U ha viaggiato da (1,1) a (2,2) in un tempo <= 40 minuti. Applicando questo filtro a tutte le rilevazioni registrate, ottengo un database pulito di tragitti percorsi da utenti del servizio di car sharing.
+
+*definizione record inutile*: un record e' inutile se e solo se ha le stesse coordinate del record precedente e del record successivo. (infatti, nell'esempio, le rilevazioni 1 e 6 non so se sono inutili, perche' non so cosa c'e' prima di 1 e dopo 6)
+
+##### 2.2.2 Calcolo tratte piu' frequenti
+
+Un conteggio pari-pari delle tratte (stesse coordinate di partenza e arrivo) non e' la cosa piu' intelligente da fare, perche' (1) le coordinate sono dei double e (2) se volessi andare in Duomo con una macchina, di certo non parcheggerei dentro il Duomo ma nell'area intorno (dentro i 500 metri di raggio), cosi' per ogni meta in citta'. Il punto (2) va tenuto a mente anche per il punto di partenza delle macchine, perche' 2 utenti possono aver percorso la stessa tratta ma partendo da 2 posti non esattamente uguali, ma molto vicini. Per cercare le tratte piu' frequenti usero' il seguente metodo:
+
+1. Creo una matrice che "racchiude" Milano sotto forma di coordinate geografiche: ogni indice di riga corrisponde a un gap in latitudine di un certo spazio (500 metri = 0.00x in latitudine) e ogni indicie di colonna a un gap in longitudine. Questa matrice sara' definita con la seguente struttura dati:
+
+```go
+type Cell struct {
+	count            int
+	ridesThatEndHere []Ride
+}
+
+type Matrix [n][m]Cell
+```
+
+2. Per ogni tratta nel database, uso le coordinate di arrivo per smistarla "geograficamente" dentro la matrice, incrementando `count` e aggiungendola alla lista `ridesThatEndHere`. Alla fine del processo ottengo una matrice con salvati tutti gli "hit" delle tratte che sono terminate nelle varie caselle. Da questa matrice sono in grado di ricavare le zone piu' "calde", se esistono. Esempio visivo di un possibile scenario:
+
+![possibile scenario](img/gridOnMilan.jpg "Milano")
+
+
+### 3. (2° METODO) Dati a confronto in tempo reale
+
+### 4. TODO
 
 1. Decifrare i parametri inviati nelle richieste dai servizi con piu' opzioni (tipo: Moovit ti fa scegliere una combinazione tra tram, metro, bici, piedi, passante ecc...)
 1. Dividere Milano in aree come Area C, centro, semicentro e periferia per ulteriori analisi a posteriori
-1. Decodificare i JSON derivanti dai vari servizi in una struttura dati comune che comprenda:
+1. ~~Decodificare i JSON derivanti dai vari servizi in una struttura dati comune che comprenda:~~ **Finito il 14/1/'20**
 	- coordinate di partenza
 	- coordinate di arrivo
 	- tempo tragitto
 	- costo tragitto
 	- coordinate di ogni step del percorso (se possibile)
 	- aree attraversate
-1. Creare un programma che date delle coordinate di partenza e di arrivo, lanci in parallelo le richieste di quel tragitto su ogni scraper a disposizione a intervalli regolari di tot minuti (nb: usare vpn per evitare blacklist ip)
+1. ~~Creare un programma che date delle coordinate di partenza e di arrivo, lanci in parallelo le richieste di quel tragitto su ogni scraper a disposizione a intervalli regolari di tot minuti (nb: usare vpn per evitare blacklist ip)~~ **Bozza pronta**
 
 ---
 
