@@ -3,7 +3,22 @@
 ## Confronto tra mezzi pubblici e privati nell'area di Milano basato su dati estratti da servizi
 #### (Università degli Studi di Milano. Tesi di Mauro Mastrapasqua)
 
-### 0. Domande a cui voglio rispondere
+### INDICE
+
+1. Domande a cui voglio rispondere
+1. Piano di elaborazione dati
+1. (1° METODO) Dati a confronto col passato
+	1. Dati a disposizione (da Losacco Federico)
+		1. Elenco dati raccolti
+		1. Normalizzazione (MongoDB)
+	1. Estrazione delle tratte piu' frequenti
+		1. Estrazione tratte (gia fatto?)
+		1. Calcolo tratte piu' frequenti
+	1. Scraping e risultati
+1. (2° METODO) Dati a confronto in tempo reale
+1. TODO
+
+### 1. Domande a cui voglio rispondere
 
 - Qual e' il mezzo piu' economico per spostarsi nella citta' di Milano?
 	- nei giorni feriali
@@ -17,7 +32,7 @@
 - Qual e' il mezzo migliore in rapporto soldi/velocita'?
 - Qual e' il mezzo migliore in rapporto (soldi/velocita')/inquinamento?
 
-### 1. Piano di elaborazione dati
+### 2. Piano di elaborazione dati
 
 Per effettuare questo studio ho deciso di usare **2 METODI** che eseguiro' parallelamente per diversi mesi, ovvero:
 
@@ -26,10 +41,10 @@ Per effettuare questo studio ho deciso di usare **2 METODI** che eseguiro' paral
 
 **Motivazione**: (1) Dai dati di Losacco non posso sapere quanto ci mette l'utente in media a raggiungere la macchina. (2) ridondanza, confronto passato-presente, garanzia e qualita' dei dati. I risultati dei due metodi li confrontero' per avere la certezza e per accorgermi di eventuali incongruenze.
 
-### 2. (1° METODO) Dati a confronto col passato
-#### 2.1 Dati a disposizione (da Losacco Federico)
+### 3. (1° METODO) Dati a confronto col passato
+#### 3.1 Dati a disposizione (da Losacco Federico)
 
-##### 2.1.1 Elenco dati raccolti
+##### 3.1.1 Elenco dati raccolti
 
 |Nome|Inizio|Fine|Pause|Veicoli|
 |-|-|-|-|-|
@@ -38,7 +53,7 @@ Per effettuare questo studio ho deciso di usare **2 METODI** che eseguiro' paral
 |Car2Go|luglio 2015|-|Si|Auto|
 |Twistcar|?|dismesso|?|Auto|
 
-##### 2.1.2 Normalizzazione (MongoDB)
+##### 3.1.2 Normalizzazione (MongoDB)
 
 |Attributi|Descrizione|
 |-|-|
@@ -53,9 +68,9 @@ Per effettuare questo studio ho deciso di usare **2 METODI** che eseguiro' paral
 |type_v|tipo di vettura (auto o motorino)|
 |id|numero sequenziale inserimento|
 
-#### 2.2 Estrazione delle tratte piu' frequenti
+#### 3.2 Estrazione delle tratte piu' frequenti
 
-##### 2.2.1 Estrazione tratte (gia fatto?)
+##### 3.2.1 Estrazione tratte (gia fatto?)
 
 I dati raccolti da Federico Losacco sono rilevazioni di macchine sulla mappa nel tempo, quindi ogni record comprende coordinate geografiche e data. Dato che, nelle ore diurne, le macchine vengono prese esclusivamente dagli utenti del servizio, **ogni coordinata di rilevazione della macchina (macchina libera) corrisponde con la fine del tragitto dell'utente precedente**, almeno in termini di spazio (ma non di tempo per possibili ritardi o gap nel campionamento). Per risalire al tragitto percorso dall'utente precedente, basta cancellare tutte le rilevazioni ridondanti, come nell'esempio:
 
@@ -70,7 +85,7 @@ eliminando i record inutili posso capire che l'utente U ha viaggiato da (1,1) a 
 
 *definizione record inutile*: un record e' inutile se e solo se ha le stesse coordinate del record precedente e del record successivo. (infatti, nell'esempio, le rilevazioni 1 e 6 non so se sono inutili, perche' non so cosa c'e' prima di 1 e dopo 6)
 
-##### 2.2.2 Calcolo tratte piu' frequenti
+##### 3.2.2 Calcolo tratte piu' frequenti
 
 Un conteggio pari-pari delle tratte (stesse coordinate di partenza e arrivo) non e' la cosa piu' intelligente da fare, perche' (1) le coordinate sono dei double e (2) se volessi andare in Duomo con una macchina, di certo non parcheggerei dentro il Duomo ma nell'area intorno (dentro i 500 metri di raggio), cosi' per ogni meta in citta'. Il punto (2) va tenuto a mente anche per il punto di partenza delle macchine, perche' 2 utenti possono aver percorso la stessa tratta ma partendo da 2 posti non esattamente uguali, ma molto vicini. Per cercare le tratte piu' frequenti usero' il seguente metodo:
 
@@ -85,14 +100,23 @@ type Cell struct {
 type Matrix [n][m]Cell
 ```
 
-2. Per ogni tratta nel database, uso le coordinate di arrivo per smistarla "geograficamente" dentro la matrice, incrementando `count` e aggiungendola alla lista `ridesThatEndHere`. Alla fine del processo ottengo una matrice con salvati tutti gli "hit" delle tratte che sono terminate nelle varie caselle. Da questa matrice sono in grado di ricavare le zone piu' "calde", se esistono. Esempio visivo di un possibile scenario:
+2. Per ogni tratta nel database, uso le coordinate di destinazione per smistarla "geograficamente" dentro la matrice, che chiamero' **matrice delle destinazioni gettonate**, incrementando `count` e aggiungendola alla lista `ridesThatEndHere`. Alla fine del processo ottengo una matrice con salvati tutti gli "hit" delle tratte che sono terminate nelle varie caselle/aree geografiche. Da questa matrice sono in grado di ricavare le zone piu' "calde", se esistono. Esempio visivo di un possibile scenario (in rosso e giallo le celle che spiccano):
 
 ![possibile scenario](img/gridOnMilan.jpg "Milano")
 
+3. Rifaccio lo stesso procedimento all'inverso: partendo da una matrice vuota, che chiamero' **matrice delle partenze gettonate**, la riempo in base alle coordinate di partenza delle tratte che sono salvate nelle celle calde della matrice precedente, la matrice delle destinazioni. Questo per ogni cella calda della matrice delle destinazioni.
 
-### 3. (2° METODO) Dati a confronto in tempo reale
+4. In questo modo, incrociando i risultati, riesco a ottenere le tratte piu' frequentemente percorse dell'intero database, che salvero' tenendo conto del tempo impiegato a percorrerle, della distanza aerea percorsa, dell'orario e del costo.
 
-### 4. TODO
+#### 3.3 Scraping e risultati
+
+Avendo a disposizione queste tratte, instrumento il multiscraper per richiedere ai vari servizi (Moovit, Waze), ripetutamente a intervalli di 15 minuti, di fare un calcolo del percorso per attraversarle, partendo dall'orario della richiesta. In questo modo posso vedere se ci sono variazioni nel tempo (tra ora e ora e giorno e giorno). Una volta acquisiti tutti i dati per qualche mese, posso estrarre tutte le informazioni (risposte alle domande) che mi servono
+
+### 4. (2° METODO) Dati a confronto in tempo reale
+
+> TODO
+
+### 5. TODO
 
 1. Decifrare i parametri inviati nelle richieste dai servizi con piu' opzioni (tipo: Moovit ti fa scegliere una combinazione tra tram, metro, bici, piedi, passante ecc...)
 1. Dividere Milano in aree come Area C, centro, semicentro e periferia per ulteriori analisi a posteriori
