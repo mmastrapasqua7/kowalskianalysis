@@ -33,6 +33,7 @@ func (t TripResult) ToTrips() []trip.Trip {
 		trip.StartTime = time.Now()
 		trip.EndTime = time.Now().Add(time.Duration(alternative.Response.TotalRouteTime) * time.Second)
 		trip.Duration = trip.EndTime.Sub(trip.StartTime)
+		trip.VehicleType = "OWN CAR"
 		trip.ScrapedApp = "WAZE"
 		trips = append(trips, trip)
 	}

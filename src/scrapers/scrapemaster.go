@@ -9,6 +9,8 @@ package main
 import (
 	"../lib/moovit"
 	"../lib/waze"
+	"../lib/openstreetmap"
+
 	"../lib/geoloc"
 	"../lib/trip"
 
@@ -30,6 +32,9 @@ func main() {
 
 	wazeTrips := waze.GetRealTimeRoutes(from, to).ToTrips()
 	trips = append(trips, wazeTrips)
+
+	openstreetmapTrips := openstreetmap.GetTrips(from, to)
+	trips = append(trips, openstreetmapTrips)
 
 	for _, serviceTrips := range trips {
 		for _, trip := range serviceTrips {

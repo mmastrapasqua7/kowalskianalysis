@@ -56,6 +56,7 @@ func (t TripResult) ToTrips() []trip.Trip {
 		trip.StartTime = timeIn(travels[0].start, "Europe/London")
 		trip.EndTime = timeIn(travels[len(travels)-1].end, "Europe/London")
 		trip.Duration = trip.EndTime.Sub(trip.StartTime)
+		trip.VehicleType = "ATM"
 		trip.ScrapedApp = "MOOVIT"
 		trips = append(trips, trip)
 	}
