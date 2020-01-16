@@ -1,9 +1,9 @@
 package moovit
 
 import (
-	"../httpwrap"
-	"../geoloc"
-	"../trip"
+	"../../httpwrap"
+	"../../geoloc"
+	"../../trip"
 
 	"bytes"
 	"encoding/json"

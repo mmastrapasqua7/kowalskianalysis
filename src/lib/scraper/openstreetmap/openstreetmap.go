@@ -1,9 +1,9 @@
 package openstreetmap
 
 import (
-	"../httpwrap"
-	"../geoloc"
-	"../trip"
+	"../../httpwrap"
+	"../../geoloc"
+	"../../trip"
 
 	"encoding/json"
 	"io/ioutil"

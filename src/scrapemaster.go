@@ -7,12 +7,11 @@
 package main
 
 import (
-	"../lib/moovit"
-	"../lib/waze"
-	"../lib/openstreetmap"
-
-	"../lib/geoloc"
-	"../lib/trip"
+	"./lib/geoloc"
+	"./lib/trip"
+	"./lib/scraper/moovit"
+	"./lib/scraper/waze"
+	"./lib/scraper/openstreetmap"
 
 	"fmt"
 	"os"

@@ -1,7 +1,7 @@
 # Makefile
 
 scrapemaster:
-	go build -o bin/scrapemaster.out src/scrapers/scrapemaster.go
+	go build -o bin/scrapemaster.out src/scrapemaster.go
 
 clean:
 	rm bin/*.out
