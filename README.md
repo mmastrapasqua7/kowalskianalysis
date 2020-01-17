@@ -1,5 +1,7 @@
 # Kowalski, analysis!
 
+.. atrent: per ora ok tue idee/note qui, ma al più presto ti consiglierei di cominciare con un doc LaTeX in modo da non trovarti spiazzato in seguito, trovi un template di massima (ampiamente modificabile) qui: https://gitlab.com/andrea-trentini/TemplateTesi
+
 ## Confronto tra mezzi pubblici e privati nell'area di Milano basato su dati estratti da servizi
 #### (Università degli Studi di Milano. Tesi di Mauro Mastrapasqua)
 
@@ -85,6 +87,8 @@ eliminando i record inutili posso capire che l'utente U ha viaggiato da (1,1) a 
 
 *definizione record inutile*: un record e' inutile se e solo se ha le stesse coordinate del record precedente e del record successivo. (infatti, nell'esempio, le rilevazioni 1 e 6 non so se sono inutili, perche' non so cosa c'e' prima di 1 e dopo 6)
 
+.. atrent: ragionamento corretto
+
 ##### 3.2.2 Calcolo tratte piu' frequenti
 
 Un conteggio pari-pari delle tratte (stesse coordinate di partenza e arrivo) non e' la cosa piu' intelligente da fare, perche' (1) le coordinate sono dei double e (2) se volessi andare in Duomo con una macchina, di certo non parcheggerei dentro il Duomo ma nell'area intorno (dentro i 500 metri di raggio), cosi' per ogni meta in citta'. Il punto (2) va tenuto a mente anche per il punto di partenza delle macchine, perche' 2 utenti possono aver percorso la stessa tratta ma partendo da 2 posti non esattamente uguali, ma molto vicini. Per cercare le tratte piu' frequenti usero' il seguente metodo:
@@ -107,6 +111,9 @@ type Matrix [n][m]Cell
 3. Rifaccio lo stesso procedimento all'inverso: partendo da una matrice vuota, che chiamero' **matrice delle partenze gettonate**, la riempo in base alle coordinate di partenza delle tratte che sono salvate nelle celle calde della matrice precedente, la matrice delle destinazioni. Questo per ogni cella calda della matrice delle destinazioni.
 
 4. In questo modo, incrociando i risultati, riesco a ottenere le tratte piu' frequentemente percorse dell'intero database, che salvero' tenendo conto del tempo impiegato a percorrerle, della distanza aerea percorsa, dell'orario e del costo.
+
+.. atrent: vediamo se ho capito: di fatto cambi (abbassando) la risoluzione del posizionamento per raggruppare le tratte, ragionamento corretto, credo si possa fare anche qualche tipo di clusterizzazione statistica, magari chiediamo alla Damiani (GIS) o a Malchiodi (statistica)
+
 
 #### 3.3 Scraping e risultati
 
