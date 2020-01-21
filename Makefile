@@ -6,6 +6,6 @@ scrapemaster:
 clean:
 	rm bin/*.out
 
-test:
+test-scraper:
 	make scrapemaster
 	bin/scrapemaster.out 45.450640 9.226650 45.465848 9.167429

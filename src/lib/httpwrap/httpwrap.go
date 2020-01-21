@@ -11,7 +11,7 @@ import (
 )
 
 func Get(url string, header http.Header, params url.Values, cookies []*http.Cookie) (*http.Response, error) {
-	time.Sleep(300 * time.Millisecond)
+	time.Sleep(150 * time.Millisecond)
 	request, err := http.NewRequest("GET", url + params.Encode(), nil)
 	if err != nil {
 		log.Fatal(err)
@@ -43,7 +43,7 @@ func Get(url string, header http.Header, params url.Values, cookies []*http.Cook
 }
 
 func Post(url string, header http.Header, params *bytes.Buffer, cookies []*http.Cookie) (*http.Response, error) {
-	time.Sleep(300 * time.Millisecond)
+	time.Sleep(150 * time.Millisecond)
 	request, err := http.NewRequest("POST", url, params)
 	request.Header = header
 

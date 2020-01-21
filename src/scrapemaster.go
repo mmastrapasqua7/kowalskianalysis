@@ -36,7 +36,7 @@ func main() {
 	trips = append(trips, openstreetmapTrips)
 
 	for _, serviceTrips := range trips {
-		for _, trip := range serviceTrips {
+		for _, trip := range serviceTrips[:2] {
 			fmt.Println(trip.TimeTable())
 		}
 	}
