@@ -19,7 +19,7 @@ func init() {
 func GetTrips(from, to geoloc.Location) []trip.Trip {
 	trips := make([]trip.Trip, 0)
 
-	bikeTrip := getTripPlans(from, to, "bike")
+	bikeTrip := getSuggestedRoutes(from, to, "bike")
 	var trip1 trip.Trip
 	trip1.StartTime = time.Now()
 	trip1.EndTime = time.Now().Add(time.Duration(bikeTrip.Routes[0].Duration) * time.Second)
@@ -29,7 +29,7 @@ func GetTrips(from, to geoloc.Location) []trip.Trip {
 	trip1.ScrapedApp = "OPENSTREETMAP"
 	trips = append(trips, trip1)
 
-	footTrip := getTripPlans(from, to, "foot")
+	footTrip := getSuggestedRoutes(from, to, "foot")
 	var trip2 trip.Trip
 	trip2.StartTime = time.Now()
 	trip2.EndTime = time.Now().Add(time.Duration(footTrip.Routes[0].Duration) * time.Second)
@@ -62,7 +62,7 @@ func getWebPage() {
 	response.Body.Close()
 }
 
-func getTripPlans(from, to geoloc.Location, routeType string) TripResult {
+func getSuggestedRoutes(from, to geoloc.Location, routeType string) Result {
 	fromString := from.Longitude + "," + from.Latitude
 	toString := to.Longitude + "," + to.Latitude
 	urlWaze := "https://routing.openstreetmap.de/routed-" + routeType + "/route/v1/driving/" + fromString + ";" + toString +"?overview=false&geometries=polyline&steps=false"
@@ -83,7 +83,7 @@ func getTripPlans(from, to geoloc.Location, routeType string) TripResult {
 
 	response, err := httpwrap.Get(urlWaze, header, nil, nil)
 	if err != nil {
-		log.Fatalf("getTripPlans: ", err)
+		log.Fatalf("getSuggestedRoutes: ", err)
 	}
 	defer response.Body.Close()
 
@@ -91,7 +91,7 @@ func getTripPlans(from, to geoloc.Location, routeType string) TripResult {
 	if err != nil {
 		log.Fatal(err)
 	}
-	var tripPlans TripResult
+	var tripPlans Result
 	json.Unmarshal(bodyBytes, &tripPlans)
 
 	// emp, _ := json.MarshalIndent(tripPlans, "", "  ")

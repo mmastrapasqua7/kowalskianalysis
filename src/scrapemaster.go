@@ -24,15 +24,14 @@ func main() {
 	}
 	from := geoloc.Location{os.Args[1], os.Args[2], "unknown"}
 	to := geoloc.Location{os.Args[3], os.Args[4], "unkown"}
-	trips := make([][]trip.Trip, 0)
 
-	moovitTrips := moovit.GetRealTimeRoutes(from, to).ToTrips()
-	trips = append(trips, moovitTrips)
-
-	wazeTrips := waze.GetRealTimeRoutes(from, to).ToTrips()
-	trips = append(trips, wazeTrips)
-
+	moovitTrips := moovit.GetTrips(from, to)
+	wazeTrips := waze.GetTrips(from, to)
 	openstreetmapTrips := openstreetmap.GetTrips(from, to)
+
+	trips := make([][]trip.Trip, 0)
+	trips = append(trips, moovitTrips)
+	trips = append(trips, wazeTrips)
 	trips = append(trips, openstreetmapTrips)
 
 	for _, serviceTrips := range trips {

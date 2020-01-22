@@ -17,21 +17,18 @@ func init() {
 	getWebPage()
 }
 
-func GetRealTimeRoutes(from, to geoloc.Location) TripResult {
+func GetTrips(from, to geoloc.Location) []trip.Trip {
+	// fetch
 	cookies := getCookies()
-
 	setCookieConsent()
+	wazeRoutes := getSuggestedRoutes(from, to, cookies)
 
-	return getTripPlans(from, to, cookies)
-}
-
-func (t TripResult) ToTrips() []trip.Trip {
+	// execute
 	trips := make([]trip.Trip, 0)
-
-	for _, alternative := range t.Alternatives[:] {
+	for _, route := range wazeRoutes.Alternatives[:] {
 		var trip trip.Trip
 		trip.StartTime = time.Now()
-		trip.EndTime = time.Now().Add(time.Duration(alternative.Response.TotalRouteTime) * time.Second)
+		trip.EndTime = time.Now().Add(time.Duration(route.Response.TotalRouteTime) * time.Second)
 		trip.Duration = trip.EndTime.Sub(trip.StartTime)
 		trip.VehicleType = "OWN CAR"
 		trip.ScrapedApp = "WAZE"
@@ -82,7 +79,7 @@ func setCookieConsent() {
 	defer response.Body.Close()
 }
 
-func getTripPlans(from, to geoloc.Location, cookies []*http.Cookie) TripResult {
+func getSuggestedRoutes(from, to geoloc.Location, cookies []*http.Cookie) Result {
 	urlWaze := "https://www.waze.com/row-RoutingManager/routingRequest?"
 
 	header := http.Header{}
@@ -112,7 +109,7 @@ func getTripPlans(from, to geoloc.Location, cookies []*http.Cookie) TripResult {
 
 	response, err := httpwrap.Get(urlWaze, header, params, cookies)
 	if err != nil {
-		log.Fatalf("getTripPlans: ", err)
+		log.Fatalf("getSuggestedRoutes: ", err)
 	}
 	defer response.Body.Close()
 
@@ -120,7 +117,7 @@ func getTripPlans(from, to geoloc.Location, cookies []*http.Cookie) TripResult {
 	if err != nil {
 		log.Fatal(err)
 	}
-	var tripPlans TripResult
+	var tripPlans Result
 	json.Unmarshal(bodyBytes, &tripPlans)
 
 	// emp, _ := json.MarshalIndent(tripPlans, "", "  ")

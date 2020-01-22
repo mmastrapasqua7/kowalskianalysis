@@ -19,40 +19,31 @@ func init() {
 	getWebPage()
 }
 
-func GetRealTimeRoutes(from, to geoloc.Location) TripResult {
+func GetTrips(from, to geoloc.Location) []trip.Trip {
+	// fetch
 	from.Name = getLocationName(from.Latitude, from.Longitude)
 	to.Name = getLocationName(to.Latitude, to.Longitude)
-
 	headerParams := getParamsNeededForHeader(from.Name, to.Name)
-
 	cookie := getMagicCookie(headerParams)
-
 	_ = getMagicKey(headerParams, cookie) // not needed (?)
-
 	fromMetadata := getLocationInfo(from.Name, headerParams, cookie)
 	toMetadata := getLocationInfo(to.Name, headerParams, cookie)
-
 	token := getMagicToken(fromMetadata, toMetadata, headerParams, cookie)
+	moovitRoutes := getSuggestedRoutes(fromMetadata, toMetadata, token, cookie)
 
-	return getTripPlans(fromMetadata, toMetadata, token, cookie)
-}
-
-func (t TripResult) ToTrips() []trip.Trip {
+	// execute
 	trips := make([]trip.Trip, 0)
-
-	for _, result := range t.Results[1:] { // Results[0] is metadata
+	for _, moovitResult := range moovitRoutes.Results[1:] { // Results[0] is metadata
 		var trip trip.Trip
 		travels := make([]travel, 0)
-
-		for _, step := range result.Result.Itinerary.Legs[:] {
-			if timestamp := step.WalkLeg.Time; timestamp.StartTime != 0 && timestamp.EndTime != 0 {
+		for _, routeStep := range moovitResult.Result.Itinerary.Legs[:] {
+			if timestamp := routeStep.WalkLeg.Time; timestamp.StartTime != 0 && timestamp.EndTime != 0 {
 				var travel travel
 				travel.start = time.Unix(0, timestamp.StartTime * int64(time.Millisecond))
 				travel.end = time.Unix(0, timestamp.EndTime * int64(time.Millisecond))
 				travels = append(travels, travel)
 			}
 		}
-
 		trip.StartTime = timeIn(travels[0].start, "Europe/London")
 		trip.EndTime = timeIn(travels[len(travels)-1].end, "Europe/London")
 		trip.Duration = trip.EndTime.Sub(trip.StartTime)
@@ -282,7 +273,7 @@ func getMagicToken(fromLocation, endLocation LocationResult, referHeaderParams u
 	return token
 }
 
-func getTripPlans(fromLocation, toLocation LocationResult, token Token, rbzidCookie *http.Cookie) TripResult {
+func getSuggestedRoutes(fromLocation, toLocation LocationResult, token Token, rbzidCookie *http.Cookie) Result {
 	urlMoovit := "https://moovitapp.com/api/route/result?"
 
 	fromLatitude := strconv.Itoa(fromLocation.LatLon.Latitude)
@@ -331,10 +322,10 @@ func getTripPlans(fromLocation, toLocation LocationResult, token Token, rbzidCoo
 	if err != nil {
 		log.Fatal(err)
 	}
-	var tripPlans TripResult
+	var tripPlans Result
 	json.Unmarshal(bodyBytes, &tripPlans)
 
-	var moreTripPlans TripResult
+	var moreTripPlans Result
 	for offset := len(tripPlans.Results); moreTripPlans.Completed != true; offset += len(moreTripPlans.Results) {
 		magicHeader := response.Header.Get("If-None-Match")
 		header.Set("If-None-Match", magicHeader)

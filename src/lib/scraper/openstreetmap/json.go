@@ -1,6 +1,6 @@
 package openstreetmap
 
-type TripResult struct {
+type Result struct {
 	Code      string `json:"code"`
 	Waypoints []struct {
 		Hint     string    `json:"hint"`

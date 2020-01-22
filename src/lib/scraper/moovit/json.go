@@ -63,7 +63,7 @@ type Token struct {
 	Value string `json:"token"`
 }
 
-type TripResult struct {
+type Result struct {
 	Results []struct {
 		Result struct {
 			Itinerary struct {

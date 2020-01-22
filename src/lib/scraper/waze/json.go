@@ -1,6 +1,6 @@
 package waze
 
-type TripResult struct {
+type Result struct {
 	Alternatives []struct {
 		Response struct {
 			Results []struct {
