@@ -7,11 +7,10 @@
 package main
 
 import (
-	"./lib/geoloc"
-	"./lib/trip"
 	"./lib/scraper/moovit"
-	"./lib/scraper/waze"
 	"./lib/scraper/openstreetmap"
+	"./lib/scraper/waze"
+	"./lib/trip"
 
 	"fmt"
 	"os"
@@ -22,8 +21,8 @@ func main() {
 		fmt.Println("usage:\n\t scrapall <fromLat> <fromLon> <toLat> <toLon>")
 		return
 	}
-	from := geoloc.Location{os.Args[1], os.Args[2], "unknown"}
-	to := geoloc.Location{os.Args[3], os.Args[4], "unkown"}
+	from := trip.Location{os.Args[1], os.Args[2], "unknown"}
+	to := trip.Location{os.Args[3], os.Args[4], "unkown"}
 
 	moovitTrips := moovit.GetTrips(from, to)
 	wazeTrips := waze.GetTrips(from, to)

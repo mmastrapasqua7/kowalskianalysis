@@ -1,16 +1,19 @@
 package trip
 
 import (
-	"../geoloc"
-
 	"fmt"
 	"time"
 )
 
+type Location struct {
+	Latitude, Longitude string
+	Name                string
+}
+
 type Trip struct {
-	From        geoloc.Location
-	To          geoloc.Location
-	MidSteps    []geoloc.Location
+	From        Location
+	To          Location
+	MidSteps    []Location
 	StartTime   time.Time
 	EndTime     time.Time
 	Duration    time.Duration
