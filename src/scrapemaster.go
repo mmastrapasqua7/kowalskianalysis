@@ -7,6 +7,7 @@
 package main
 
 import (
+	"./lib/scraper/car2go"
 	"./lib/scraper/moovit"
 	"./lib/scraper/openstreetmap"
 	"./lib/scraper/waze"
@@ -27,15 +28,19 @@ func main() {
 	moovitTrips := moovit.GetTrips(from, to)
 	wazeTrips := waze.GetTrips(from, to)
 	openstreetmapTrips := openstreetmap.GetTrips(from, to)
+	car2goTrips := car2go.GetTrips(from, to, "bin/car2go")
 
 	trips := make([][]trip.Trip, 0)
 	trips = append(trips, moovitTrips)
 	trips = append(trips, wazeTrips)
 	trips = append(trips, openstreetmapTrips)
+	trips = append(trips, car2goTrips)
 
+	trip.PrintHeader() // pretty
 	for _, serviceTrips := range trips {
-		for _, trip := range serviceTrips[:2] {
+		for _, trip := range serviceTrips {
 			fmt.Println(trip.TimeTable())
 		}
 	}
+	trip.PrintFooter() // pretty
 }
