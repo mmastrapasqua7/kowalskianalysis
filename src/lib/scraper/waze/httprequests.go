@@ -25,7 +25,6 @@ func getWebPage() error {
 
 	response, err := httpwrap.Get(urlWaze, header, nil, nil)
 	if err != nil {
-		log.Println("waze: failed to get webpage:", err)
 		return err
 	}
 	response.Body.Close()
@@ -37,7 +36,6 @@ func getCookies() ([]*http.Cookie, error) {
 
 	response, err := http.Get(urlWaze)
 	if err != nil {
-		log.Println("waze: getCookies: ", err)
 		return nil, err
 	}
 	defer response.Body.Close()
@@ -50,7 +48,6 @@ func setCookieConsent() error {
 
 	response, err := http.Get(urlWaze)
 	if err != nil {
-		log.Println("waze: setCookieConsent: ", err)
 		return err
 	}
 	defer response.Body.Close()
