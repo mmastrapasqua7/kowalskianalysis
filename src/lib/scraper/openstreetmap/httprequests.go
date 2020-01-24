@@ -6,11 +6,10 @@ import (
 
 	"encoding/json"
 	"io/ioutil"
-	"log"
 	"net/http"
 )
 
-func getWebPage() {
+func getWebPage() error {
 	urlWaze := "https://www.openstreetmap.org/"
 
 	header := http.Header{}
@@ -25,12 +24,15 @@ func getWebPage() {
 
 	response, err := httpwrap.Get(urlWaze, header, nil, nil)
 	if err != nil {
-		log.Fatalf("getWebPage: ", err)
+		return err
 	}
 	response.Body.Close()
+	return nil
 }
 
-func getSuggestedRoutes(from, to trip.Location, routeType string) Result {
+func getSuggestedRoutes(from, to trip.Location, routeType string) (Result, error) {
+	var tripPlans Result
+
 	fromString := from.Longitude + "," + from.Latitude
 	toString := to.Longitude + "," + to.Latitude
 	urlWaze := "https://routing.openstreetmap.de/routed-" + routeType + "/route/v1/driving/" + fromString + ";" + toString +"?overview=false&geometries=polyline&steps=false"
@@ -51,18 +53,17 @@ func getSuggestedRoutes(from, to trip.Location, routeType string) Result {
 
 	response, err := httpwrap.Get(urlWaze, header, nil, nil)
 	if err != nil {
-		log.Fatalf("getSuggestedRoutes: ", err)
+		return tripPlans, err
 	}
 	defer response.Body.Close()
 
 	bodyBytes, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		log.Fatal(err)
+		return tripPlans, err
 	}
-	var tripPlans Result
 	json.Unmarshal(bodyBytes, &tripPlans)
 
 	// emp, _ := json.MarshalIndent(tripPlans, "", "  ")
 	// fmt.Println(string(emp))
-	return tripPlans
+	return tripPlans, nil
 }

@@ -13,6 +13,7 @@ import (
 	"./lib/scraper/waze"
 	"./lib/trip"
 
+	"log"
 	"fmt"
 	"os"
 )
@@ -24,6 +25,14 @@ func main() {
 	}
 	from := trip.Location{os.Args[1], os.Args[2], "unknown"}
 	to := trip.Location{os.Args[3], os.Args[4], "unkown"}
+
+	logfile, err := os.OpenFile("scrapers_error.log", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+	if err != nil {
+		fmt.Println("scrapemaster: can't open/create file:", err)
+		return
+	}
+	defer logfile.Close()
+	log.SetOutput(logfile)
 
 	moovitTrips := moovit.GetTrips(from, to)
 	wazeTrips := waze.GetTrips(from, to)

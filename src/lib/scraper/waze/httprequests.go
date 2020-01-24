@@ -11,7 +11,7 @@ import (
 	"net/url"
 )
 
-func getWebPage() {
+func getWebPage() error {
 	urlWaze := "https://www.waze.com/it/livemap"
 
 	header := http.Header{}
@@ -25,34 +25,41 @@ func getWebPage() {
 
 	response, err := httpwrap.Get(urlWaze, header, nil, nil)
 	if err != nil {
-		log.Fatalf("getWebPage: ", err)
+		log.Println("waze: failed to get webpage:", err)
+		return err
 	}
 	response.Body.Close()
+	return nil
 }
 
-func getCookies() []*http.Cookie {
+func getCookies() ([]*http.Cookie, error) {
 	urlWaze := "https://www.waze.com/login/get"
 
 	response, err := http.Get(urlWaze)
 	if err != nil {
-		log.Fatalf("getCookies: ", err)
+		log.Println("waze: getCookies: ", err)
+		return nil, err
 	}
 	defer response.Body.Close()
 
-	return response.Cookies()
+	return response.Cookies(), nil
 }
 
-func setCookieConsent() {
+func setCookieConsent() error {
 	urlWaze := "https://www.waze.com/web_api/request_info?source=cookie_consent"
 
 	response, err := http.Get(urlWaze)
 	if err != nil {
-		log.Fatalf("setCookieConsent: ", err)
+		log.Println("waze: setCookieConsent: ", err)
+		return err
 	}
 	defer response.Body.Close()
+	return nil
 }
 
-func getSuggestedRoutes(from, to trip.Location, cookies []*http.Cookie) Result {
+func getSuggestedRoutes(from, to trip.Location, cookies []*http.Cookie) (Result, error) {
+	var tripPlans Result
+
 	urlWaze := "https://www.waze.com/row-RoutingManager/routingRequest?"
 
 	header := http.Header{}
@@ -82,18 +89,17 @@ func getSuggestedRoutes(from, to trip.Location, cookies []*http.Cookie) Result {
 
 	response, err := httpwrap.Get(urlWaze, header, params, cookies)
 	if err != nil {
-		log.Fatalf("getSuggestedRoutes: ", err)
+		return tripPlans, err
 	}
 	defer response.Body.Close()
 
 	bodyBytes, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		log.Fatal(err)
+		return tripPlans, err
 	}
-	var tripPlans Result
 	json.Unmarshal(bodyBytes, &tripPlans)
 
 	// emp, _ := json.MarshalIndent(tripPlans, "", "  ")
 	// fmt.Println(string(emp))
-	return tripPlans
+	return tripPlans, nil
 }

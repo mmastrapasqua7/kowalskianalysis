@@ -10,16 +10,33 @@ import (
 	"math"
 	"io/ioutil"
 	"log"
-	// "strconv"
+	"time"
 )
 
 func GetTrips(from, to trip.Location, dirName string) []trip.Trip {
 	trips := make([]trip.Trip, 0)
 
-	carPosition := findTheClosestCar(from, dirName)
-	osmTrips := openstreetmap.GetTrips(from, carPosition)
-	wazeTrips := waze.GetTrips(carPosition, to)
+	carPosition, err := findTheClosestCar(from, dirName)
+	if err != nil {
+		log.Println("car2go: failed to fetch position of the closest car:", err)
+		return trips
+	}
 
+	osmTrips := openstreetmap.GetTrips(from, carPosition)
+	for i, osmTrip := range osmTrips {
+		if osmTrip.Duration > (1 * time.Hour) {
+			osmTrips[i].Duration = 23 * time.Hour
+		}
+	}
+
+	wazeTrips := waze.GetTrips(carPosition, to)
+	if len(wazeTrips) == 0 {
+		log.Println("car2go: waze trips are empty:", len(osmTrips), len(wazeTrips))
+		trips = append(trips, Sum(osmTrips[1], trip.Trip{}))
+		return trips
+	}
+
+	// // RETRY
 	// for i := 0; len(wazeTrips) == 0 && i < 100; i++ { // retry
 	// 	lat, _ := strconv.ParseFloat(carPosition.Latitude, 64)
 	// 	lon, _ := strconv.ParseFloat(carPosition.Longitude, 64)
@@ -30,32 +47,9 @@ func GetTrips(from, to trip.Location, dirName string) []trip.Trip {
 	// 	wazeTrips = waze.GetTrips(newCarPosition, to)
 	// }
 
-	if len(osmTrips) > 1 && len(wazeTrips) > 0 {
-		car2goRoutes := Sum(osmTrips[1], wazeTrips[0])
-		trips = append(trips, car2goRoutes)
-		return trips
-	} else {
-		// Brutto
-		fmt.Println(from, carPosition)
-		fmt.Println(carPosition, to)
-
-		for _, trip := range osmTrips[1:] {
-			fmt.Println("\nERRORE")
-			fmt.Println(trip.TimeTable())
-			fmt.Println(trip.TimeTable())
-			fmt.Println("")
-		}
-
-		for _, trip := range wazeTrips {
-			fmt.Println("\nERRORE")
-			fmt.Println(trip.TimeTable())
-			fmt.Println(trip.TimeTable())
-			fmt.Println("")
-		}
-
-	}
-
-	return nil
+	car2goRoutes := Sum(osmTrips[1], wazeTrips[0])
+	trips = append(trips, car2goRoutes)
+	return trips
 }
 
 func Sum(trip1, trip2 trip.Trip) trip.Trip {
@@ -74,10 +68,11 @@ func Sum(trip1, trip2 trip.Trip) trip.Trip {
 	return trip
 }
 
-func findTheClosestCar(from trip.Location, dirName string) trip.Location {
+func findTheClosestCar(from trip.Location, dirName string) (trip.Location, error) {
+	var closestCarPosition trip.Location
 	files, err := ioutil.ReadDir(dirName)
 	if err != nil {
-		log.Fatal(err)
+		return closestCarPosition, err
 	}
 	// car2go_error.log is the last file,
 	// I need the previous one with len()-2
@@ -85,12 +80,12 @@ func findTheClosestCar(from trip.Location, dirName string) trip.Location {
 
 	latestJsonDump, err := ioutil.ReadFile(latestJsonDumpFilename)
 	if err != nil {
-		log.Fatal(err)
+		return closestCarPosition, err
 	}
 	car2goResult := Car2goResult{}
 	err = json.Unmarshal([]byte(latestJsonDump), &car2goResult)
 	if err != nil {
-		log.Fatal(err)
+		return closestCarPosition, err
 	}
 
 	closestCar := [2]float64{car2goResult[0].Loc[1], car2goResult[0].Loc[0]} // lon lat
@@ -111,11 +106,9 @@ func findTheClosestCar(from trip.Location, dirName string) trip.Location {
 
 	}
 
-	closestCarPosition := trip.Location{
-		fmt.Sprintf("%.06f", closestCar[0]),
-		fmt.Sprintf("%.06f", closestCar[1]),
-		"unknown"}
-	return closestCarPosition
+	closestCarPosition.Latitude = fmt.Sprintf("%.06f", closestCar[0])
+	closestCarPosition.Longitude = fmt.Sprintf("%.06f", closestCar[1])
+	return closestCarPosition, nil
 }
 
 func distance(lat1, lon1, lat2, lon2 float64) float64 {

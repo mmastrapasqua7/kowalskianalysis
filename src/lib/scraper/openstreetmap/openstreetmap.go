@@ -3,17 +3,30 @@ package openstreetmap
 import (
 	"../../trip"
 
+	"fmt"
+	"log"
 	"time"
 )
 
 func init() {
-	getWebPage()
+	err := getWebPage()
+	if err != nil {
+		log.Println("openstreetmap: failed to get webpage:", err)
+		fmt.Println("ERROR: look at the logfile for more details. Sleeping.")
+		for {
+			time.Sleep(24 * time.Hour)
+		}
+	}
 }
 
 func GetTrips(from, to trip.Location) []trip.Trip {
 	trips := make([]trip.Trip, 0)
 
-	bikeTrip := getSuggestedRoutes(from, to, "bike")
+	bikeTrip, err := getSuggestedRoutes(from, to, "bike")
+	if err != nil {
+		log.Println("openstreetmap: failed to fetch bike routes:", err)
+		return trips
+	}
 	var trip1 trip.Trip
 	trip1.StartTime = time.Now()
 	trip1.EndTime = time.Now().Add(time.Duration(bikeTrip.Routes[0].Duration) * time.Second)
@@ -23,7 +36,11 @@ func GetTrips(from, to trip.Location) []trip.Trip {
 	trip1.ScrapedApp = "OPENSTREETMAP"
 	trips = append(trips, trip1)
 
-	footTrip := getSuggestedRoutes(from, to, "foot")
+	footTrip, err := getSuggestedRoutes(from, to, "foot")
+	if err != nil {
+		log.Println("openstreetmap: failed to fetch foot routes:", err)
+		return trips
+	}
 	var trip2 trip.Trip
 	trip2.StartTime = time.Now()
 	trip2.EndTime = time.Now().Add(time.Duration(footTrip.Routes[0].Duration) * time.Second)
