@@ -39,17 +39,11 @@ func main() {
 	openstreetmapTrips := openstreetmap.GetTrips(from, to)
 	car2goTrips := car2go.GetTrips(from, to, "bin/car2go")
 
-	trips := make([][]trip.Trip, 0)
-	trips = append(trips, moovitTrips)
-	trips = append(trips, wazeTrips)
-	trips = append(trips, openstreetmapTrips)
-	trips = append(trips, car2goTrips)
+	trips := make([]trip.Trip, 0)
+	trips = append(trips, moovitTrips...)
+	trips = append(trips, wazeTrips...)
+	trips = append(trips, openstreetmapTrips...)
+	trips = append(trips, car2goTrips...)
 
-	trip.PrintHeader() // pretty
-	for _, serviceTrips := range trips {
-		for _, trip := range serviceTrips {
-			fmt.Println(trip.TimeTable())
-		}
-	}
-	trip.PrintFooter() // pretty
+	trip.PrintTimeTable(trips)
 }

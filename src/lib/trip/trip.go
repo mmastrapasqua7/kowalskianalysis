@@ -27,25 +27,23 @@ type Trip struct {
 	ScrapedApp  string
 }
 
-func PrintHeader() {
+func PrintTimeTable(trips []Trip) {
 	fmt.Printf(
 		"-------------------------------------------------------------------------------------------------------------\n" +
 		"| %-13s | %-20s | %-20s | %-14s | %-14s | %-9s |\n" +
 		"-------------------------------------------------------------------------------------------------------------\n",
 		"Service", "Scraped App", "Vehicle", "Departure", "Arrival", "Duration")
-}
 
-func (t Trip) TimeTable() string {
-	return fmt.Sprintf("| %-13s | %-20s | %-20s | %-14v | %-14v | %-9s |",
-		t.ServiceName,
-		t.ScrapedApp,
-		t.VehicleType,
-		t.StartTime.Format("02/01/06 15:04"),
-		t.EndTime.Format("02/01/06 15:04"),
-		humanizeDuration(t.Duration))
-}
+	for _, trip := range trips {
+		fmt.Printf("| %-13s | %-20s | %-20s | %-14v | %-14v | %-9s |\n",
+		trip.ServiceName,
+		trip.ScrapedApp,
+		trip.VehicleType,
+		trip.StartTime.Format("02/01/06 15:04"),
+		trip.EndTime.Format("02/01/06 15:04"),
+		humanizeDuration(trip.Duration))
+	}
 
-func PrintFooter() {
 	fmt.Println("-------------------------------------------------------------------------------------------------------------")
 }
 
