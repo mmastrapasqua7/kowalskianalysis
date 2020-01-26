@@ -67,7 +67,7 @@ func GetTrips(from, to trip.Location) []trip.Trip {
 		log.Println("moovit: failed to get magic token:", err)
 		return trips
 	}
-	
+
 	moovitRoutes, err := getSuggestedRoutes(fromMetadata, toMetadata, token, cookie)
 	if err != nil {
 		log.Println("moovit: failed to fetch routes:", err)
@@ -86,11 +86,12 @@ func GetTrips(from, to trip.Location) []trip.Trip {
 				travels = append(travels, travel)
 			}
 		}
+		trip.ServiceName = "ATM"
+		trip.ScrapedApp = "MOOVIT"
 		trip.StartTime = timeIn(travels[0].start, "Europe/London")
 		trip.EndTime = timeIn(travels[len(travels)-1].end, "Europe/London")
 		trip.Duration = trip.EndTime.Sub(trip.StartTime)
-		trip.VehicleType = "ATM"
-		trip.ScrapedApp = "MOOVIT"
+		trip.VehicleType = "METRO/BUS/TRAM"
 		trips = append(trips, trip)
 	}
 

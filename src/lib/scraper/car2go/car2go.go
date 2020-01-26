@@ -55,15 +55,15 @@ func GetTrips(from, to trip.Location, dirName string) []trip.Trip {
 func Sum(trip1, trip2 trip.Trip) trip.Trip {
 	var trip trip.Trip
 
+	trip.ServiceName = "CAR2GO"
+	trip.ScrapedApp = trip1.ScrapedApp + " + " + trip2.ScrapedApp
+	trip.VehicleType = trip1.VehicleType + " + " + "SHARED CAR"
 	trip.From = trip1.From
 	trip.To = trip2.To
 	trip.StartTime = trip1.StartTime
 	trip.EndTime = trip2.EndTime
 	trip.Duration = trip1.Duration + trip2.Duration
 	trip.Distance = trip1.Distance + trip2.Distance
-	trip.VehicleType = trip1.VehicleType + " + " + "SHARED CAR"
-	trip.ServiceName = "CAR2GO"
-	trip.ScrapedApp = trip1.ScrapedApp + " + " + trip2.ScrapedApp
 
 	return trip
 }

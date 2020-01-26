@@ -6,7 +6,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -23,7 +22,6 @@ func getWebPage() error {
 
 	response, err := httpwrap.Get(urlMoovit, header, nil, nil)
 	if err != nil {
-		log.Println("moovit: failed to get webpage:", err)
 		return err
 	}
 	defer response.Body.Close()

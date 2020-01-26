@@ -52,11 +52,12 @@ func GetTrips(from, to trip.Location) []trip.Trip {
 	// execute
 	for _, route := range wazeRoutes.Alternatives {
 		var trip trip.Trip
+		trip.ScrapedApp = "WAZE"
+		// trip.ServiceName = ""
+		trip.VehicleType = "OWN CAR"
 		trip.StartTime = time.Now()
 		trip.EndTime = time.Now().Add(time.Duration(route.Response.TotalRouteTime) * time.Second)
 		trip.Duration = trip.EndTime.Sub(trip.StartTime)
-		trip.VehicleType = "OWN CAR"
-		trip.ScrapedApp = "WAZE"
 		trips = append(trips, trip)
 	}
 

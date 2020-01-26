@@ -13,6 +13,9 @@ type Location struct {
 }
 
 type Trip struct {
+	ServiceName string
+	ScrapedApp  string
+	VehicleType string
 	From        Location
 	To          Location
 	MidSteps    []Location
@@ -20,11 +23,11 @@ type Trip struct {
 	EndTime     time.Time
 	Duration    time.Duration
 	Distance    float64
-	VehicleType string
 	FuelType    string
-	ServiceName string
 	CostInCents int
-	ScrapedApp  string
+	Leaves      []Trip
+	ErrorCode   int
+	TripTooLong bool // carsharing: foot trip from (x,y) to car too long
 }
 
 func PrintTimeTable(trips []Trip) {
