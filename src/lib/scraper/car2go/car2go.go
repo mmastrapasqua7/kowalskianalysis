@@ -10,6 +10,7 @@ import (
 	"math"
 	"io/ioutil"
 	"log"
+	"strconv"
 	"time"
 )
 
@@ -91,22 +92,27 @@ func findTheClosestCar(from trip.Location, dirName string) (trip.Location, error
 		return closestCarPosition, err
 	}
 
+	fromLat, err := strconv.ParseFloat(from.Latitude, 64)
+	if err != nil {
+		return closestCarPosition, err
+	}
+	fromLon, err := strconv.ParseFloat(from.Longitude, 64)
+	if err != nil {
+		return closestCarPosition, err
+	}
 	closestCar := [2]float64{car2goResult[0].Loc[1], car2goResult[0].Loc[0]} // lon lat
-	minimumDistance := 100000000000.0
+	minimumDistance := distance(closestCar[0], closestCar[1], fromLat, fromLon)
+
 	for _, result := range car2goResult[1:] {
-		// [lon, lat] inside json
-		if len(result.Loc) > 0 {
-			lat := result.Loc[1]
-			lon := result.Loc[0]
+		lat := result.Loc[1]
+		lon := result.Loc[0]
 
-			distance := distance(closestCar[0], closestCar[1], lat, lon)
-			if distance < minimumDistance {
-				minimumDistance = distance
-				closestCar[0] = lat
-				closestCar[1] = lon
-			}
+		distance := distance(lat, lon, fromLat, fromLon)
+		if distance < minimumDistance {
+			minimumDistance = distance
+			closestCar[0] = lat
+			closestCar[1] = lon
 		}
-
 	}
 
 	closestCarPosition.Latitude = fmt.Sprintf("%.06f", closestCar[0])

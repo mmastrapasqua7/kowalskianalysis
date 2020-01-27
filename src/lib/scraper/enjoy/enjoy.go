@@ -12,6 +12,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -38,17 +39,6 @@ func GetTrips(from, to trip.Location, dirName string) []trip.Trip {
 		trips = append(trips, Sum(osmTrips[1], trip.Trip{}))
 		return trips
 	}
-
-	// // RETRY
-	// for i := 0; len(wazeTrips) == 0 && i < 100; i++ { // retry
-	// 	lat, _ := strconv.ParseFloat(carPosition.Latitude, 64)
-	// 	lon, _ := strconv.ParseFloat(carPosition.Longitude, 64)
-	// 	lat += float64(i) * 10e-6
-	// 	lon += float64(i) * 10e-6
-	//
-	// 	newCarPosition := trip.Location{fmt.Sprintf("%.06f", lat), fmt.Sprintf("%.06f"), "unknown"}
-	// 	wazeTrips = waze.GetTrips(newCarPosition, to)
-	// }
 
 	enjoyRoutes := Sum(osmTrips[1], wazeTrips[0])
 	trips = append(trips, enjoyRoutes)
@@ -105,19 +95,27 @@ func findTheClosestCar(from trip.Location, dirName string) (trip.Location, error
 		return closestCarPosition, err
 	}
 
-	closestCar := [2]float64{enjoyResult[0].Lat, enjoyResult[0].Lon} // lon lat
-	minimumDistance := 100000000000.0
+	fromLat, err := strconv.ParseFloat(from.Latitude, 64)
+	if err != nil {
+		return closestCarPosition, err
+	}
+	fromLon, err := strconv.ParseFloat(from.Longitude, 64)
+	if err != nil {
+		return closestCarPosition, err
+	}
+	closestCar := [2]float64{enjoyResult[0].Lat, enjoyResult[0].Lon}
+	minimumDistance := distance(closestCar[0], closestCar[1], fromLat, fromLon)
+
 	for _, result := range enjoyResult[1:] {
 		lat := result.Lat
 		lon := result.Lon
 
-		distance := distance(closestCar[0], closestCar[1], lat, lon)
+		distance := distance(lat, lon, fromLat, fromLon)
 		if distance < minimumDistance {
 			minimumDistance = distance
 			closestCar[0] = lat
 			closestCar[1] = lon
 		}
-
 	}
 
 	closestCarPosition.Latitude = fmt.Sprintf("%.06f", closestCar[0])
@@ -141,3 +139,14 @@ func distance(lat1, lon1, lat2, lon2 float64) float64 {
 func hsin(theta float64) float64 {
 	return math.Pow(math.Sin(theta/2), 2)
 }
+
+// // RETRY
+// for i := 0; len(wazeTrips) == 0 && i < 100; i++ { // retry
+// 	lat, _ := strconv.ParseFloat(carPosition.Latitude, 64)
+// 	lon, _ := strconv.ParseFloat(carPosition.Longitude, 64)
+// 	lat += float64(i) * 10e-6
+// 	lon += float64(i) * 10e-6
+//
+// 	newCarPosition := trip.Location{fmt.Sprintf("%.06f", lat), fmt.Sprintf("%.06f"), "unknown"}
+// 	wazeTrips = waze.GetTrips(newCarPosition, to)
+// }
