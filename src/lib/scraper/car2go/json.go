@@ -1,6 +1,6 @@
 package car2go
 
-type Car2goResult []struct {
+type Result []struct {
 	Provider string    `json:"provider"`
 	Loc      []float64 `json:"loc"`
 	Obj      struct {

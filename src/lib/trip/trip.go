@@ -32,22 +32,19 @@ type Trip struct {
 
 func PrintTimeTable(trips []Trip) {
 	fmt.Printf(
-		"-------------------------------------------------------------------------------------------------------------\n" +
-		"| %-13s | %-20s | %-20s | %-14s | %-14s | %-9s |\n" +
-		"-------------------------------------------------------------------------------------------------------------\n",
-		"Service", "Scraped App", "Vehicle", "Departure", "Arrival", "Duration")
+		"| %-13s | %-20s | %-20s | %-14s | %-14s | %-9s | %-5s\n",
+		"Service", "Scraped App", "Vehicle", "Departure", "Arrival", "Duration", "Error")
 
 	for _, trip := range trips {
-		fmt.Printf("| %-13s | %-20s | %-20s | %-14v | %-14v | %-9s |\n",
+		fmt.Printf("| %-13s | %-20s | %-20s | %-14v | %-14v | %-9s | %-5v\n",
 		trip.ServiceName,
 		trip.ScrapedApp,
 		trip.VehicleType,
 		trip.StartTime.Format("02/01/06 15:04"),
 		trip.EndTime.Format("02/01/06 15:04"),
-		humanizeDuration(trip.Duration))
+		humanizeDuration(trip.Duration),
+		trip.TripTooLong)
 	}
-
-	fmt.Println("-------------------------------------------------------------------------------------------------------------")
 }
 
 func humanizeDuration(duration time.Duration) string {

@@ -1,15 +1,17 @@
-package car2go
+package enjoy
 
 import (
 	"../../trip"
 	"../openstreetmap"
 	"../waze"
 
+	"compress/gzip"
 	"encoding/json"
 	"fmt"
 	"math"
 	"io/ioutil"
 	"log"
+	"os"
 	"time"
 )
 
@@ -18,7 +20,7 @@ func GetTrips(from, to trip.Location, dirName string) []trip.Trip {
 
 	carPosition, err := findTheClosestCar(from, dirName)
 	if err != nil {
-		log.Println("car2go: failed to fetch position of the closest car:", err)
+		log.Println("enjoy: failed to fetch position of the closest car:", err)
 		return trips
 	}
 
@@ -32,7 +34,7 @@ func GetTrips(from, to trip.Location, dirName string) []trip.Trip {
 
 	wazeTrips := waze.GetTrips(carPosition, to)
 	if len(wazeTrips) == 0 {
-		log.Println("car2go: waze trips are empty:", len(osmTrips), len(wazeTrips))
+		log.Println("enjoy: waze trips are empty:", len(osmTrips), len(wazeTrips))
 		trips = append(trips, Sum(osmTrips[1], trip.Trip{}))
 		return trips
 	}
@@ -48,23 +50,24 @@ func GetTrips(from, to trip.Location, dirName string) []trip.Trip {
 	// 	wazeTrips = waze.GetTrips(newCarPosition, to)
 	// }
 
-	car2goRoutes := Sum(osmTrips[1], wazeTrips[0])
-	trips = append(trips, car2goRoutes)
+	enjoyRoutes := Sum(osmTrips[1], wazeTrips[0])
+	trips = append(trips, enjoyRoutes)
 	return trips
 }
 
 func Sum(trip1, trip2 trip.Trip) trip.Trip {
 	var trip trip.Trip
 
-	trip.ServiceName = "CAR2GO"
+	trip.ServiceName = "ENJOY"
 	trip.ScrapedApp = trip1.ScrapedApp + " + " + trip2.ScrapedApp
-	trip.VehicleType = trip1.VehicleType + " + " + "SHARED CAR"
+	trip.VehicleType = trip1.VehicleType + " + " + "SHARED CAR/SCOOTER"
 	trip.From = trip1.From
 	trip.To = trip2.To
 	trip.StartTime = trip1.StartTime
 	trip.EndTime = trip2.EndTime
 	trip.Duration = trip1.Duration + trip2.Duration
 	trip.Distance = trip1.Distance + trip2.Distance
+	trip.TripTooLong = trip1.TripTooLong || trip2.TripTooLong
 
 	return trip
 }
@@ -75,36 +78,44 @@ func findTheClosestCar(from trip.Location, dirName string) (trip.Location, error
 	if err != nil {
 		return closestCarPosition, err
 	}
-	// car2go_error.log is the last file,
+	// enjoy_error.log is the last file,
 	// I need the previous one with len()-2
 	latestJsonDumpFilename := dirName + "/" + files[len(files) - 2].Name()
-
-	latestJsonDump, err := ioutil.ReadFile(latestJsonDumpFilename)
+	file, err := os.Open(latestJsonDumpFilename)
 	if err != nil {
 		return closestCarPosition, err
 	}
-	log.Println("car2go: OPEN FILE", latestJsonDumpFilename)
+	defer file.Close()
+	log.Println("enjoy: OPEN FILE", latestJsonDumpFilename)
 
-	car2goResult := Result{}
-	err = json.Unmarshal([]byte(latestJsonDump), &car2goResult)
+	gzReader, err := gzip.NewReader(file)
+	if err != nil {
+		return closestCarPosition, err
+	}
+	defer gzReader.Close()
+
+	latestJsonDump, err := ioutil.ReadAll(gzReader)
 	if err != nil {
 		return closestCarPosition, err
 	}
 
-	closestCar := [2]float64{car2goResult[0].Loc[1], car2goResult[0].Loc[0]} // lon lat
+	enjoyResult := Result{}
+	err = json.Unmarshal([]byte(latestJsonDump), &enjoyResult)
+	if err != nil {
+		return closestCarPosition, err
+	}
+
+	closestCar := [2]float64{enjoyResult[0].Lat, enjoyResult[0].Lon} // lon lat
 	minimumDistance := 100000000000.0
-	for _, result := range car2goResult[1:] {
-		// [lon, lat] inside json
-		if len(result.Loc) > 0 {
-			lat := result.Loc[1]
-			lon := result.Loc[0]
+	for _, result := range enjoyResult[1:] {
+		lat := result.Lat
+		lon := result.Lon
 
-			distance := distance(closestCar[0], closestCar[1], lat, lon)
-			if distance < minimumDistance {
-				minimumDistance = distance
-				closestCar[0] = lat
-				closestCar[1] = lon
-			}
+		distance := distance(closestCar[0], closestCar[1], lat, lon)
+		if distance < minimumDistance {
+			minimumDistance = distance
+			closestCar[0] = lat
+			closestCar[1] = lon
 		}
 
 	}
