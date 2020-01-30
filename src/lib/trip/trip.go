@@ -1,53 +1,40 @@
 package trip
 
 import (
+	"../scraper/moovit"
+	// "../scraper/openstreetmap"
+	// "../scraper/waze"
+
 	"fmt"
 	"math"
 	"strings"
 	"time"
 )
 
-type Location struct {
-	Latitude, Longitude string
-	Name                string
+type BigJson struct {
+	MoovitRoutes        moovit.Result
+	// OpenStreetMapRoutes openstreetmap.Result
+	// WazeRoutes          waze.Result
 }
 
-type Trip struct {
-	ServiceName string
-	ScrapedApp  string
-	VehicleType string
-	From        Location
-	To          Location
-	MidSteps    []Location
-	StartTime   time.Time
-	EndTime     time.Time
-	Duration    time.Duration
-	Distance    float64
-	FuelType    string
-	CostInCents int
-	Leaves      []Trip
-	ErrorCode   int
-	TripTooLong bool // carsharing: foot trip from (x,y) to car too long
-}
+// func PrintTimeTable(trips []Trip) {
+// 	fmt.Printf(
+// 		"| %-13s | %-20s | %-20s | %-14s | %-14s | %-9s | %-5s\n",
+// 		"Service", "Scraped App", "Vehicle", "Departure", "Arrival", "Duration", "Error")
+//
+// 	for _, trip := range trips {
+// 		fmt.Printf("| %-13s | %-20s | %-20s | %-14v | %-14v | %-9s | %-5v\n",
+// 		trip.ServiceName,
+// 		trip.ScrapedApp,
+// 		trip.VehicleType,
+// 		trip.StartTime.Format("02/01/06 15:04"),
+// 		trip.EndTime.Format("02/01/06 15:04"),
+// 		humanizeDuration(trip.Duration),
+// 		trip.TripTooLong)
+// 	}
+// }
 
-func PrintTimeTable(trips []Trip) {
-	fmt.Printf(
-		"| %-13s | %-20s | %-20s | %-14s | %-14s | %-9s | %-5s\n",
-		"Service", "Scraped App", "Vehicle", "Departure", "Arrival", "Duration", "Error")
-
-	for _, trip := range trips {
-		fmt.Printf("| %-13s | %-20s | %-20s | %-14v | %-14v | %-9s | %-5v\n",
-		trip.ServiceName,
-		trip.ScrapedApp,
-		trip.VehicleType,
-		trip.StartTime.Format("02/01/06 15:04"),
-		trip.EndTime.Format("02/01/06 15:04"),
-		humanizeDuration(trip.Duration),
-		trip.TripTooLong)
-	}
-}
-
-func humanizeDuration(duration time.Duration) string {
+func HumanizeDuration(duration time.Duration) string {
 	hours := int64(math.Mod(duration.Hours(), 24))
 	minutes := int64(math.Mod(duration.Minutes(), 60))
 

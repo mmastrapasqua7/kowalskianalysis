@@ -1,8 +1,6 @@
 package moovit
 
 import (
-	"../../trip"
-
 	"fmt"
 	"log"
 	"time"
@@ -19,92 +17,57 @@ func init() {
 	}
 }
 
-func GetTrips(from, to trip.Location) []trip.Trip {
-	trips := make([]trip.Trip, 0)
+func GetRoutes(fromLat, fromLon, toLat, toLon string) Result {
+	var empty Result
 
-	// fetch
-	x, err := getLocationName(from.Latitude, from.Longitude)
+	fromName, err := getLocationName(fromLat, fromLon)
 	if err != nil {
 		log.Println("moovit: failed to get location name:", err)
-		return trips
+		return empty
 	}
-	from.Name = x
 
-	y, err := getLocationName(to.Latitude, to.Longitude)
+	toName, err := getLocationName(toLat, toLon)
 	if err != nil {
 		log.Println("moovit: failed to get location name:", err)
-		return trips
+		return empty
 	}
-	to.Name = y
 
-	headerParams, err := getParamsNeededForHeader(from.Name, to.Name)
+	headerParams, err := getParamsNeededForHeader(fromName, toName)
 	if err != nil {
 		log.Println("moovit: failed to get params for header:", err)
-		return trips
+		return empty
 	}
 
 	cookie, err := getMagicCookie(headerParams)
 	if err != nil {
 		log.Println("moovit: failed to get magic cookie:", err)
-		return trips
+		return empty
 	}
 
 	_, _ = getMagicKey(headerParams, cookie) // not needed (?)
-	fromMetadata, err := getLocationInfo(from.Name, headerParams, cookie)
+	fromMetadata, err := getLocationInfo(fromName, headerParams, cookie)
 	if err != nil {
 		log.Println("moovit: failed to fetch location name:", err)
-		return trips
+		return empty
 	}
 
-	toMetadata, err := getLocationInfo(to.Name, headerParams, cookie)
+	toMetadata, err := getLocationInfo(toName, headerParams, cookie)
 	if err != nil {
 		log.Println("moovit: failed to get location info:", err)
-		return trips
+		return empty
 	}
 
 	token, err := getMagicToken(fromMetadata, toMetadata, headerParams, cookie)
 	if err != nil {
 		log.Println("moovit: failed to get magic token:", err)
-		return trips
+		return empty
 	}
 
-	moovitRoutes, err := getSuggestedRoutes(fromMetadata, toMetadata, token, cookie)
+	routes, err := getSuggestedRoutes(fromMetadata, toMetadata, token, cookie)
 	if err != nil {
 		log.Println("moovit: failed to fetch routes:", err)
-		return trips
+		return empty
 	}
 
-	// execute
-	for _, moovitResult := range moovitRoutes.Results[1:] { // Results[0] is metadata
-		var trip trip.Trip
-		travels := make([]travel, 0)
-		for _, routeStep := range moovitResult.Result.Itinerary.Legs[:] {
-			if timestamp := routeStep.WalkLeg.Time; timestamp.StartTime != 0 && timestamp.EndTime != 0 {
-				var travel travel
-				travel.start = time.Unix(0, timestamp.StartTime * int64(time.Millisecond))
-				travel.end = time.Unix(0, timestamp.EndTime * int64(time.Millisecond))
-				travels = append(travels, travel)
-			}
-		}
-		trip.ServiceName = "ATM"
-		trip.ScrapedApp = "MOOVIT"
-		trip.StartTime = timeIn(travels[0].start, "Europe/London")
-		trip.EndTime = timeIn(travels[len(travels)-1].end, "Europe/London")
-		trip.Duration = trip.EndTime.Sub(trip.StartTime)
-		trip.VehicleType = "METRO/BUS/TRAM"
-		trips = append(trips, trip)
-	}
-
-	minDuration := trips[0].Duration
-	minDurationIndex := 0
-
-	for i, trip := range trips[1:] {
-		if trip.Duration < minDuration {
-			minDuration = trip.Duration
-			minDurationIndex = i
-		}
- 	}
-
-	trips[minDurationIndex] = trips[len(trips)-1]
-	return trips[:len(trips)-1]
+	return routes
 }

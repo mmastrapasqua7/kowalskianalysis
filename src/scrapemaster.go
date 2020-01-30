@@ -7,32 +7,33 @@
 package main
 
 import (
-	"./lib/scraper/car2go"
-	"./lib/scraper/enjoy"
+	// normal
 	"./lib/scraper/moovit"
-	"./lib/scraper/openstreetmap"
-	"./lib/scraper/sharengo"
-	"./lib/scraper/waze"
+	// "./lib/scraper/openstreetmap"
+	// "./lib/scraper/waze"
+
+	// sharing
+	// "./lib/scraper/car2go"
+	// "./lib/scraper/enjoy"
+	// "./lib/scraper/sharengo"
+
 	"./lib/trip"
 
-	"log"
+	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 )
 
-type Request []struct {
-	From    []float64 `json:"from"`
-	To      []float64 `json:"to"`
-	Comment string    `json:"_comment"`
-}
-
 func main() {
 	if len(os.Args) < 5 {
-		fmt.Println("usage:\n\t scrapall <fromLat> <fromLon> <toLat> <toLon>")
+		fmt.Println("usage:\n\t scrapemaster <fromLat> <fromLon> <toLat> <toLon>")
 		return
 	}
-	from := trip.Location{os.Args[1], os.Args[2], "unknown"}
-	to := trip.Location{os.Args[3], os.Args[4], "unkown"}
+	fromLat := os.Args[1]
+	fromLon := os.Args[2]
+	toLat := os.Args[3]
+	toLon := os.Args[4]
 
 	logfile, err := os.OpenFile("scrapers_error.log", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
 	if err != nil {
@@ -42,20 +43,16 @@ func main() {
 	defer logfile.Close()
 	log.SetOutput(logfile)
 
-	moovitTrips := moovit.GetTrips(from, to)
-	wazeTrips := waze.GetTrips(from, to)
-	openstreetmapTrips := openstreetmap.GetTrips(from, to)
-	car2goTrips := car2go.GetTrips(from, to, "bin/car2go")
-	enjoyTrips := enjoy.GetTrips(from, to, "bin/enjoy")
-	sharengoTrips := sharengo.GetTrips(from, to, "bin/sharengo")
+	moovitResult := moovit.GetRoutes(fromLat, fromLon, toLat, toLon)
+	// wazeTrips := waze.GetTrips(from, to)
+	// openstreetmapTrips := openstreetmap.GetTrips(from, to)
+	// car2goTrips := car2go.GetTrips(from, to, "bin/car2go")
+	// enjoyTrips := enjoy.GetTrips(from, to, "bin/enjoy")
+	// sharengoTrips := sharengo.GetTrips(from, to, "bin/sharengo")
 
-	trips := make([]trip.Trip, 0)
-	trips = append(trips, moovitTrips...)
-	trips = append(trips, wazeTrips...)
-	trips = append(trips, openstreetmapTrips...)
-	trips = append(trips, car2goTrips...)
-	trips = append(trips, enjoyTrips...)
-	trips = append(trips, sharengoTrips...)
+	var results trip.BigJson
+	results.MoovitRoutes = moovitResult
 
-	trip.PrintTimeTable(trips)
+	emp, _ := json.MarshalIndent(results, "", "  ")
+	fmt.Println(string(emp))
 }
