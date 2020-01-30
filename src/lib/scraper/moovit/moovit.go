@@ -95,5 +95,16 @@ func GetTrips(from, to trip.Location) []trip.Trip {
 		trips = append(trips, trip)
 	}
 
-	return trips
+	minDuration := trips[0].Duration
+	minDurationIndex := 0
+
+	for i, trip := range trips[1:] {
+		if trip.Duration < minDuration {
+			minDuration = trip.Duration
+			minDurationIndex = i
+		}
+ 	}
+
+	trips[minDurationIndex] = trips[len(trips)-1]
+	return trips[:len(trips)-1]
 }
