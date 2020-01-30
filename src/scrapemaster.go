@@ -13,9 +13,9 @@ import (
 	"./lib/scraper/waze"
 
 	// sharing
+	"./lib/scraper/sharengo"
 	// "./lib/scraper/car2go"
 	// "./lib/scraper/enjoy"
-	// "./lib/scraper/sharengo"
 
 	"./lib/trip"
 
@@ -47,15 +47,16 @@ func main() {
 	openstreetmapBikeResult := openstreetmap.GetBikeRoutes(fromLat, fromLon, toLat, toLon)
 	openstreetmapFootResult := openstreetmap.GetFootRoutes(fromLat, fromLon, toLat, toLon)
 	wazeResult := waze.GetRoutes(fromLat, fromLon, toLat, toLon)
+	sharengoResult := sharengo.GetRoutes(fromLat, fromLon, toLat, toLon, "bin/sharengo")
 	// car2goTrips := car2go.GetTrips(from, to, "bin/car2go")
 	// enjoyTrips := enjoy.GetTrips(from, to, "bin/enjoy")
-	// sharengoTrips := sharengo.GetTrips(from, to, "bin/sharengo")
 
 	var results trip.BigJson
 	results.MoovitRoutes = moovitResult
 	results.OpenStreetMapBikeRoutes = openstreetmapBikeResult
 	results.OpenStreetMapFootRoutes = openstreetmapFootResult
 	results.WazeRoutes = wazeResult
+	results.SharengoRoutes = sharengoResult
 
 	emp, _ := json.MarshalIndent(results, "", "  ")
 	fmt.Println(string(emp))

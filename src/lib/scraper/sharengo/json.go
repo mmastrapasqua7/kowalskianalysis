@@ -1,6 +1,16 @@
 package sharengo
 
+import (
+	"../openstreetmap"
+	"../waze"
+)
+
 type Result struct {
+	WalkResult openstreetmap.Result
+	CarResult  waze.Result
+}
+
+type JsonFile struct {
 	Time string `json:"time"`
 	Data struct {
 		Status int    `json:"status"`

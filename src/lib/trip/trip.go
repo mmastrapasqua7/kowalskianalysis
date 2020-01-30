@@ -4,6 +4,7 @@ import (
 	"../scraper/moovit"
 	"../scraper/openstreetmap"
 	"../scraper/waze"
+	"../scraper/sharengo"
 
 	"fmt"
 	"math"
@@ -16,6 +17,7 @@ type BigJson struct {
 	OpenStreetMapBikeRoutes openstreetmap.Result
 	OpenStreetMapFootRoutes openstreetmap.Result
 	WazeRoutes              waze.Result
+	SharengoRoutes          sharengo.Result
 }
 
 func HumanizeDuration(duration time.Duration) string {
