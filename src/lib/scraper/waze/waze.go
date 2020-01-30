@@ -1,8 +1,6 @@
 package waze
 
 import (
-	"../../trip"
-
 	"fmt"
 	"log"
 	"time"
@@ -19,47 +17,31 @@ func init() {
 	}
 }
 
-func GetTrips(from, to trip.Location) []trip.Trip {
-	trips := make([]trip.Trip, 0)
+func GetRoutes(fromLat, fromLon, toLat, toLon string) Result {
+	var empty Result
 
-	// fetch
 	cookies, err := getCookies()
 	if err != nil {
 		log.Println("waze: failed to get cookies:", err)
-		return trips
+		return empty
 	}
 
 	err = setCookieConsent()
 	if err != nil {
 		log.Println("waze: failed to set cookie consent", err)
-		return trips
+		return empty
 	}
 
-	wazeRoutes, err := getSuggestedRoutes(from, to, cookies)
+	routes, err := getSuggestedRoutes(fromLat, fromLon, toLat, toLon, cookies)
 	if err != nil {
 		log.Println("waze: failed to fetch routes:", err)
-		return trips
+		return empty
 	}
 
-	if len(wazeRoutes.Alternatives) == 0 {
+	if len(routes.Alternatives) == 0 {
 		log.Println("waze: no routes found")
-
-		var emptyTrip trip.Trip
-		emptyTrip.Duration = 1 * time.Minute
-		trips = append(trips, emptyTrip)
+		return empty
 	}
 
-	// execute
-	for _, route := range wazeRoutes.Alternatives {
-		var trip trip.Trip
-		trip.ScrapedApp = "WAZE"
-		// trip.ServiceName = ""
-		trip.VehicleType = "OWN CAR"
-		trip.StartTime = time.Now()
-		trip.EndTime = time.Now().Add(time.Duration(route.Response.TotalRouteTime) * time.Second)
-		trip.Duration = trip.EndTime.Sub(trip.StartTime)
-		trips = append(trips, trip)
-	}
-
-	return trips
+	return routes
 }

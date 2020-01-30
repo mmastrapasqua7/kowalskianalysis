@@ -10,7 +10,7 @@ import (
 	// normal
 	"./lib/scraper/moovit"
 	"./lib/scraper/openstreetmap"
-	// "./lib/scraper/waze"
+	"./lib/scraper/waze"
 
 	// sharing
 	// "./lib/scraper/car2go"
@@ -46,7 +46,7 @@ func main() {
 	moovitResult := moovit.GetRoutes(fromLat, fromLon, toLat, toLon)
 	openstreetmapBikeResult := openstreetmap.GetBikeRoutes(fromLat, fromLon, toLat, toLon)
 	openstreetmapFootResult := openstreetmap.GetFootRoutes(fromLat, fromLon, toLat, toLon)
-	// wazeTrips := waze.GetTrips(from, to)
+	wazeResult := waze.GetRoutes(fromLat, fromLon, toLat, toLon)
 	// car2goTrips := car2go.GetTrips(from, to, "bin/car2go")
 	// enjoyTrips := enjoy.GetTrips(from, to, "bin/enjoy")
 	// sharengoTrips := sharengo.GetTrips(from, to, "bin/sharengo")
@@ -55,6 +55,7 @@ func main() {
 	results.MoovitRoutes = moovitResult
 	results.OpenStreetMapBikeRoutes = openstreetmapBikeResult
 	results.OpenStreetMapFootRoutes = openstreetmapFootResult
+	results.WazeRoutes = wazeResult
 
 	emp, _ := json.MarshalIndent(results, "", "  ")
 	fmt.Println(string(emp))

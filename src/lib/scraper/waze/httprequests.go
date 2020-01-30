@@ -2,7 +2,6 @@ package waze
 
 import (
 	"../../httpwrap"
-	"../../trip"
 
 	"encoding/json"
 	"io/ioutil"
@@ -53,7 +52,7 @@ func setCookieConsent() error {
 	return nil
 }
 
-func getSuggestedRoutes(from, to trip.Location, cookies []*http.Cookie) (Result, error) {
+func getSuggestedRoutes(fromLat, fromLon, toLat, toLon string, cookies []*http.Cookie) (Result, error) {
 	var tripPlans Result
 
 	urlWaze := "https://www.waze.com/row-RoutingManager/routingRequest?"
@@ -74,14 +73,14 @@ func getSuggestedRoutes(from, to trip.Location, cookies []*http.Cookie) (Result,
 	params := url.Values{}
 	params.Add("at", "0")
 	params.Add("clientVersion", "4.0.0")
-	params.Add("from", "x:" + from.Longitude + " y:" + from.Latitude) // invertiti
+	params.Add("from", "x:" + fromLon + " y:" + fromLat) // invertiti
 	params.Add("nPaths", "2")
 	params.Add("options", "AVOID_TRAILS:t,ALLOW_UTURNS:t")
 	params.Add("returnGeometries", "true")
 	params.Add("returnInstructions", "true")
 	params.Add("returnJSON", "true")
 	params.Add("timeout", "60000")
-	params.Add("to", "x:" + to.Longitude + " y:" + to.Latitude)
+	params.Add("to", "x:" + toLon + " y:" + toLat)
 
 	response, err := httpwrap.Get(urlWaze, header, params, cookies)
 	if err != nil {
