@@ -11,6 +11,7 @@ import (
 	"./lib/scraper/enjoy"
 	"./lib/scraper/moovit"
 	"./lib/scraper/openstreetmap"
+	"./lib/scraper/sharengo"
 	"./lib/scraper/waze"
 	"./lib/trip"
 
@@ -18,6 +19,12 @@ import (
 	"fmt"
 	"os"
 )
+
+type Request []struct {
+	From    []float64 `json:"from"`
+	To      []float64 `json:"to"`
+	Comment string    `json:"_comment"`
+}
 
 func main() {
 	if len(os.Args) < 5 {
@@ -29,7 +36,7 @@ func main() {
 
 	logfile, err := os.OpenFile("scrapers_error.log", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
 	if err != nil {
-		fmt.Println("scrapemaster: can't open/create file:", err)
+		fmt.Println("scrapemaster: can't open/create log file:", err)
 		return
 	}
 	defer logfile.Close()
@@ -40,6 +47,7 @@ func main() {
 	openstreetmapTrips := openstreetmap.GetTrips(from, to)
 	car2goTrips := car2go.GetTrips(from, to, "bin/car2go")
 	enjoyTrips := enjoy.GetTrips(from, to, "bin/enjoy")
+	sharengoTrips := sharengo.GetTrips(from, to, "bin/sharengo")
 
 	trips := make([]trip.Trip, 0)
 	trips = append(trips, moovitTrips...)
@@ -47,6 +55,7 @@ func main() {
 	trips = append(trips, openstreetmapTrips...)
 	trips = append(trips, car2goTrips...)
 	trips = append(trips, enjoyTrips...)
+	trips = append(trips, sharengoTrips...)
 
 	trip.PrintTimeTable(trips)
 }
