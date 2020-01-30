@@ -2,7 +2,6 @@ package openstreetmap
 
 import (
 	"../../httpwrap"
-	"../../trip"
 
 	"encoding/json"
 	"io/ioutil"
@@ -30,11 +29,11 @@ func getWebPage() error {
 	return nil
 }
 
-func getSuggestedRoutes(from, to trip.Location, routeType string) (Result, error) {
+func getSuggestedRoutes(fromLat, fromLon, toLat, toLon string, routeType string) (Result, error) {
 	var tripPlans Result
 
-	fromString := from.Longitude + "," + from.Latitude
-	toString := to.Longitude + "," + to.Latitude
+	fromString := fromLon + "," + fromLat
+	toString := toLon + "," + toLat
 	urlWaze := "https://routing.openstreetmap.de/routed-" + routeType + "/route/v1/driving/" + fromString + ";" + toString +"?overview=false&geometries=polyline&steps=false"
 
 	header := http.Header{}
