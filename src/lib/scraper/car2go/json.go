@@ -1,6 +1,16 @@
 package car2go
 
-type Result []struct {
+import (
+	"../openstreetmap"
+	"../waze"
+)
+
+type Result struct {
+	WalkResult openstreetmap.Result
+	CarResult  waze.Result
+}
+
+type JsonFile []struct {
 	Provider string    `json:"provider"`
 	Loc      []float64 `json:"loc"`
 	Obj      struct {

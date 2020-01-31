@@ -3,11 +3,11 @@ package sharengo
 import (
 	"../openstreetmap"
 	"../waze"
+	"../../util"
 
 	"compress/gzip"
 	"encoding/json"
 	"fmt"
-	"math"
 	"io/ioutil"
 	"log"
 	"os"
@@ -96,7 +96,7 @@ func findTheClosestCar(fromLat, fromLon, dirName string) ([]string, error) {
 		return nil, err
 	}
 
-	minimumDistance := distance(fromLatFloat, fromLonFloat, carLatFloat, carLonFloat)
+	minimumDistance := util.Distance(fromLatFloat, fromLonFloat, carLatFloat, carLonFloat)
 	closestCarPositionLatFloat := carLatFloat
 	closestCarPositionLonFloat := carLonFloat
 
@@ -104,7 +104,7 @@ func findTheClosestCar(fromLat, fromLon, dirName string) ([]string, error) {
 		carLatFloatResult, _ := strconv.ParseFloat(result.Latitude, 64)
 		carLonFloatResult, _ := strconv.ParseFloat(result.Longitude, 64)
 
-		distance := distance(fromLatFloat, fromLonFloat, carLatFloatResult, carLonFloatResult)
+		distance := util.Distance(fromLatFloat, fromLonFloat, carLatFloatResult, carLonFloatResult)
 		if distance < minimumDistance {
 			minimumDistance = distance
 			closestCarPositionLatFloat = carLatFloatResult
@@ -115,31 +115,3 @@ func findTheClosestCar(fromLat, fromLon, dirName string) ([]string, error) {
 	return []string{fmt.Sprintf("%.06f", closestCarPositionLatFloat),
 									fmt.Sprintf("%.06f", closestCarPositionLonFloat)}, nil
 }
-
-func distance(lat1, lon1, lat2, lon2 float64) float64 {
-	var la1, lo1, la2, lo2, earthRadius float64
-
-	la1 = lat1 * math.Pi / 180
-	lo1 = lon1 * math.Pi / 180
-	la2 = lat2 * math.Pi / 180
-	lo2 = lon2 * math.Pi / 180
-	earthRadius = 6378100
-
-	h := hsin(la2-la1) + math.Cos(la1) * math.Cos(la2) * hsin(lo2-lo1)
-	return 2 * earthRadius * math.Asin(math.Sqrt(h))
-}
-
-func hsin(theta float64) float64 {
-	return math.Pow(math.Sin(theta/2), 2)
-}
-
-// // RETRY
-// for i := 0; len(wazeTrips) == 0 && i < 100; i++ { // retry
-// 	lat, _ := strconv.ParseFloat(carPosition.Latitude, 64)
-// 	lon, _ := strconv.ParseFloat(carPosition.Longitude, 64)
-// 	lat += float64(i) * 10e-6
-// 	lon += float64(i) * 10e-6
-//
-// 	newCarPosition := trip.Location{fmt.Sprintf("%.06f", lat), fmt.Sprintf("%.06f"), "unknown"}
-// 	wazeTrips = waze.GetTrips(newCarPosition, to)
-// }

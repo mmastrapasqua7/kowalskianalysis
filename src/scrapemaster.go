@@ -1,20 +1,11 @@
-// Date 2 coordinate (latitudine, longitudine) di partenza e arrivo,
-// questo programma chiede a tutti gli scrapers (Moovit, Waze) di
-// calcolare le tratte migliori in tempo reale e restituirle in una struttura
-// dati di tipo trip.Trip per poi stamparne in forma simil-tabella
-// tutte le info dei vari percorsi proposti
-
 package main
 
 import (
-	// normal
 	"./lib/scraper/moovit"
 	"./lib/scraper/openstreetmap"
 	"./lib/scraper/waze"
-
-	// sharing
 	"./lib/scraper/sharengo"
-	// "./lib/scraper/car2go"
+	"./lib/scraper/car2go"
 	// "./lib/scraper/enjoy"
 
 	"./lib/trip"
@@ -47,8 +38,8 @@ func main() {
 	openstreetmapBikeResult := openstreetmap.GetBikeRoutes(fromLat, fromLon, toLat, toLon)
 	openstreetmapFootResult := openstreetmap.GetFootRoutes(fromLat, fromLon, toLat, toLon)
 	wazeResult := waze.GetRoutes(fromLat, fromLon, toLat, toLon)
+	car2goResult := car2go.GetRoutes(fromLat, fromLon, toLat, toLon, "bin/car2go")
 	sharengoResult := sharengo.GetRoutes(fromLat, fromLon, toLat, toLon, "bin/sharengo")
-	// car2goTrips := car2go.GetTrips(from, to, "bin/car2go")
 	// enjoyTrips := enjoy.GetTrips(from, to, "bin/enjoy")
 
 	var results trip.BigJson
@@ -56,6 +47,7 @@ func main() {
 	results.OpenStreetMapBikeRoutes = openstreetmapBikeResult
 	results.OpenStreetMapFootRoutes = openstreetmapFootResult
 	results.WazeRoutes = wazeResult
+	results.Car2GoRoutes = car2goResult
 	results.SharengoRoutes = sharengoResult
 
 	emp, _ := json.MarshalIndent(results, "", "  ")
