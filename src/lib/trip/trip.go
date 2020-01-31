@@ -5,6 +5,7 @@ import (
 	"../scraper/openstreetmap"
 	"../scraper/waze"
 	"../scraper/car2go"
+	"../scraper/enjoy"
 	"../scraper/sharengo"
 )
 
@@ -14,5 +15,6 @@ type BigJson struct {
 	OpenStreetMapFootRoutes openstreetmap.Result
 	WazeRoutes              waze.Result
 	Car2GoRoutes            car2go.Result
+	EnjoyRoutes             enjoy.Result
 	SharengoRoutes          sharengo.Result
 }

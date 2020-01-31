@@ -24,16 +24,7 @@ func GetRoutes(fromLat, fromLon, toLat, toLon string, dirName string) Result {
 	}
 
 	osmRoutes := openstreetmap.GetFootRoutes(fromLat, fromLon, carPosition[0], carPosition[1])
-	// if len(osmRoutes) == 0 {
-	// 	log.Println("sharengo: osm trips are empty:", len(osmRoutes))
-	// 	return routes
-	// }
-
 	wazeRoutes := waze.GetRoutes(carPosition[0], carPosition[1], toLat, toLon)
-	// if len(wazeRoutes) == 0 {
-	// 	log.Println("sharengo: waze trips are empty:", len(wazeTrips))
-	// 	return routes
-	// }
 
 	routes.WalkResult = osmRoutes
 	routes.CarResult = wazeRoutes
@@ -87,6 +78,8 @@ func findTheClosestCar(fromLat, fromLon, dirName string) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	// lat, lon
 	carLatFloat, err := strconv.ParseFloat(sharengoResult.Data.Data[0].Latitude, 64)
 	if err != nil {
 		return nil, err

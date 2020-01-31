@@ -29,8 +29,7 @@ func GetRoutes(fromLat, fromLon, toLat, toLon string, dirName string) Result {
 	return routes
 }
 
-func findTheClosestCar(fromLat, fromLon, dirName string) ([]string, error) {
-	// Read dir, Open file, Attach reader, Read data
+func findTheClosestCar(fromLat, fromLon string, dirName string) ([]string, error) {
 	files, err := ioutil.ReadDir(dirName)
 	if err != nil {
 		return nil, err
@@ -58,6 +57,7 @@ func findTheClosestCar(fromLat, fromLon, dirName string) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
+	
 	// [lon, lat]
 	carLatFloat := car2goResult[0].Loc[1]
 	carLonFloat := car2goResult[0].Loc[0]

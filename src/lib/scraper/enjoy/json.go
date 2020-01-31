@@ -1,6 +1,16 @@
 package enjoy
 
-type Result []struct {
+import (
+	"../openstreetmap"
+	"../waze"
+)
+
+type Result struct {
+	WalkResult openstreetmap.Result
+	CarResult  waze.Result
+}
+
+type JsonFile []struct {
 	CarName             string  `json:"car_name"`
 	FuelLevel           int     `json:"fuel_level"`
 	Lat                 float64 `json:"lat"`
