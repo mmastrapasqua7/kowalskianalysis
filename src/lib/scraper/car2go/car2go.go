@@ -15,7 +15,7 @@ import (
 func GetRoutes(fromLat, fromLon, toLat, toLon string, dirName string) Result {
 	var routes Result
 
-	carPosition, err := findTheClosestCar(fromLat, fromLon, dirName)
+	carPosition, err := findTheClosestCar(fromLat, fromLon, dirName + "/car2go")
 	if err != nil {
 		log.Println("car2go: failed to fetch position of the closest car:", err)
 		return routes
@@ -57,7 +57,7 @@ func findTheClosestCar(fromLat, fromLon string, dirName string) ([]string, error
 	if err != nil {
 		return nil, err
 	}
-	
+
 	// [lon, lat]
 	carLatFloat := car2goResult[0].Loc[1]
 	carLonFloat := car2goResult[0].Loc[0]

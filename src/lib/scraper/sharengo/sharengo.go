@@ -17,7 +17,7 @@ import (
 func GetRoutes(fromLat, fromLon, toLat, toLon string, dirName string) Result {
 	var routes Result
 
-	carPosition, err := findTheClosestCar(fromLat, fromLon, dirName)
+	carPosition, err := findTheClosestCar(fromLat, fromLon, dirName + "/sharengo")
 	if err != nil {
 		log.Println("sharengo: failed to fetch position of the closest car:", err)
 		return routes

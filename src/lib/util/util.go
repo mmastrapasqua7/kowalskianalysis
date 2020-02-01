@@ -7,6 +7,16 @@ import (
 	"time"
 )
 
+func FormattedData(t time.Time) string {
+	timeString := t.Format("2006-01-02 15:04:05")
+
+	timeString = strings.Replace(timeString, "-", "_", -1)
+	timeString = strings.Replace(timeString, ":", "_", -1)
+	timeString = strings.Replace(timeString, " ", "_ore_", -1)
+
+	return fmt.Sprint("data_" + timeString)
+}
+
 func HumanizeDuration(duration time.Duration) string {
 	hours := int64(math.Mod(duration.Hours(), 24))
 	minutes := int64(math.Mod(duration.Minutes(), 60))
@@ -20,7 +30,6 @@ func HumanizeDuration(duration time.Duration) string {
 	}
 
 	parts := []string{}
-
 	for _, chunk := range chunks {
 		switch chunk.amount {
 		case 0:
