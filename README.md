@@ -1,12 +1,9 @@
 # Kowalski, analysis!
 
-.. atrent: per ora ok tue idee/note qui, ma al più presto ti consiglierei di cominciare con un doc LaTeX in modo da non trovarti spiazzato in seguito, trovi un template di massima (ampiamente modificabile) qui: https://gitlab.com/andrea-trentini/TemplateTesi
-
 ## Confronto tra mezzi pubblici e privati nell'area di Milano basato su dati estratti da servizi
 #### (Università degli Studi di Milano. Tesi di Mauro Mastrapasqua)
 
 ### INDICE
-
 1. Domande a cui voglio rispondere
 1. Piano di elaborazione dati
 1. (1° METODO) Dati a confronto col passato
@@ -21,7 +18,6 @@
 1. TODO
 
 ### 1. Domande a cui voglio rispondere
-
 - Qual e' il mezzo piu' economico per spostarsi nella citta' di Milano?
 	- nei giorni feriali
 	- nel weekend
@@ -35,7 +31,6 @@
 - Qual e' il mezzo migliore in rapporto (soldi/velocita')/inquinamento?
 
 ### 2. Piano di elaborazione dati
-
 Per effettuare questo studio ho deciso di usare **2 METODI** che eseguiro' parallelamente per diversi mesi, ovvero:
 
 1. **Dati a confronto col passato**: partendo dalle tratte piu' frequentemente percorse estratte dai dati di Losacco, instrumento il multiscraper per richiedere a tutti i servizi di calcolare il tempo di percorrenza di tutte le tratte frequenti a intervalli regolari di 15 minuti, dalle ore 06:00 alle ore 23:00 di ogni giorno feriale, dalle ore 06:00 alle 01:00 nei giorni festivi, per mesi
@@ -47,7 +42,6 @@ Per effettuare questo studio ho deciso di usare **2 METODI** che eseguiro' paral
 #### 3.1 Dati a disposizione (da Losacco Federico)
 
 ##### 3.1.1 Elenco dati raccolti
-
 |Nome|Inizio|Fine|Pause|Veicoli|
 |-|-|-|-|-|
 |Enjoy|luglio 2015|-|Si|Auto,Scooter|
@@ -56,7 +50,6 @@ Per effettuare questo studio ho deciso di usare **2 METODI** che eseguiro' paral
 |Twistcar|?|dismesso|?|Auto|
 
 ##### 3.1.2 Normalizzazione (MongoDB)
-
 |Attributi|Descrizione|
 |-|-|
 |car_plate|identificativo veicolo(targa)|
@@ -73,7 +66,6 @@ Per effettuare questo studio ho deciso di usare **2 METODI** che eseguiro' paral
 #### 3.2 Estrazione delle tratte piu' frequenti
 
 ##### 3.2.1 Estrazione tratte (gia fatto?)
-
 I dati raccolti da Federico Losacco sono rilevazioni di macchine sulla mappa nel tempo, quindi ogni record comprende coordinate geografiche e data. Dato che, nelle ore diurne, le macchine vengono prese esclusivamente dagli utenti del servizio, **ogni coordinata di rilevazione della macchina (macchina libera) corrisponde con la fine del tragitto dell'utente precedente**, almeno in termini di spazio (ma non di tempo per possibili ritardi o gap nel campionamento). Per risalire al tragitto percorso dall'utente precedente, basta cancellare tutte le rilevazioni ridondanti, come nell'esempio:
 
 1. ~~Macchina M a coordinate 1,1 alle 15:05~~ inutile, stesse coordinate
@@ -87,10 +79,7 @@ eliminando i record inutili posso capire che l'utente U ha viaggiato da (1,1) a 
 
 *definizione record inutile*: un record e' inutile se e solo se ha le stesse coordinate del record precedente e del record successivo. (infatti, nell'esempio, le rilevazioni 1 e 6 non so se sono inutili, perche' non so cosa c'e' prima di 1 e dopo 6)
 
-.. atrent: ragionamento corretto
-
 ##### 3.2.2 Calcolo tratte piu' frequenti
-
 Un conteggio pari-pari delle tratte (stesse coordinate di partenza e arrivo) non e' la cosa piu' intelligente da fare, perche' (1) le coordinate sono dei double e (2) se volessi andare in Duomo con una macchina, di certo non parcheggerei dentro il Duomo ma nell'area intorno (dentro i 500 metri di raggio), cosi' per ogni meta in citta'. Il punto (2) va tenuto a mente anche per il punto di partenza delle macchine, perche' 2 utenti possono aver percorso la stessa tratta ma partendo da 2 posti non esattamente uguali, ma molto vicini. Per cercare le tratte piu' frequenti usero' il seguente metodo:
 
 1. Creo una matrice che "racchiude" Milano sotto forma di coordinate geografiche: ogni indice di riga corrisponde a un gap in latitudine di un certo spazio (500 metri = 0.00x in latitudine) e ogni indicie di colonna a un gap in longitudine. Questa matrice sara' definita con la seguente struttura dati:
@@ -112,38 +101,16 @@ type Matrix [n][m]Cell
 
 4. In questo modo, incrociando i risultati, riesco a ottenere le tratte piu' frequentemente percorse dell'intero database, che salvero' tenendo conto del tempo impiegato a percorrerle, della distanza aerea percorsa, dell'orario e del costo.
 
-.. atrent: vediamo se ho capito: di fatto cambi (abbassando) la risoluzione del posizionamento per raggruppare le tratte, ragionamento corretto, credo si possa fare anche qualche tipo di clusterizzazione statistica, magari chiediamo alla Damiani (GIS) o a Malchiodi (statistica)
-
+> atrent: vediamo se ho capito: di fatto cambi (abbassando) la risoluzione del posizionamento per raggruppare le tratte, ragionamento corretto, credo si possa fare anche qualche tipo di clusterizzazione statistica, magari chiediamo alla Damiani (GIS) o a Malchiodi (statistica)
 
 #### 3.3 Scraping e risultati
-
 Avendo a disposizione queste tratte, instrumento il multiscraper per richiedere ai vari servizi (Moovit, Waze), ripetutamente a intervalli di 15 minuti, di fare un calcolo del percorso per attraversarle, partendo dall'orario della richiesta. In questo modo posso vedere se ci sono variazioni nel tempo (tra ora e ora e giorno e giorno). Una volta acquisiti tutti i dati per qualche mese, posso estrarre tutte le informazioni (risposte alle domande) che mi servono
 
 ### 4. (2° METODO) Dati a confronto in tempo reale
 
 > TODO
 
-### 5. TODO
-
-1. Decifrare i parametri inviati nelle richieste dai servizi con piu' opzioni (tipo: Moovit ti fa scegliere una combinazione tra tram, metro, bici, piedi, passante ecc...)
-1. Dividere Milano in aree come Area C, centro, semicentro e periferia per ulteriori analisi a posteriori
-1. ~~Decodificare i JSON derivanti dai vari servizi in una struttura dati comune che comprenda:~~ **Finito il 14/1/'20**
-	- coordinate di partenza
-	- coordinate di arrivo
-	- tempo tragitto
-	- costo tragitto
-	- coordinate di ogni step del percorso (se possibile)
-	- aree attraversate
-1. ~~Creare un programma che date delle coordinate di partenza e di arrivo, lanci in parallelo le richieste di quel tragitto su ogni scraper a disposizione a intervalli regolari di tot minuti (nb: usare vpn per evitare blacklist ip)~~ **Bozza pronta**
-
 ---
-
-# Diary
-
-## TODO
-- ~~tentare lo scraping di Waze~~ **Finito il 21/11/'19**
-- ~~finire lo scraper di Moovit~~ **Finito il 27/10/'19**
-- ~~tentare lo scraping dei dati del traffico su Google~~ **Abbandonato perche' overcomplicated**
 
 ## Diary
 
@@ -207,27 +174,3 @@ Problemi da risolvere:
 - ~~A ogni via/luogo e' associato un ID da inviare nelle richieste, si puo' scrapare anche senza? Altrimenti, esiste API per ricavare l'ID di un luogo dal suo nome informale? (tipo: getLocID("Via Comelico") -> 64564)~~ **Risolto il 21/10/'19: Il problema non si pone perche' Moovit da la possibilita' di cercare posti con le coordinate (lat,lon) e in risposta da tutti i dati associati di quelle coordinate (compreso di nome della via, civico e un id)**
 
 - ~~Una volta acquisito il token, tutta la sequenza prosegue flawless?~~ **Parzialmente risolto il 21/10/'19: L'unico problema e' che Moovit restituisce json spezzati a random: puoi ricevere tutto l'array con la prima query, altrimenti devi fare piu' query e riunire gli elementi restituiti (ecco spiegato il parametro ?offset= nelle query). Da trovare modo per riunificarlo nel codice** | **Risolto il 27/10/'19**
-
----
-
-# Scrapers
-
-## A disposizione
-
-`$REPODIR/tesi-traffico/codice/scraper/module/`
-
-- Car2Go
-- Enjoy
-- SharenGo
-
-`$REPODIR/kowalskyanalysis/src/scrapers/`
-
-- Moovit
-- Waze
-
-## Da trovare...
-- MyTaxi
-- BikeMi (Gia fatto?)
-- MiMoto
-- DriveNow
-- Google (overcomplicated)
