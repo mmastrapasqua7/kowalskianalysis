@@ -40,7 +40,6 @@ func findTheClosestCar(fromLat, fromLon string, dirName string) ([]string, error
 	if err != nil {
 		return nil, err
 	}
-	log.Println("car2go: OPEN FILE", latestJsonDumpFilename)
 
 	car2goResult := JsonFile{}
 	err = json.Unmarshal([]byte(latestJsonDump), &car2goResult)

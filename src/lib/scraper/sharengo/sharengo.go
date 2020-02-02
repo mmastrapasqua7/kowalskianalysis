@@ -50,7 +50,6 @@ func findTheClosestCar(fromLat, fromLon, dirName string) ([]string, error) {
 		return nil, err
 	}
 	defer file.Close()
-	log.Println("sharengo: OPEN FILE", latestJsonDumpFilename)
 
 	gzReader, err := gzip.NewReader(file)
 	if err != nil {

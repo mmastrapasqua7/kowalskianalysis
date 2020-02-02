@@ -44,7 +44,6 @@ func findTheClosestCar(fromLat, fromLon string, dirName string) ([]string, error
 		return nil, err
 	}
 	defer file.Close()
-	log.Println("enjoy: OPEN FILE", latestJsonDumpFilename)
 
 	gzReader, err := gzip.NewReader(file)
 	if err != nil {

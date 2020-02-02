@@ -8,5 +8,5 @@ clean:
 
 test-scraper:
 	make scrapemaster
-	bin/scrapemaster.out bin/richieste.json bin bin/results
+	bin/scrapemaster.out bin/richieste.json bin/scraped_data bin/results
 	make clean
