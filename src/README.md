@@ -4,9 +4,9 @@
 
 ```bash
 $ go build scrapemaster.go
-$ ./scrapemaster fromLat fromLon toLat toLon
+$ ./scrapemaster ./requests.json [carsharing_data_dir] [save_dir]
 ```
 ##### Esempio
 ```bash
-$ ./scrapemaster 45.123456 9.355904 45.034955 9.340340
+$ ./scrapemaster ./requests.json ./bin/scraped_data ./bin/results
 ```
