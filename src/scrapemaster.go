@@ -20,6 +20,10 @@ import (
 	"time"
 )
 
+const (
+	DEBUGGING = false
+)
+
 type JsonRequestsFile []struct {
 	From    []string `json:"from"`
 	To      []string `json:"to"`
@@ -79,10 +83,17 @@ func main() {
 			time.Sleep(30 * time.Second)
 		}
 
-		resultsData, _ := json.MarshalIndent(resultFileStruct.Results, "", "\t")
-		resultFileStruct.ResultsSha256Sum = fmt.Sprintf("%x", sha256.Sum256(resultsData))
+		var data []byte
+		if DEBUGGING { // debugging ? indent : don't indent, save space
+			data, _ = json.MarshalIndent(resultFileStruct.Results, "", "\t")
+			resultFileStruct.ResultsSha256Sum = fmt.Sprintf("%x", sha256.Sum256(data))
+			data, _ = json.MarshalIndent(resultFileStruct, "", "\t")
+		} else {
+			data, _ = json.Marshal(resultFileStruct.Results)
+			resultFileStruct.ResultsSha256Sum = fmt.Sprintf("%x", sha256.Sum256(data))
+			data, _ = json.Marshal(resultFileStruct)
+		}
 
-		data, _ := json.MarshalIndent(resultFileStruct, "", "\t")
 		if _, err := resultFile.Write(data); err != nil {
 			log.Println("scrapemaster: can't write to file" + outputDir + "/" + resultFilename, err)
 		}
