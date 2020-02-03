@@ -1,3 +1,6 @@
+// Package openstreetmap fornisce una funzione GetRoutes che chiede al servizio
+// Openstreetmap il tragitto più veloce per andare da un punto A a un punto B
+// andando a piedi o in bicicletta
 package openstreetmap
 
 import (

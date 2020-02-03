@@ -1,3 +1,15 @@
+// Package enjoy fornisce una funzione GetRoutes che calcola il tragitto più
+// veloce per andare da un punto A a un punto B usando il servizio car sharing
+// di Enjoy.
+// Per calcolare la tratta, la funzione cerca la macchina C più vicina
+// al punto di partenza A, chiede allo scraper di Openstreetmap di calcolare
+// il tragitto a piedi dal punto di partenza A alla macchina C, e infine
+// chiede a Waze di calcolare quanto impiegherebbe a percorrere la tratta
+// da C al punto di arrivo B, in base ai dati in tempo reale del traffico
+// e dei disservizi stradali.
+// Matematicamente:
+//   C = MacchinaPiùVicina
+//   Percorso(A, B) = PercorsoAPiedi(A, C) + PercorsoInMacchina(C, B)
 package enjoy
 
 import (
@@ -34,6 +46,11 @@ func GetRoutes(fromLat, fromLon, toLat, toLon string, dirName string) Result {
 	return routes
 }
 
+// Questa funzione cerca la macchina più vicina da un punto di partenza A.
+// Per farlo, cerca nella directory dirName il file json coi dati più recenti
+// di tutte le macchine parcheggiate utilizzabili, lo apre, lo legge e
+// uno per uno scorre tutti i risultati salvando man mano la macchina più vicina
+// trovata con la funzione util.Distance
 func findTheClosestCar(fromLat, fromLon string, dirName string) (JsonEntry, error) {
 	var closestCar JsonEntry
 	files, err := ioutil.ReadDir(dirName)

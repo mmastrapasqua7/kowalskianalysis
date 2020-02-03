@@ -1,3 +1,7 @@
+// Package waze fornisce una funzione GetRoutes che chiede al servizio Waze
+// il tragitto più veloce per andare da un punto A a un punto B usando
+// la propria macchina. Le risposte sono date in tempo reale e tenendo conto
+// del traffico, strade chiuse e disservizi vari
 package waze
 
 import (

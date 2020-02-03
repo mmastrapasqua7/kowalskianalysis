@@ -1,3 +1,7 @@
+// Package moovit fornisce una funzione GetRoutes che chiede al servizio Moovit
+// il tragitto più veloce per andare da un punto A a un punto B usando i
+// servizi di mezzi pubblici ATM e passanti Trenord. Le risposte sono date
+// in tempo reale e tenendo conto di orari, scioperi e disservizi
 package moovit
 
 import (
