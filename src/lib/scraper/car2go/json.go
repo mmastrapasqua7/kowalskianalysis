@@ -6,11 +6,12 @@ import (
 )
 
 type Result struct {
+	ChosenCar  JsonEntry
 	WalkResult openstreetmap.Result
 	CarResult  waze.Result
 }
 
-type JsonFile []struct {
+type JsonEntry struct {
 	Provider string    `json:"provider"`
 	Loc      []float64 `json:"loc"`
 	Obj      struct {
@@ -31,3 +32,5 @@ type JsonFile []struct {
 		Seats    int    `json:"seats"`
 	} `json:"obj"`
 }
+
+type JsonFile []JsonEntry

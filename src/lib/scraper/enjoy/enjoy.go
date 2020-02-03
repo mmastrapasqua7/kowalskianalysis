@@ -17,81 +17,69 @@ import (
 func GetRoutes(fromLat, fromLon, toLat, toLon string, dirName string) Result {
 	var routes Result
 
-	closestCarPosition, err := findTheClosestCar(fromLat, fromLon, dirName + "/enjoy")
+	closestCar, err := findTheClosestCar(fromLat, fromLon, dirName + "/enjoy")
 	if err != nil {
 		log.Println("enjoy: failed to fetch position of the closest car:", err)
 		return routes
 	}
+	carLat := fmt.Sprintf("%.06f", closestCar.Lat)
+	carLon := fmt.Sprintf("%.06f", closestCar.Lon)
 
-	osmRoutes := openstreetmap.GetFootRoutes(fromLat, fromLon, closestCarPosition[0], closestCarPosition[1])
-	wazeRoutes := waze.GetRoutes(closestCarPosition[0], closestCarPosition[1], toLat, toLon)
+	osmRoutes := openstreetmap.GetFootRoutes(fromLat, fromLon, carLat, carLon)
+	wazeRoutes := waze.GetRoutes(carLat, carLon, toLat, toLon)
 
-
+	routes.ChosenCar = closestCar
 	routes.WalkResult = osmRoutes
 	routes.CarResult = wazeRoutes
 	return routes
 }
 
-func findTheClosestCar(fromLat, fromLon string, dirName string) ([]string, error) {
+func findTheClosestCar(fromLat, fromLon string, dirName string) (JsonEntry, error) {
+	var closestCar JsonEntry
 	files, err := ioutil.ReadDir(dirName)
 	if err != nil {
-		return nil, err
+		return closestCar, err
 	}
 	latestJsonDumpFilename := dirName + "/" + files[len(files) - 2].Name()
 
 	file, err := os.Open(latestJsonDumpFilename)
 	if err != nil {
-		return nil, err
+		return closestCar, err
 	}
 	defer file.Close()
 
 	gzReader, err := gzip.NewReader(file)
 	if err != nil {
-		return nil, err
+		return closestCar, err
 	}
 	defer gzReader.Close()
 
 	latestJsonDump, err := ioutil.ReadAll(gzReader)
 	if err != nil {
-		return nil, err
+		return closestCar, err
 	}
 
 	enjoyResult := JsonFile{}
 	err = json.Unmarshal([]byte(latestJsonDump), &enjoyResult)
 	if err != nil {
-		return nil, err
+		return closestCar, err
 	}
 
 	// Coordinate float64
-	fromLatFloat, err := strconv.ParseFloat(fromLat, 64)
-	if err != nil {
-		return nil, err
-	}
-	fromLonFloat, err := strconv.ParseFloat(fromLon, 64)
-	if err != nil {
-		return nil, err
-	}
+	fromLatFloat, _ := strconv.ParseFloat(fromLat, 64)
+	fromLonFloat, _ := strconv.ParseFloat(fromLon, 64)
 
 	// lat, lon
-	carLatFloat := enjoyResult[0].Lat
-	carLonFloat := enjoyResult[0].Lon
-
-	minimumDistance := util.Distance(fromLatFloat, fromLonFloat, carLatFloat, carLonFloat)
-	closestCarPositionLatFloat := carLatFloat
-	closestCarPositionLonFloat := carLonFloat
+	closestCar = enjoyResult[0]
+	minimumDistance := util.Distance(fromLatFloat, fromLonFloat, closestCar.Lat, closestCar.Lon)
 
 	for _, result := range enjoyResult[1:] {
-		carLatFloatResult := result.Lat
-		carLonFloatResult := result.Lon
-
-		distance := util.Distance(fromLatFloat, fromLonFloat, carLatFloatResult, carLonFloatResult)
+		distance := util.Distance(fromLatFloat, fromLonFloat, result.Lat, result.Lon)
 		if distance < minimumDistance {
 			minimumDistance = distance
-			closestCarPositionLatFloat = carLatFloatResult
-			closestCarPositionLonFloat = carLonFloatResult
+			closestCar = result
 		}
 	}
 
-	return []string{fmt.Sprintf("%.06f", closestCarPositionLatFloat),
-									fmt.Sprintf("%.06f", closestCarPositionLonFloat)}, nil
+	return closestCar, nil
 }

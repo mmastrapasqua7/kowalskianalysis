@@ -6,11 +6,12 @@ import (
 )
 
 type Result struct {
+	ChosenCar  JsonEntry
 	WalkResult openstreetmap.Result
 	CarResult  waze.Result
 }
 
-type JsonFile []struct {
+type JsonEntry struct {
 	CarName             string  `json:"car_name"`
 	FuelLevel           int     `json:"fuel_level"`
 	Lat                 float64 `json:"lat"`
@@ -23,3 +24,5 @@ type JsonFile []struct {
 	OnClickDisabled     bool    `json:"onClick_disabled"`
 	CarModelData        []int   `json:"carModelData"`
 }
+
+type JsonFile []JsonEntry
