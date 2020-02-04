@@ -3,6 +3,8 @@ package car2go
 import (
 	"../openstreetmap"
 	"../waze"
+
+	"fmt"
 )
 
 type Result struct {
@@ -34,3 +36,17 @@ type JsonEntry struct {
 }
 
 type JsonFile []JsonEntry
+
+func (r *Result) Print() {
+	car := r.ChosenCar
+	fmt.Println("Provider: CAR2GO")
+	fmt.Printf("Car position: %.06f, %.06f\n", car.Loc[1], car.Loc[0])
+	fmt.Println("Car manufacturer:", car.Obj.Manufacturer)
+	fmt.Println("Car model:", car.Obj.Model)
+	fmt.Println("Car engine type:", car.Obj.EngineType)
+	fmt.Println("Car cost per minute:", car.Obj.PriceInfo.Driving.Formatted)
+	fmt.Println("Car seats:", car.Obj.Seats)
+
+	// r.WalkResult.Print()
+	// r.CarResult.Print()
+}

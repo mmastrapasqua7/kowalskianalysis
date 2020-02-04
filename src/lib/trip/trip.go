@@ -9,6 +9,26 @@ import (
 	"../scraper/sharengo"
 )
 
+
+type JsonRequestsFile []struct {
+	From    []string `json:"from"`
+	To      []string `json:"to"`
+	Comment string   `json:"_comment"`
+}
+
+type ResultFile struct {
+	Id               int
+	Date             string
+	ResultsSha256Sum string
+	Results          []Result
+}
+
+type Result struct {
+	FromLat, FromLon string
+	ToLat, ToLon     string
+	BigResult        BigJson
+}
+
 type BigJson struct {
 	MoovitRoutes            moovit.Result
 	OpenStreetMapBikeRoutes openstreetmap.Result

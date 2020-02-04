@@ -24,25 +24,6 @@ const (
 	DEBUGGING = false
 )
 
-type JsonRequestsFile []struct {
-	From    []string `json:"from"`
-	To      []string `json:"to"`
-	Comment string   `json:"_comment"`
-}
-
-type ResultFile struct {
-	Id               int
-	Date             string
-	ResultsSha256Sum string
-	Results          []Result
-}
-
-type Result struct {
-	FromLat, FromLon string
-	ToLat, ToLon     string
-	BigResult        trip.BigJson
-}
-
 func main() {
 	// Arguments
 	if len(os.Args) < 4 {
@@ -63,12 +44,12 @@ func main() {
 	for i := 0; true; i++ {
 		resultFilename := "scrapemaster_" + util.FormattedData(time.Now()) + ".json"
 		resultFile := createFile(outputDir, resultFilename)
-		var resultFileStruct ResultFile
+		var resultFileStruct trip.ResultFile
 		resultFileStruct.Id = i
 		resultFileStruct.Date = time.Now().Format("2006-01-02 15:04:05")
 
 		for _, request := range requests {
-			var resultStruct Result
+			var resultStruct trip.Result
 			resultStruct.FromLat = request.From[0]
 			resultStruct.FromLon = request.From[1]
 			resultStruct.ToLat = request.To[0]
@@ -164,7 +145,7 @@ func compressFile(dir, filename string) error {
 	return nil
 }
 
-func readJsonRequests(jsonFilename string) JsonRequestsFile {
+func readJsonRequests(jsonFilename string) trip.JsonRequestsFile {
 	// read file
 	requestsData, err := ioutil.ReadFile(jsonFilename)
 	if err != nil {
@@ -173,7 +154,7 @@ func readJsonRequests(jsonFilename string) JsonRequestsFile {
 	}
 
 	// unmarshal
-	var requests JsonRequestsFile
+	var requests trip.JsonRequestsFile
 	if err := json.Unmarshal([]byte(requestsData), &requests); err != nil {
 		fmt.Println("scrapemaster: can't unmarshal json file " + jsonFilename + ":", err)
 		os.Exit(1)
@@ -206,4 +187,25 @@ func createFile(dir, filename string) *os.File {
 		os.Exit(1)
 	}
 	return file
+}
+
+func checkFile(rf trip.ResultFile) {
+	fmt.Println("ID:", rf.Id)
+	fmt.Println("DATE:", rf.Date)
+
+	data, _ := json.Marshal(rf.Results)
+	dataChecksum := fmt.Sprintf("%x", sha256.Sum256(data))
+	fileChecksum := rf.ResultsSha256Sum
+	if dataChecksum == fileChecksum {
+		fmt.Println("CHECKSUM OK")
+	} else {
+		fmt.Println("CHECKSUM FAILED!!!")
+		fmt.Printf("%x\n%x\n", dataChecksum, fileChecksum)
+		return
+	}
+
+	for _, result := range rf.Results {
+		fmt.Println("From: " + result.FromLat + ", " + result.FromLon)
+		fmt.Println("To:   " + result.ToLat + ", " + result.ToLon)
+	}
 }
