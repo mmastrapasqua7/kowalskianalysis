@@ -82,9 +82,10 @@ func (r *Result) Print() {
 	for _, alternative := range r.Alternatives {
 		startTime := time.Now()
 		endTime := time.Now().Add(time.Duration(alternative.Response.TotalRouteTime) * time.Second)
+		duration := endTime.Sub(startTime)
 
-		fmt.Println("Start time:", startTime)
-		fmt.Println("End time:", endTime)
-		fmt.Println("Duration:", util.HumanizeDuration(endTime.Sub(startTime)))
+		fmt.Println("Start time:", startTime.Format("02/01/06 15:04"))
+		fmt.Println("End time:  ", endTime.Format("02/01/06 15:04"))
+		fmt.Println("Duration:  ", util.HumanizeDuration(duration))
 	}
 }

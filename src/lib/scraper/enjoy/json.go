@@ -33,8 +33,11 @@ func (r *Result) Print() {
 	car := r.ChosenCar
 	fmt.Println("Provider: ENJOY")
 	fmt.Printf("Car position: %.06f, %.06f\n", car.Lat, car.Lon)
-	fmt.Println("Car name:", car.CarName)
+	fmt.Println("Car name:", car.CarName, "\n")
 
+	fmt.Println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
 	r.WalkResult.Print()
+	fmt.Println()
 	r.CarResult.Print()
+	fmt.Println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
 }

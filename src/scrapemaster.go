@@ -158,35 +158,6 @@ func createFile(dir, filename string) *os.File {
 	return file
 }
 
-func checkFile(rf trip.ResultFile) {
-	fmt.Println("ID:", rf.Id)
-	fmt.Println("DATE:", rf.Date)
-
-	data, _ := json.Marshal(rf.Results)
-	dataChecksum := fmt.Sprintf("%x", sha256.Sum256(data))
-	fileChecksum := rf.ResultsSha256Sum
-	if dataChecksum == fileChecksum {
-		fmt.Println("CHECKSUM OK")
-	} else {
-		fmt.Println("CHECKSUM FAILED!!!")
-		fmt.Printf("%x\n%x\n", dataChecksum, fileChecksum)
-		return
-	}
-
-	for _, result := range rf.Results {
-		fmt.Println("From: " + result.FromLat + ", " + result.FromLon)
-		fmt.Println("To:   " + result.ToLat + ", " + result.ToLon)
-
-		result.BigResult.MoovitRoutes.Print()
-		result.BigResult.OpenStreetMapBikeRoutes.Print()
-		result.BigResult.OpenStreetMapFootRoutes.Print()
-		result.BigResult.WazeRoutes.Print()
-		result.BigResult.Car2GoRoutes.Print()
-		result.BigResult.EnjoyRoutes.Print()
-		result.BigResult.SharengoRoutes.Print()
-	}
-}
-
 func saveResults(rf trip.ResultFile, dir string) {
 	resultFilename := "scrapemaster_" + util.FormattedData(time.Now()) + ".json"
 	resultFile := createFile(dir, resultFilename)

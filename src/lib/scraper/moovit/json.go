@@ -254,29 +254,41 @@ func (r *Result) Print() {
 
 	for i, result := range r.Results[1:] {
 		fmt.Println("Result", i)
-		firstLeg := result.Result.Itinerary.Legs[0]
-		lastLeg := result.Result.Itinerary.Legs[len(result.Result.Itinerary.Legs) - 1]
 
-		var startTime time.Time
-		if timestamp := firstLeg.WalkLeg.Time.StartTime; timestamp != 0 {
-			startTime = time.Unix(0, timestamp * int64(time.Millisecond))
-		} else if timestamp := firstLeg.PathwayWalkLeg.Time.StartTime; timestamp != 0 {
-			startTime = time.Unix(0, timestamp * int64(time.Millisecond))
+		times := make([]int64, 0)
+		for _, leg := range result.Result.Itinerary.Legs {
+			if timestamp := leg.WalkLeg.Time; timestamp.StartTime != 0 && timestamp.EndTime != 0 {
+				times = append(times, timestamp.StartTime)
+				times = append(times, timestamp.EndTime)
+			} else if timestamp := leg.PathwayWalkLeg.Time; timestamp.StartTime != 0 && timestamp.EndTime != 0 {
+				times = append(times, timestamp.StartTime)
+				times = append(times, timestamp.EndTime)
+			} else if timestamp := leg.WaitToMultiLineLeg.Time; timestamp.StartTime != 0 && timestamp.EndTime != 0 {
+				times = append(times, timestamp.StartTime)
+				times = append(times, timestamp.EndTime)
+			}
 		}
 
-		var endTime time.Time
-		if timestamp := lastLeg.WalkLeg.Time.EndTime; timestamp != 0 {
-			endTime = time.Unix(0, timestamp * int64(time.Millisecond))
-		} else if timestamp := lastLeg.PathwayWalkLeg.Time.StartTime; timestamp != 0 {
-			endTime = time.Unix(0, timestamp * int64(time.Millisecond))
-		}
+		// for _, leg := range result.Result.Itinerary.Legs {
+		// 	if timestamp := leg.PathwayWalkLeg.Time; timestamp.StartTime != 0 || timestamp.EndTime != 0 {
+		// 		if timestamp.StartTime > times[len(times)-1] {
+		// 			times = append(times, timestamp.StartTime)
+		// 		}
+		//
+		// 		if timestamp.EndTime > times[len(times)-1] {
+		// 			times = append(times, timestamp.EndTime)
+		// 		}
+		// 	}
+		// }
 
+		startTime := time.Unix(0, times[0] * int64(time.Millisecond))
 		startTime = timeIn(startTime, "Europe/London")
-		endTime = timeIn(startTime, "Europe/London")
+		endTime := time.Unix(0, times[len(times)-1] * int64(time.Millisecond))
+		endTime = timeIn(endTime, "Europe/London")
 		duration := endTime.Sub(startTime)
 
-		fmt.Println("Start time:", startTime)
-		fmt.Println("End time:", endTime)
-		fmt.Println("Duration:", util.HumanizeDuration(duration))
+		fmt.Println("Start time:", startTime.Format("02/01/06 15:04"))
+		fmt.Println("End time:  ", endTime.Format("02/01/06 15:04"))
+		fmt.Println("Duration:  ", util.HumanizeDuration(duration), "\n")
 	}
 }

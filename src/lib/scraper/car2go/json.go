@@ -42,11 +42,14 @@ func (r *Result) Print() {
 	fmt.Println("Provider: CAR2GO")
 	fmt.Printf("Car position: %.06f, %.06f\n", car.Loc[1], car.Loc[0])
 	fmt.Println("Car manufacturer:", car.Obj.Manufacturer)
-	fmt.Println("Car model:", car.Obj.Model)
-	fmt.Println("Car engine type:", car.Obj.EngineType)
-	fmt.Println("Car cost per minute:", car.Obj.PriceInfo.Driving.Formatted)
-	fmt.Println("Car seats:", car.Obj.Seats)
+	fmt.Println("Car model:", car.Obj.Model, "\n")
+	// fmt.Println("Car engine type:", car.Obj.EngineType)
+	// fmt.Println("Car cost per minute:", car.Obj.PriceInfo.Driving.Formatted)
+	// fmt.Println("Car seats:", car.Obj.Seats, "\n")
 
+	fmt.Println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
 	r.WalkResult.Print()
+	fmt.Println()
 	r.CarResult.Print()
+	fmt.Println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
 }

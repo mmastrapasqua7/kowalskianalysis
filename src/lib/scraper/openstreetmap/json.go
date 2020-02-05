@@ -57,10 +57,11 @@ func (r *Result) Print() {
 	for _, route := range r.Routes {
 		startTime := time.Now()
 		endTime := startTime.Add(time.Duration(route.Duration) * time.Second)
+		duration := endTime.Sub(startTime)
 
-		fmt.Println("Start time:", startTime)
-		fmt.Println("End time:", endTime)
-		fmt.Println("Duration:", util.HumanizeDuration(endTime.Sub(startTime)))
+		fmt.Println("Start time:", startTime.Format("02/01/06 15:04"))
+		fmt.Println("End time:  ", endTime.Format("02/01/06 15:04"))
+		fmt.Println("Duration:  ", util.HumanizeDuration(duration))
 		fmt.Println("Distance:", route.Distance)
 	}
 }
