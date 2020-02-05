@@ -42,6 +42,18 @@ func main() {
 	// Read requests
 	requests := readJsonRequests(jsonRequestsFilename)
 	for i := 0; true; i++ { // i = ~ 10 minuti
+		timeNow := time.Now()
+		switch timeNow.Weekday() {
+		case time.Saturday, time.Sunday:
+			if timeNow.Hour() >= 2 && timeNow.Hour() < 6 { // weekend sleep from 2:00 to 6:00
+				time.Sleep(4 * time.Hour)
+			}
+		default:
+			if timeNow.Hour() >= 1 && timeNow.Hour() < 6 { // workweek sleep from 1:00 to 6:00
+				time.Sleep(5 * time.Hour)
+			}
+		}
+
 		var resultFileStruct trip.ResultFile
 		resultFileStruct.Id = i
 		resultFileStruct.Date = time.Now().Format("2006-01-02 15:04:05")
