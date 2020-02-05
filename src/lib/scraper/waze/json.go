@@ -1,5 +1,12 @@
 package waze
 
+import (
+	"../../util"
+
+	"fmt"
+	"time"
+)
+
 type Result struct {
 	Alternatives []struct {
 		Response struct {
@@ -67,4 +74,17 @@ type Result struct {
 			Z string  `json:"z"`
 		} `json:"coords"`
 	} `json:"alternatives"`
+}
+
+func (r *Result) Print() {
+	fmt.Println("Provider: WAZE")
+
+	for _, alternative := range r.Alternatives {
+		startTime := time.Now()
+		endTime := time.Now().Add(time.Duration(alternative.Response.TotalRouteTime) * time.Second)
+
+		fmt.Println("Start time:", startTime)
+		fmt.Println("End time:", endTime)
+		fmt.Println("Duration:", util.HumanizeDuration(endTime.Sub(startTime)))
+	}
 }

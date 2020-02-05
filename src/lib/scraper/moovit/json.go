@@ -2,6 +2,8 @@ package moovit
 
 import (
 	"fmt"
+	"time"
+	"../../util"
 )
 
 type InlineSuggestion struct {
@@ -250,24 +252,31 @@ type Result struct {
 func (r *Result) Print() {
 	fmt.Println("Provider: MOOVIT")
 
-	// OLD CODE !!!!!!!!!!
-	// type travel struct {
-	// 	start, end time.Time
-	// }
-	//
-	// for _, result := range r.Results[1:] {
-	// 	for _, routeStep := range moovitResult.Result.Itinerary.Legs[:] {
-	// 		if timestamp := routeStep.WalkLeg.Time; timestamp.StartTime != 0 && timestamp.EndTime != 0 {
-	// 			var travel travel
-	// 			travel.start = time.Unix(0, timestamp.StartTime * int64(time.Millisecond))
-	// 			travel.end = time.Unix(0, timestamp.EndTime * int64(time.Millisecond))
-	// 			travels = append(travels, travel)
-	// 		}
-	// 	}
-	//
-	// }
-	//
-	// trip.StartTime = timeIn(travels[0].start, "Europe/London")
-	// trip.EndTime = timeIn(travels[len(travels)-1].end, "Europe/London")
-	// trip.Duration = trip.EndTime.Sub(trip.StartTime)
+	for i, result := range r.Results[1:] {
+		fmt.Println("Result", i)
+		firstLeg := result.Result.Itinerary.Legs[0]
+		lastLeg := result.Result.Itinerary.Legs[len(result.Result.Itinerary.Legs) - 1]
+
+		var startTime time.Time
+		if timestamp := firstLeg.WalkLeg.Time.StartTime; timestamp != 0 {
+			startTime = time.Unix(0, timestamp * int64(time.Millisecond))
+		} else if timestamp := firstLeg.PathwayWalkLeg.Time.StartTime; timestamp != 0 {
+			startTime = time.Unix(0, timestamp * int64(time.Millisecond))
+		}
+
+		var endTime time.Time
+		if timestamp := lastLeg.WalkLeg.Time.EndTime; timestamp != 0 {
+			endTime = time.Unix(0, timestamp * int64(time.Millisecond))
+		} else if timestamp := lastLeg.PathwayWalkLeg.Time.StartTime; timestamp != 0 {
+			endTime = time.Unix(0, timestamp * int64(time.Millisecond))
+		}
+
+		startTime = timeIn(startTime, "Europe/London")
+		endTime = timeIn(startTime, "Europe/London")
+		duration := endTime.Sub(startTime)
+
+		fmt.Println("Start time:", startTime)
+		fmt.Println("End time:", endTime)
+		fmt.Println("Duration:", util.HumanizeDuration(duration))
+	}
 }
