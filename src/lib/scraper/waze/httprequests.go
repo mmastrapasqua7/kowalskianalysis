@@ -9,7 +9,7 @@ import (
 	"net/url"
 )
 
-func getWebPage() error {
+func GetWebPage() error {
 	urlWaze := "https://www.waze.com/it/livemap"
 
 	header := http.Header{}

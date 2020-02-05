@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func getWebPage() error {
+func GetWebPage() error {
 	urlWaze := "https://www.openstreetmap.org/"
 
 	header := http.Header{}

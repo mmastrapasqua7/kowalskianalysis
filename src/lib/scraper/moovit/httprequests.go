@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-func getWebPage() error {
+func GetWebPage() error {
 	urlMoovit := "https://moovitapp.com/index/it/mezzi_pubblici-Milano_e_Lombardia-223"
 
 	header := newCommonHeader()

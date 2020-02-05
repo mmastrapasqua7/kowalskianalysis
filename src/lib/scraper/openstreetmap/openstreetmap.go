@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	err := getWebPage()
+	err := GetWebPage()
 	if err != nil {
 		log.Println("openstreetmap: failed to get webpage:", err)
 		fmt.Println("ERROR: look at the logfile for more details. Sleeping.")

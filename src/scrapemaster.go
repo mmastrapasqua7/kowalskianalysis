@@ -41,7 +41,7 @@ func main() {
 
 	// Read requests
 	requests := readJsonRequests(jsonRequestsFilename)
-	for i := 0; true; i++ {
+	for i := 0; true; i++ { // i = ~ 10 minuti
 		var resultFileStruct trip.ResultFile
 		resultFileStruct.Id = i
 		resultFileStruct.Date = time.Now().Format("2006-01-02 15:04:05")
@@ -58,11 +58,13 @@ func main() {
 				scrapedDataDir)
 
 			resultFileStruct.Results = append(resultFileStruct.Results, resultStruct)
-			time.Sleep(30 * time.Second)
+			time.Sleep(30 * time.Second) // 20 richieste = 20 * 30s = 10 minuti
 		}
-
 		saveResults(resultFileStruct, outputDir)
-		time.Sleep(10 * time.Minute)
+
+		if i % 12 == 0 { // ogni 2 ore
+			refreshSessions()
+		}
 	}
 }
 
@@ -187,5 +189,28 @@ func saveResults(rf trip.ResultFile, dir string) {
 		if err := os.Remove(dir + "/" + resultFilename); err != nil {
 			log.Println("scrapemaster: can't delete file" + dir + "/" + resultFilename, err)
 		}
+	}
+}
+
+func refreshSessions() {
+	err := moovit.GetWebPage()
+	for err != nil {
+		log.Println("moovit: failed to get webpage:", err)
+		time.Sleep(1 * time.Minute)
+		err = moovit.GetWebPage()
+	}
+
+	err = waze.GetWebPage()
+	for err != nil {
+		log.Println("waze: failed to get webpage:", err)
+		time.Sleep(1 * time.Minute)
+		err = waze.GetWebPage()
+	}
+
+	err = openstreetmap.GetWebPage()
+	for err != nil {
+		log.Println("openstreetmap: failed to get webpage:", err)
+		time.Sleep(1 * time.Minute)
+		err = openstreetmap.GetWebPage()
 	}
 }
