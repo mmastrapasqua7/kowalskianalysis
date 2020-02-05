@@ -47,6 +47,6 @@ func (r *Result) Print() {
 	fmt.Println("Car cost per minute:", car.Obj.PriceInfo.Driving.Formatted)
 	fmt.Println("Car seats:", car.Obj.Seats)
 
-	// r.WalkResult.Print()
-	// r.CarResult.Print()
+	r.WalkResult.Print()
+	r.CarResult.Print()
 }

@@ -3,6 +3,8 @@ package sharengo
 import (
 	"../openstreetmap"
 	"../waze"
+
+	"fmt"
 )
 
 type Result struct {
@@ -83,4 +85,15 @@ type JsonFile struct {
 		Reason string      `json:"reason"`
 		Data   []JsonEntry `json:"data"`
 	} `json:"data"`
+}
+
+func (r *Result) Print() {
+	car := r.ChosenCar
+	fmt.Println("Provider: SHARENGO")
+	fmt.Println("Manufacturer:", car.Manufactures)
+	fmt.Println("Car model:", car.Model)
+	fmt.Printf("Car position: %s, %s\n", car.Latitude, car.Longitude)
+
+	r.WalkResult.Print()
+	r.CarResult.Print()
 }

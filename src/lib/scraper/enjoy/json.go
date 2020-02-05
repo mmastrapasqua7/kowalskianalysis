@@ -35,6 +35,6 @@ func (r *Result) Print() {
 	fmt.Printf("Car position: %.06f, %.06f\n", car.Lat, car.Lon)
 	fmt.Println("Car name:", car.CarName)
 
-	// r.WalkResult.Print()
-	// r.CarResult.Print()
+	r.WalkResult.Print()
+	r.CarResult.Print()
 }

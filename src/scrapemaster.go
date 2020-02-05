@@ -42,8 +42,6 @@ func main() {
 	// Read requests
 	requests := readJsonRequests(jsonRequestsFilename)
 	for i := 0; true; i++ {
-		resultFilename := "scrapemaster_" + util.FormattedData(time.Now()) + ".json"
-		resultFile := createFile(outputDir, resultFilename)
 		var resultFileStruct trip.ResultFile
 		resultFileStruct.Id = i
 		resultFileStruct.Date = time.Now().Format("2006-01-02 15:04:05")
@@ -60,39 +58,10 @@ func main() {
 				scrapedDataDir)
 
 			resultFileStruct.Results = append(resultFileStruct.Results, resultStruct)
-
 			time.Sleep(30 * time.Second)
 		}
 
-		var data []byte
-		if DEBUGGING { // debugging ? indent : don't indent, save space
-			data, _ = json.MarshalIndent(resultFileStruct.Results, "", "\t")
-			resultFileStruct.ResultsSha256Sum = fmt.Sprintf("%x", sha256.Sum256(data))
-			data, _ = json.MarshalIndent(resultFileStruct, "", "\t")
-		} else {
-			data, _ = json.Marshal(resultFileStruct.Results)
-			resultFileStruct.ResultsSha256Sum = fmt.Sprintf("%x", sha256.Sum256(data))
-			data, _ = json.Marshal(resultFileStruct)
-		}
-
-		if _, err := resultFile.Write(data); err != nil {
-			log.Println("scrapemaster: can't write to file" + outputDir + "/" + resultFilename, err)
-		}
-
-		if err := resultFile.Close(); err != nil {
-			log.Println("scrapemaster: can't close file" + outputDir + "/" + resultFilename, err)
-		}
-
-		if err := compressFile(outputDir, resultFilename); err != nil {
-			log.Println("scrapemaster: can't compress file" + outputDir + "/" + resultFilename, err)
-		} else {
-			if err := os.Remove(outputDir + "/" + resultFilename); err != nil {
-				log.Println("scrapemaster: can't delete file" + outputDir + "/" + resultFilename, err)
-			}
-		}
-
-		// emp, _ := json.MarshalIndent(results, "", "  ")
-		// fmt.Println(string(emp))
+		saveResults(resultFileStruct, outputDir)
 		time.Sleep(10 * time.Minute)
 	}
 }
@@ -207,5 +176,45 @@ func checkFile(rf trip.ResultFile) {
 	for _, result := range rf.Results {
 		fmt.Println("From: " + result.FromLat + ", " + result.FromLon)
 		fmt.Println("To:   " + result.ToLat + ", " + result.ToLon)
+
+		result.BigResult.MoovitRoutes.Print()
+		result.BigResult.OpenStreetMapBikeRoutes.Print()
+		result.BigResult.OpenStreetMapFootRoutes.Print()
+		result.BigResult.WazeRoutes.Print()
+		result.BigResult.Car2GoRoutes.Print()
+		result.BigResult.EnjoyRoutes.Print()
+		result.BigResult.SharengoRoutes.Print()
+	}
+}
+
+func saveResults(rf trip.ResultFile, dir string) {
+	resultFilename := "scrapemaster_" + util.FormattedData(time.Now()) + ".json"
+	resultFile := createFile(dir, resultFilename)
+
+	var data []byte
+	if DEBUGGING { // debugging ? indent : don't indent, save space
+		data, _ = json.MarshalIndent(rf.Results, "", "\t")
+		rf.ResultsSha256Sum = fmt.Sprintf("%x", sha256.Sum256(data))
+		data, _ = json.MarshalIndent(rf, "", "\t")
+	} else {
+		data, _ = json.Marshal(rf.Results)
+		rf.ResultsSha256Sum = fmt.Sprintf("%x", sha256.Sum256(data))
+		data, _ = json.Marshal(rf)
+	}
+
+	if _, err := resultFile.Write(data); err != nil {
+		log.Println("scrapemaster: can't write to file" + dir + "/" + resultFilename, err)
+	}
+
+	if err := resultFile.Close(); err != nil {
+		log.Println("scrapemaster: can't close file" + dir + "/" + resultFilename, err)
+	}
+
+	if err := compressFile(dir, resultFilename); err != nil {
+		log.Println("scrapemaster: can't compress file" + dir + "/" + resultFilename, err)
+	} else {
+		if err := os.Remove(dir + "/" + resultFilename); err != nil {
+			log.Println("scrapemaster: can't delete file" + dir + "/" + resultFilename, err)
+		}
 	}
 }
