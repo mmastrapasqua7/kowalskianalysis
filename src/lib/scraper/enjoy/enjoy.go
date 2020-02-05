@@ -77,7 +77,7 @@ func findTheClosestCar(fromLat, fromLon string, dirName string) (JsonEntry, erro
 	}
 
 	enjoyResult := JsonFile{}
-	err = json.Unmarshal([]byte(latestJsonDump), &enjoyResult)
+	err = json.Unmarshal(latestJsonDump, &enjoyResult)
 	if err != nil {
 		return closestCar, err
 	}

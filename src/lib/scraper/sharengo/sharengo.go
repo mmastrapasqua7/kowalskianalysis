@@ -81,7 +81,7 @@ func findTheClosestCar(fromLat, fromLon, dirName string) (JsonEntry, error) {
 	}
 
 	sharengoResult := JsonFile{}
-	err = json.Unmarshal([]byte(latestJsonDump), &sharengoResult)
+	err = json.Unmarshal(latestJsonDump, &sharengoResult)
 	if err != nil {
 		return closestCar, err
 	}

@@ -124,7 +124,7 @@ func readJsonRequests(jsonFilename string) trip.JsonRequestsFile {
 
 	// unmarshal
 	var requests trip.JsonRequestsFile
-	if err := json.Unmarshal([]byte(requestsData), &requests); err != nil {
+	if err := json.Unmarshal(requestsData, &requests); err != nil {
 		fmt.Println("scrapemaster: can't unmarshal json file " + jsonFilename + ":", err)
 		os.Exit(1)
 	}
