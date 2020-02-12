@@ -1,2 +1,10 @@
 bin/
 scrapers_error.log
+latex/Template.aux
+latex/Template.bbl
+latex/Template.blg
+latex/Template.log
+latex/Template.out
+latex/Template.pdf
+latex/Template.synctex.gz
+latex/Template.toc
