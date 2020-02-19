@@ -54,18 +54,21 @@
 	\tableofcontents
 	
 	\chapter{Introduzione}
-	{\large
-		prova
+	{\LARGE
+		PER PROF: questa è una bozza di partenza per la stesura delle idee. Sto man mano studiando i vari articoli (sul repo: kowalskianalysis/docs/pdf\_articoli\_accademici) per poi creare il .bib e inserire le citazioni
 	}
-	TCP/IP over Avian Carriers\cite{waitzman1990standard}
 
+
+	TCP/IP over Avian Carriers\cite{waitzman1990standard}
+	TCP/IP over Avian Carriers\cite{waitzman1990standard}
+	
 	\chapter{Confronto}
 	{\large
-		L'obiettivo di questo studio è di mettere a confronto in termini di velocità, prezzo, rapporto velocità/prezzo e altri parametri i diversi mezzi di trasporto a disposizione nel Comune di Milano per spostarsi al suo interno. Per quanto sia un dato di fatto che un'automobile vada più veloce di un tram o che quest'ultimo vada più veloce di una persona a piedi, questi fatti potrebbero non sussistere all'interno di una città come Milano per via delle proprietà intrinsiche che accomunano ogni città di medie e grandi dimensioni: traffico, deviazioni di percorso, incidenti, eventi di massa e ore di punta.
+		L'obiettivo di questo studio è di mettere a confronto in termini di velocità, prezzo, rapporto velocità/prezzo e altri parametri i diversi mezzi di trasporto a disposizione nel Comune di Milano per spostarsi al suo interno. Anche se può sembrare ovvio che un'automobile sia più veloce di un tram o che quest'ultimo sia più veloce di una persona a piedi, questi fatti potrebbero non sussistere all'interno di una città come Milano per via delle proprietà intrinsiche che accomunano ogni città di medie e grandi dimensioni: traffico, deviazioni di percorso, incidenti, eventi di massa e ore di punta.
 	}
 
 	{\large
-		L'idea alla base del confronto è quella di simulare in tempo reale, ripetutamente a intervalli regolari, la percorrenza di alcune tratte prestabilite lungo l'arco della giornata, per un arco di tempo di qualche mese, dove per ogni simulazione di tratta vengono calcolate diverse soluzioni ognuna con un mezzo di trasporto diverso. I dati collezionati da questa simulazione mi permetterebbero di fare le dovute analisi sui termini di paragone scelti per confrontare i mezzi, traendo infine le conclusioni.
+		L'idea alla base del confronto è quella di simulare in tempo reale, ripetutamente a intervalli regolari, la percorrenza di alcune tratte prestabilite lungo l'arco della giornata, per un arco di tempo di qualche mese, dove per ogni simulazione di percorrenza di una tratta vengono calcolate diverse soluzioni ognuna con un mezzo di trasporto diverso. I dati collezionati da questa simulazione mi permetterebbero di fare le dovute analisi sui termini di paragone scelti per confrontare i mezzi, traendo infine le conclusioni.
 	}
 
 		\section{Mezzi a confronto}
@@ -75,9 +78,44 @@
 	
 		\section{Stima in tempo reale}
 		{\large
-			TODO
+			Per simulare la percorrenza di una tratta userò le API messe a disposizione di alcuni servizi: Moovit per il trasporto pubblico ATM, Waze per gli spostamenti su veicoli, OpenStreetMap per gli spostamenti a piedi e in bicicletta. Queste API richiedono in input le coordinate geografiche di partenza e di arrivo desiderate e forniscono in output un file formato .json contenente le tratte più veloci calcolate. Queste API sono nella sostanza di forma:
 		}
 	
+		\begin{verbatim}
+		getRoutes(startCoordinates, endCoordinates) List[Route]
+		\end{verbatim}
+	
+		{\large
+			In particolare, Moovit e Waze considerano, nel calcolo delle tratte, anche i dati in tempo reale del traffico, delle deviazioni di percorso e degli incidenti nell'area di Milano. Moovit inoltre ha accesso ai dati di tracking dei vari mezzi pubblici direttamente da ATM, tramite questo infatti garantisce una corrispondenza con la realtà riguardo i tempi di arrivo dei mezzi alle fermate indicate, rendendo il calcolo più preciso. OpenStreetMap invece offre dei dati statici in caso di input uguale, ovvero che non cambiano nel tempo, il che è ragionevole per il percorso a piedi e in bicicletta che tendenzialmente non sono affetti dal traffico.
+		}
+	
+		{\large
+			I servizi di Car Sharing invece mettono a disposizione delle API per i dati in tempo reale delle macchine parcheggiate libere, ma non del tempo di percorrenza e/o del raggiungimento delle auto. Le API sono nella forma:
+		}
+	
+		\begin{verbatim}
+		getCars() List[CarPosition]
+		\end{verbatim}
+	
+		{\large
+			Nonostante questo, il tempo di percorrenza delle tratte usando il car sharing è comunque calcolabile tramite le API di OpenStreetMap per raggiungere una macchina a piedi, e infine usando le API di Waze per calcolare il percorso in macchina in tempo reale. Per rendere effettivo questo calcolo, serve anche calcolare la macchina più vicina dal punto di partenza richiesto.
+		}
+	
+		\begin{verbatim}
+		// se voglio andare da A a B
+
+		cars = sharingService.getCars()
+		C = findClosestCar(cars, A)
+		footRoute = openstreetmap.GetRoutes(A, C) // foot
+		carRoute = waze.GetRoutes(C, B)
+		totalRoute = footRoute.Add(carRoute)
+		\end{verbatim}
+		
+		\section{Scelta delle tratte}
+		{\large
+			Per poter confrontare i vari mezzi di trasporto 
+		}
+			
 	
 	\chapter{Cap3}
 	\chapter{Cap4}
