@@ -33,9 +33,7 @@
 		\end{center}
 	
 		\vspace{14mm}
-		\begin{flushleft}	{\large
-				prova
-			}
+		\begin{flushleft}
 			{\normalsize{\bf Relatore}}\\
 			\vspace{1mm}
 			{\large{\bf Alessandro Magno}}\\
@@ -55,8 +53,9 @@
 	
 	\chapter{Introduzione}
 	{\LARGE
-		PER PROF: questa è una bozza di partenza per la stesura delle idee. Sto man mano studiando i vari articoli (sul repo: kowalskianalysis/docs/pdf\_articoli\_accademici) per poi creare il .bib e inserire le citazioni
+		PER PROF: questa è una bozza di partenza per la stesura delle idee. Sto man mano studiando i vari articoli (sul repo: kowalskianalysis/docs/pdf\_articoli\_accademici) per poi creare il .bib e inserire le citazioni. Devo ancora scrivere delle formule per formalizzare ragionamenti e algoritmi.
 	}
+	\linebreak
 
 
 	TCP/IP over Avian Carriers\cite{waitzman1990standard}
@@ -71,70 +70,81 @@
 		L'idea alla base del confronto è quella di simulare in tempo reale, ripetutamente a intervalli regolari, la percorrenza di alcune tratte prestabilite lungo l'arco della giornata, per un arco di tempo di qualche mese, dove per ogni simulazione di percorrenza di una tratta vengono calcolate diverse soluzioni ognuna con un mezzo di trasporto diverso. I dati collezionati da questa simulazione mi permetterebbero di fare le dovute analisi sui termini di paragone scelti per confrontare i mezzi, traendo infine le conclusioni.
 	}
 
-		\section{Mezzi a confronto}
-		{\large
-			I mezzi di trasporto presi in considerazione per questo confronto sono:
-			
+	\section{Mezzi a confronto}
+	{\large
+		I mezzi di trasporto presi in considerazione per questo confronto sono:
+		\begin{itemize}
+			\item servizio di trasporto pubblico ATM (metro, bus, filobus e passanti Trenord)
+			\item servizi di car sharing
 			\begin{itemize}
-				\item servizio di trasporto pubblico ATM (metro, bus, filobus e passanti Trenord)
-				\item servizi di car sharing
-				\begin{itemize}
-					\item ShareNOW (CAR2GO) (Smart for2, Smart for4)
-					\item Enjoy (Fiat 500)
-					\item Sharengo (veicoli elettrici)
-				\end{itemize}
-				\item macchina di proprietà
-				\item bicicletta di proprietà
-				\item propri piedi
+				\item ShareNOW (CAR2GO) (Smart for2, Smart for4)
+				\item Enjoy (Fiat 500)
+				\item Sharengo (veicoli elettrici)
 			\end{itemize}
-		}
+			\item macchina di proprietà
+			\item bicicletta di proprietà
+			\item propri piedi
+		\end{itemize}
+	}
 	
-		\section{Stima in tempo reale}
-		{\large
-			Per simulare la percorrenza di una tratta userò le API messe a disposizione di alcuni servizi: Moovit per il trasporto pubblico ATM, Waze per gli spostamenti su veicoli, OpenStreetMap per gli spostamenti a piedi e in bicicletta. Queste API richiedono in input le coordinate geografiche di partenza e di arrivo desiderate e forniscono in output un file formato .json contenente le tratte più veloci calcolate. Queste API sono nella sostanza di forma:
-			
-			\begin{verbatim}
-				getRoutes(startCoordinates, endCoordinates) List[Route]
-			\end{verbatim}
-		}
+	\section{Stima in tempo reale}
+	{\large
+		Per simulare la percorrenza di una tratta userò le API messe a disposizione di alcuni servizi: Moovit per il trasporto pubblico ATM, Waze per gli spostamenti su veicoli, OpenStreetMap per gli spostamenti a piedi e in bicicletta. Queste API richiedono in input le coordinate geografiche di partenza e di arrivo desiderate e forniscono in output un file formato .json contenente le tratte più veloci calcolate. Queste API sono nella sostanza di forma:
+		\begin{verbatim}
+			getRoutes(startCoordinates, endCoordinates) List[Route]
+		\end{verbatim}
+	}
+
+	{\large
+		In particolare, Moovit e Waze considerano, nel calcolo delle tratte, anche i dati in tempo reale del traffico, delle deviazioni di percorso e degli incidenti nell'area di Milano. Moovit inoltre ha accesso ai dati di tracking dei vari mezzi pubblici direttamente da ATM, tramite questo infatti garantisce una corrispondenza con la realtà riguardo i tempi di arrivo dei mezzi alle fermate indicate, rendendo il calcolo più preciso. OpenStreetMap invece offre dei dati statici in caso di input uguale, ovvero che non cambiano nel tempo, il che è ragionevole per il percorso a piedi e in bicicletta che tendenzialmente non sono affetti dal traffico.
+	}
+
+	{\large
+		I servizi di Car Sharing invece mettono a disposizione delle API per i dati in tempo reale delle macchine parcheggiate libere, ma non del tempo di percorrenza e/o del raggiungimento delle auto. Le API sono nella forma:
+		\begin{verbatim}
+			getCars() List[CarPosition]
+		\end{verbatim}
+	}
 	
-		{\large
-			In particolare, Moovit e Waze considerano, nel calcolo delle tratte, anche i dati in tempo reale del traffico, delle deviazioni di percorso e degli incidenti nell'area di Milano. Moovit inoltre ha accesso ai dati di tracking dei vari mezzi pubblici direttamente da ATM, tramite questo infatti garantisce una corrispondenza con la realtà riguardo i tempi di arrivo dei mezzi alle fermate indicate, rendendo il calcolo più preciso. OpenStreetMap invece offre dei dati statici in caso di input uguale, ovvero che non cambiano nel tempo, il che è ragionevole per il percorso a piedi e in bicicletta che tendenzialmente non sono affetti dal traffico.
-		}
+	{\large
+		Nonostante questo, il tempo di percorrenza delle tratte usando il car sharing è comunque calcolabile: tramite le API di OpenStreetMap per raggiungere una macchina a piedi e usando le API di Waze per calcolare il percorso in macchina restante per raggiungere la destinazione. Per rendere effettivo questo calcolo, serve anche calcolare la macchina più vicina dal punto di partenza richiesto.
+		\begin{verbatim}
+			// se voglio andare da A a B
+
+			cars := sharingService.getCars()
+			C := findClosestCar(cars, A)
+			footRoute := openstreetmap.GetRoutes(A, C) // foot
+			carRoute := waze.GetRoutes(C, B)
+			totalRoute := footRoute.Add(carRoute)
+		\end{verbatim}
+	}
+
+	\section{Scelta delle tratte}
+	{\large
+		Per avere un confronto significativo tra i vari mezzi di trasporto ho usato varie risorse per scegliere delle tratte significative:
+		\begin{itemize}
+			\item tratte più percorse dagli utenti del car sharing
+			\item generatore pseudorandom con alcuni vincoli
+			\item strade più e meno trafficate di Milano
+		\end{itemize}
+	}
+
+	\subsection{Tratte più percorse dagli utenti del car sharing}
+	(studente/collega/qualcuno) colleziona i dati delle macchine parcheggiate libere da più di 5 anni tramite le API dei servizi di car sharing. Da questi dati, campionati a intervalli regolari di circa 1 minuto, è possibile ricavare le tratte percorse dagli utilizzatori. Per farlo, è sufficiente applicare il seguente algoritmo a ogni macchina: (cit)
+	\begin{verbatim}
+	sia R una rilevazione di una macchina contenente data del campionamento
+	e posizione geografica della macchina
 	
-		{\large
-			I servizi di Car Sharing invece mettono a disposizione delle API per i dati in tempo reale delle macchine parcheggiate libere, ma non del tempo di percorrenza e/o del raggiungimento delle auto. Le API sono nella forma:
+	sia L una lista di rilevazioni R ordinate in ordine crescente sulla base
+	dell'attributo della data di campionamento
+	
+	salva tutte rilevazioni L[i] ed L[i+1] in una tupla T (R1, R2) se e solo se:
+	L[i].posizione != L[i+1].posizione
+	\end{verbatim}
+	In questo modo ottengo una lista di tratte percorse dagli utenti del car sharing, dove \texttt{T.R1.posizione} è il punto di partenza, \texttt{T.R2.posizione} è il punto di arrivo e \texttt{T.R2.data - T.R1.data} è il tempo impiegato a percorrerla, con uno scarto di massimo 2 minuti (cit).
+	
+	Una volta collezionate tutte le tratte percorse, utilizzerò un algoritmo di clustering per ridurre l'insieme e trovare dei gruppi significativi che hanno in comune la partenza e l'arrivo. Sebbene l'algoritmo di clustering K-means sia tra i migliori algoritmi per dei dati multidimensionali e sia in grado di trovare dei punti significativi detti centroidi, non è il migliore per quanto riguarda i dati geospaziali (cit).
 		
-			\begin{verbatim}
-				getCars() List[CarPosition]
-			\end{verbatim}	
-		}
-	
-		{\large
-			Nonostante questo, il tempo di percorrenza delle tratte usando il car sharing è comunque calcolabile: tramite le API di OpenStreetMap per raggiungere una macchina a piedi e usando le API di Waze per calcolare il percorso in macchina restante per raggiungere la destinazione. Per rendere effettivo questo calcolo, serve anche calcolare la macchina più vicina dal punto di partenza richiesto.
-
-			\begin{verbatim}
-				// se voglio andare da A a B
-				
-				cars = sharingService.getCars()
-				C = findClosestCar(cars, A)
-				footRoute = openstreetmap.GetRoutes(A, C) // foot
-				carRoute = waze.GetRoutes(C, B)
-				totalRoute = footRoute.Add(carRoute)
-			\end{verbatim}
-		}
-	
-		\section{Scelta delle tratte}
-		{\large
-			Per avere un confronto significativo tra i vari mezzi di trasporto ho usato varie risorse per scegliere delle tratte significative:
-			\begin{itemize}
-				\item tratte più percorse dagli utenti del car sharing
-				\item generatore pseudorandom con alcuni vincoli
-				\item strade più e meno trafficate di Milano
-			\end{itemize}
-		}
-
-		\subsection{Tratte più percorse dagli utenti del car sharing}
 
 	\bibliographystyle{plain}
 	\bibliography{Biblio}
