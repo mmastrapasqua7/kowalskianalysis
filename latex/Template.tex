@@ -138,12 +138,12 @@
 	sia L una lista di rilevazioni R ordinate in ordine crescente sulla base
 	dell'attributo della data di campionamento
 	
-	salva tutte rilevazioni L[i] ed L[i+1] in una tupla T (R1, R2) se e solo se:
-	L[i].posizione != L[i+1].posizione
+	salva tutte rilevazioni L[i] ed L[i+1] sotto forma di tupla T (R1, R2)
+	se e solo se: L[i].posizione != L[i+1].posizione
 	\end{verbatim}
 	In questo modo ottengo una lista di tratte percorse dagli utenti del car sharing, dove \texttt{T.R1.posizione} è il punto di partenza, \texttt{T.R2.posizione} è il punto di arrivo e \texttt{T.R2.data - T.R1.data} è il tempo impiegato a percorrerla, con uno scarto di massimo 2 minuti (cit).
 	
-	Una volta collezionate tutte le tratte percorse, utilizzerò un algoritmo di clustering per ridurre l'insieme e trovare dei gruppi significativi che hanno in comune la partenza e l'arrivo. Sebbene l'algoritmo di clustering K-means sia tra i migliori algoritmi per dei dati multidimensionali e sia in grado di trovare dei punti significativi detti centroidi, non è il migliore per quanto riguarda i dati geospaziali (cit).
+	Una volta collezionate tutte le tratte percorse, utilizzerò un algoritmo di clustering per ridurre l'insieme e trovare delle tratte rappresentative che hanno in comune coordinate di partenza e di arrivo molto vicine. Sebbene l'algoritmo di clustering K-means sia tra i migliori algoritmi per dei dati multidimensionali e sia in grado di trovare dei punti significativi detti centroidi, non è il migliore per quanto riguarda i dati geospaziali (cit). L'algoritmo migliore in questo caso è il DBSCAN, algoritmo di clustering basato sulla densità. Questo tipo di clusterizzazione però non trova dei centroidi, ma solamente i cluster. Infatti questo algoritmo è in grado di trovare cluster di qualsiasi forma oltre a quella circolare gaussiana dove il K-means da il meglio. Quando il cluster ha una forma diversa da quella tipica di una distribuzione gaussiana, il concetto di centroide perde di significato. Nonostante questo, come è stato dimostrato da altri lavori (cit/ref), usando i giusti parametri in funzione della grandezza dello spazio dimensionale analizzato, è possibile indurre il DBSCAN a trovare dei cluster di piccola dimensione dove la definizione di un centroide torna ad aver significato. Ad esempio, se trovassi un cluster di macchine parcheggiate di forma allungata, simile a un segmento, che corrisponde geograficamente a una via o vialone, avrebbe senso poter prendere il punto medio di quel cluster e affermare che quella via è una destinazione rappresentativa che accomuna alcuni degli utenti del car sharing. Questa cosa vale anche per le piazze e per le strade a più carreggiate. Al contrario, in un cluster della stessa forma ma che copre una vasta area rapportata alla dimensione dell'area analizzata non avrebbe senso trovare il punto medio. Ad esempio: in un cluster di forma circolare che copre tutta la periferia di Milano, il centroide sarebbe indicato come il centro della città, il Duomo, il che non ha senso.
 		
 
 	\bibliographystyle{plain}
