@@ -3,6 +3,8 @@ package enjoy
 import (
 	"../openstreetmap"
 	"../waze"
+
+	"fmt"
 )
 
 type Result struct {
@@ -27,15 +29,31 @@ type JsonEntry struct {
 
 type JsonFile []JsonEntry
 
-// func (r *Result) Print() {
-// 	car := r.ChosenCar
-// 	fmt.Println("Provider: ENJOY")
-// 	fmt.Printf("Car position: %.06f, %.06f\n", car.Lat, car.Lon)
-// 	fmt.Println("Car name:", car.CarName, "\n")
-//
-// 	fmt.Println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-// 	r.WalkResult.Print()
-// 	fmt.Println()
-// 	r.CarResult.Print()
-// 	fmt.Println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-// }
+func (r *Result) CarPosition() string {
+	return fmt.Sprintf("%.06f, %.06f", r.ChosenCar.Lat, r.ChosenCar.Lon)
+}
+
+func (r *Result) CarManufacturer() string {
+	return fmt.Sprint("FIAT")
+}
+
+func (r *Result) CarModel() string {
+	return fmt.Sprint(r.ChosenCar.CarName)
+}
+
+func (r *Result) EngineType() string {
+	return fmt.Sprint("Benzina")
+}
+
+func (r *Result) CostPerMinute() string {
+	return fmt.Sprint("to be defined")
+}
+
+func (r *Result) String() string {
+	return fmt.Sprint("Provider:", "ENJOY",
+		"\nPosition:", r.CarPosition(),
+		"\nManufacturer:", r.CarManufacturer(),
+		"\nModel:", r.CarModel(),
+		"\nEngine:", r.EngineType(),
+		"\nCost/minute:", r.CostPerMinute())
+}

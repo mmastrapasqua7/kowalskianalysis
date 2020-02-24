@@ -1,5 +1,10 @@
 package openstreetmap
 
+import (
+	"fmt"
+	"time"
+)
+
 type Result struct {
 	Code      string `json:"code"`
 	Waypoints []struct {
@@ -43,6 +48,26 @@ type Result struct {
 		Duration   float64 `json:"duration"`
 	} `json:"routes"`
 }
+
+func (r *Result) Duration() time.Duration {
+	return time.Duration(r.Routes[0].Duration) * time.Second
+}
+
+func (r *Result) Departure() time.Time {
+	return time.Now()
+}
+
+func (r *Result) Arrival() time.Time {
+	return time.Now().Add(r.Duration())
+}
+
+func (r *Result) String() string {
+	return fmt.Sprintln("Provider:", "OPENSTREETMAP",
+		"\nDuration:", r.Duration(),
+		"\nDeparture:", r.Departure(),
+		"\nArrival:", r.Arrival())
+}
+
 
 // func (r *Result) Print() {
 // 	fmt.Println("Provider: OPENSTREETMAP")

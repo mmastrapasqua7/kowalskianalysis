@@ -1,5 +1,10 @@
 package waze
 
+import (
+	"fmt"
+	"time"
+)
+
 type Result struct {
 	Alternatives []struct {
 		Response struct {
@@ -67,6 +72,31 @@ type Result struct {
 			Z string  `json:"z"`
 		} `json:"coords"`
 	} `json:"alternatives"`
+}
+
+func (r *Result) Duration(i int) time.Duration {
+	return time.Duration(r.Alternatives[i].Response.TotalRouteTime) * time.Second
+}
+
+func (r *Result) Departure() time.Time {
+	return time.Now()
+}
+
+func (r *Result) Arrival(i int) time.Time {
+	return time.Now().Add(r.Duration(i))
+}
+
+func (r *Result) String() string {
+	toString := ""
+
+	for i, _ := range r.Alternatives {
+		toString += fmt.Sprintln("Provider:", "WAZE",
+			"\nDuration:", r.Duration(i),
+			"\nDeparture:", r.Departure(),
+			"\nArrival:", r.Arrival(i))
+	}
+
+	return toString
 }
 
 // func (r *Result) Print() {

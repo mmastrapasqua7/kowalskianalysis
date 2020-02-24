@@ -1,5 +1,10 @@
 package moovit
 
+import (
+	"fmt"
+	"time"
+)
+
 type InlineSuggestion struct {
 	UserKey string `json:"userKey"`
 	Query   string `json:"query"`
@@ -243,6 +248,82 @@ type Result struct {
 	Completed bool `json:"completed"`
 }
 
+func (r Result) Duration(i int) time.Duration {
+	times := make([]int64, 0)
+
+	for _, leg := range r.Results[i].Result.Itinerary.Legs {
+		if timestamp := leg.WalkLeg.Time; timestamp.StartTime != 0 && timestamp.EndTime != 0 {
+			times = append(times, timestamp.StartTime)
+			times = append(times, timestamp.EndTime)
+		} else if timestamp := leg.PathwayWalkLeg.Time; timestamp.StartTime != 0 && timestamp.EndTime != 0 {
+			times = append(times, timestamp.StartTime)
+			times = append(times, timestamp.EndTime)
+		} else if timestamp := leg.WaitToMultiLineLeg.Time; timestamp.StartTime != 0 && timestamp.EndTime != 0 {
+			times = append(times, timestamp.StartTime)
+			times = append(times, timestamp.EndTime)
+		}
+	}
+
+	startTime := time.Unix(0, times[0] * int64(time.Millisecond))
+	startTime = timeIn(startTime, "Europe/London")
+	endTime := time.Unix(0, times[len(times)-1] * int64(time.Millisecond))
+	endTime = timeIn(endTime, "Europe/London")
+	return endTime.Sub(startTime)
+}
+
+func (r Result) Departure(i int) time.Time {
+	times := make([]int64, 0)
+
+	for _, leg := range r.Results[i].Result.Itinerary.Legs {
+		if timestamp := leg.WalkLeg.Time; timestamp.StartTime != 0 && timestamp.EndTime != 0 {
+			times = append(times, timestamp.StartTime)
+			times = append(times, timestamp.EndTime)
+		} else if timestamp := leg.PathwayWalkLeg.Time; timestamp.StartTime != 0 && timestamp.EndTime != 0 {
+			times = append(times, timestamp.StartTime)
+			times = append(times, timestamp.EndTime)
+		} else if timestamp := leg.WaitToMultiLineLeg.Time; timestamp.StartTime != 0 && timestamp.EndTime != 0 {
+			times = append(times, timestamp.StartTime)
+			times = append(times, timestamp.EndTime)
+		}
+	}
+
+	startTime := time.Unix(0, times[0] * int64(time.Millisecond))
+	return timeIn(startTime, "Europe/London")
+}
+
+func (r Result) Arrival(i int) time.Time {
+	times := make([]int64, 0)
+
+	for _, leg := range r.Results[i].Result.Itinerary.Legs {
+		if timestamp := leg.WalkLeg.Time; timestamp.StartTime != 0 && timestamp.EndTime != 0 {
+			times = append(times, timestamp.StartTime)
+			times = append(times, timestamp.EndTime)
+		} else if timestamp := leg.PathwayWalkLeg.Time; timestamp.StartTime != 0 && timestamp.EndTime != 0 {
+			times = append(times, timestamp.StartTime)
+			times = append(times, timestamp.EndTime)
+		} else if timestamp := leg.WaitToMultiLineLeg.Time; timestamp.StartTime != 0 && timestamp.EndTime != 0 {
+			times = append(times, timestamp.StartTime)
+			times = append(times, timestamp.EndTime)
+		}
+	}
+
+	endTime := time.Unix(0, times[len(times)-1] * int64(time.Millisecond))
+	return timeIn(endTime, "Europe/London")
+}
+
+func (r *Result) String() string {
+	toString := ""
+
+	for i, _ := range r.Results {
+		toString += fmt.Sprintln("Provider:", "MOOVIT",
+			"\nDuration:", r.Duration(i),
+			"\nDeparture:", r.Departure(i),
+			"\nArrival:", r.Arrival(i))
+	}
+
+	return toString
+}
+
 // func (r *Result) Print() {
 // 	fmt.Println("Provider: MOOVIT")
 //
@@ -262,18 +343,6 @@ type Result struct {
 // 				times = append(times, timestamp.EndTime)
 // 			}
 // 		}
-//
-// 		// for _, leg := range result.Result.Itinerary.Legs {
-// 		// 	if timestamp := leg.PathwayWalkLeg.Time; timestamp.StartTime != 0 || timestamp.EndTime != 0 {
-// 		// 		if timestamp.StartTime > times[len(times)-1] {
-// 		// 			times = append(times, timestamp.StartTime)
-// 		// 		}
-// 		//
-// 		// 		if timestamp.EndTime > times[len(times)-1] {
-// 		// 			times = append(times, timestamp.EndTime)
-// 		// 		}
-// 		// 	}
-// 		// }
 //
 // 		startTime := time.Unix(0, times[0] * int64(time.Millisecond))
 // 		startTime = timeIn(startTime, "Europe/London")
