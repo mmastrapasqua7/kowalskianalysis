@@ -1,7 +1,7 @@
 package main
 
 import (
-	"./lib/trip"
+	"./lib/scraper"
 
 	"crypto/sha256"
 	"encoding/json"
@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	// var rf trip.ResultFile
+	// var rf scraper.ResultFile
 	files, err := ioutil.ReadDir(".")
 	if err != nil {
 		fmt.Println("main: error while reading directory:", err)
@@ -37,7 +37,7 @@ func main() {
 			continue
 		}
 
-		var rf trip.ResultFile
+		var rf scraper.ResultFile
 		if err := json.Unmarshal(data, &rf); err != nil {
 			fmt.Println("main: error while unmarshaling json" + jsonFilename, err)
 			continue
@@ -64,7 +64,7 @@ func extractXZFile(filename string) error {
 	return nil
 }
 
-func checkResults(rf trip.ResultFile) {
+func checkResults(rf scraper.ResultFile) {
 	printRow()
 	fmt.Println("ID:", rf.Id)
 	fmt.Println("DATE:", rf.Date)
@@ -86,19 +86,13 @@ func checkResults(rf trip.ResultFile) {
 		fmt.Println("From: " + result.FromLat + ", " + result.FromLon)
 		fmt.Println("To:   " + result.ToLat + ", " + result.ToLon)
 
-		result.BigResult.MoovitRoutes.Print()
-		fmt.Println()
-		result.BigResult.OpenStreetMapBikeRoutes.Print()
-		fmt.Println()
-		result.BigResult.OpenStreetMapFootRoutes.Print()
-		fmt.Println()
-		result.BigResult.WazeRoutes.Print()
-		fmt.Println()
-		result.BigResult.Car2GoRoutes.Print()
-		fmt.Println()
-		result.BigResult.EnjoyRoutes.Print()
-		fmt.Println()
-		result.BigResult.SharengoRoutes.Print()
+		fmt.Println(result.BigResult.MoovitRoutes.String())
+		fmt.Println(result.BigResult.OpenStreetMapBikeRoutes.String())
+		fmt.Println(result.BigResult.OpenStreetMapFootRoutes.String())
+		fmt.Println(result.BigResult.WazeRoutes.String())
+		fmt.Println(result.BigResult.Car2GoRoutes.String())
+		fmt.Println(result.BigResult.EnjoyRoutes.String())
+		fmt.Println(result.BigResult.SharengoRoutes.String())
 	}
 	printRow()
 	fmt.Println()
