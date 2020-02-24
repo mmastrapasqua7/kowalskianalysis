@@ -1,8 +1,6 @@
 package waze
 
 import (
-	"../../util"
-
 	"fmt"
 	"time"
 )
@@ -76,16 +74,41 @@ type Result struct {
 	} `json:"alternatives"`
 }
 
-func (r *Result) Print() {
-	fmt.Println("Provider: WAZE")
-
-	for _, alternative := range r.Alternatives {
-		startTime := time.Now()
-		endTime := time.Now().Add(time.Duration(alternative.Response.TotalRouteTime) * time.Second)
-		duration := endTime.Sub(startTime)
-
-		fmt.Println("Start time:", startTime.Format("02/01/06 15:04"))
-		fmt.Println("End time:  ", endTime.Format("02/01/06 15:04"))
-		fmt.Println("Duration:  ", util.HumanizeDuration(duration))
-	}
+func (r *Result) Duration(i int) time.Duration {
+	return time.Duration(r.Alternatives[i].Response.TotalRouteTime) * time.Second
 }
+
+func (r *Result) Departure() time.Time {
+	return time.Now()
+}
+
+func (r *Result) Arrival(i int) time.Time {
+	return time.Now().Add(r.Duration(i))
+}
+
+func (r *Result) String() string {
+	toString := ""
+
+	for i, _ := range r.Alternatives {
+		toString += fmt.Sprintln("Provider:", "WAZE",
+			"\nDuration:", r.Duration(i),
+			"\nDeparture:", r.Departure(),
+			"\nArrival:", r.Arrival(i), "\n")
+	}
+
+	return toString
+}
+
+// func (r *Result) Print() {
+// 	fmt.Println("Provider: WAZE")
+//
+// 	for _, alternative := range r.Alternatives {
+// 		startTime := time.Now()
+// 		endTime := time.Now().Add(time.Duration(alternative.Response.TotalRouteTime) * time.Second)
+// 		duration := endTime.Sub(startTime)
+//
+// 		fmt.Println("Start time:", startTime.Format("02/01/06 15:04"))
+// 		fmt.Println("End time:  ", endTime.Format("02/01/06 15:04"))
+// 		fmt.Println("Duration:  ", util.HumanizeDuration(duration))
+// 	}
+// }

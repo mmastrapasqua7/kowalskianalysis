@@ -1,7 +1,7 @@
 package main
 
 import (
-	"./lib/trip"
+	"./lib/scraper"
 
 	"crypto/sha256"
 	"encoding/json"
@@ -13,8 +13,8 @@ import (
 )
 
 func main() {
-	// var rf trip.ResultFile
-	files, err := ioutil.ReadDir(".")
+	// var rf scraper.ResultFile
+	files, err := ioutil.ReadDir("results")
 	if err != nil {
 		fmt.Println("main: error while reading directory:", err)
 		os.Exit(1)
@@ -23,7 +23,7 @@ func main() {
 	resultFileNames := make([]string, 0)
 	for _, file := range files {
 		if strings.Contains(file.Name(), ".json") {
-			resultFileNames = append(resultFileNames, file.Name())
+			resultFileNames = append(resultFileNames, "results/" + file.Name())
 		}
 	}
 
@@ -37,7 +37,7 @@ func main() {
 			continue
 		}
 
-		var rf trip.ResultFile
+		var rf scraper.ResultFile
 		if err := json.Unmarshal(data, &rf); err != nil {
 			fmt.Println("main: error while unmarshaling json" + jsonFilename, err)
 			continue
@@ -64,41 +64,35 @@ func extractXZFile(filename string) error {
 	return nil
 }
 
-func checkResults(rf trip.ResultFile) {
+func checkResults(rf scraper.ResultFile) {
 	printRow()
-	fmt.Println("ID:", rf.Id)
-	fmt.Println("DATE:", rf.Date)
+	fmt.Println("# ID:", rf.Id)
+	fmt.Println("# DATE:", rf.Date)
 
 	data, _ := json.Marshal(rf.Results)
 	dataChecksum := fmt.Sprintf("%x", sha256.Sum256(data))
 	fileChecksum := rf.ResultsSha256Sum
 	if dataChecksum == fileChecksum {
-		fmt.Println("CHECKSUM: OK")
+		fmt.Println("# CHECKSUM: OK")
 	} else {
-		fmt.Println("CHECKSUM: FAILED!!!")
-		fmt.Printf("%x\n%x\n", dataChecksum, fileChecksum)
+		fmt.Println("# CHECKSUM: FAILED!!!")
+		fmt.Printf("# %x\n%x\n", dataChecksum, fileChecksum)
 		printRow()
 		fmt.Println()
 		return
 	}
 
 	for _, result := range rf.Results {
-		fmt.Println("From: " + result.FromLat + ", " + result.FromLon)
-		fmt.Println("To:   " + result.ToLat + ", " + result.ToLon)
+		fmt.Println("# From:", result.FromLat + ", " + result.FromLon)
+		fmt.Println("# To:  ", result.ToLat + ",", result.ToLon, "\n")
 
-		result.BigResult.MoovitRoutes.Print()
-		fmt.Println()
-		result.BigResult.OpenStreetMapBikeRoutes.Print()
-		fmt.Println()
-		result.BigResult.OpenStreetMapFootRoutes.Print()
-		fmt.Println()
-		result.BigResult.WazeRoutes.Print()
-		fmt.Println()
-		result.BigResult.Car2GoRoutes.Print()
-		fmt.Println()
-		result.BigResult.EnjoyRoutes.Print()
-		fmt.Println()
-		result.BigResult.SharengoRoutes.Print()
+		fmt.Println(result.BigResult.MoovitRoutes.String())
+		fmt.Println(result.BigResult.OpenStreetMapBikeRoutes.String())
+		fmt.Println(result.BigResult.OpenStreetMapFootRoutes.String())
+		fmt.Println(result.BigResult.WazeRoutes.String())
+		fmt.Println(result.BigResult.Car2GoRoutes.String())
+		fmt.Println(result.BigResult.EnjoyRoutes.String())
+		fmt.Println(result.BigResult.SharengoRoutes.String())
 	}
 	printRow()
 	fmt.Println()

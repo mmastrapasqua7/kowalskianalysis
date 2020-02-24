@@ -37,19 +37,31 @@ type JsonEntry struct {
 
 type JsonFile []JsonEntry
 
-func (r *Result) Print() {
-	car := r.ChosenCar
-	fmt.Println("Provider: CAR2GO")
-	fmt.Printf("Car position: %.06f, %.06f\n", car.Loc[1], car.Loc[0])
-	fmt.Println("Car manufacturer:", car.Obj.Manufacturer)
-	fmt.Println("Car model:", car.Obj.Model, "\n")
-	// fmt.Println("Car engine type:", car.Obj.EngineType)
-	// fmt.Println("Car cost per minute:", car.Obj.PriceInfo.Driving.Formatted)
-	// fmt.Println("Car seats:", car.Obj.Seats, "\n")
+func (r *Result) CarPosition() string {
+	return fmt.Sprintf("%.06f, %.06f", r.ChosenCar.Loc[1], r.ChosenCar.Loc[0])
+}
 
-	fmt.Println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-	r.WalkResult.Print()
-	fmt.Println()
-	r.CarResult.Print()
-	fmt.Println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+func (r *Result) CarManufacturer() string {
+	return fmt.Sprint(r.ChosenCar.Obj.Manufacturer)
+}
+
+func (r *Result) CarModel() string {
+	return fmt.Sprint(r.ChosenCar.Obj.Model)
+}
+
+func (r *Result) EngineType() string {
+	return fmt.Sprint(r.ChosenCar.Obj.EngineType)
+}
+
+func (r *Result) CostPerMinute() string {
+	return fmt.Sprint(r.ChosenCar.Obj.PriceInfo.Driving.Formatted)
+}
+
+func (r *Result) String() string {
+	return fmt.Sprint("Provider:", "CAR2GO",
+		"\nPosition:", r.CarPosition(),
+		"\nManufacturer:", r.CarManufacturer(),
+		"\nModel:", r.CarModel(),
+		"\nEngine:", r.EngineType(),
+		"\nCost/minute:", r.CostPerMinute(), "\n")
 }

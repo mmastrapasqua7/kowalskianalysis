@@ -1,228 +1,88 @@
 package main
 
 import (
-	"./lib/scraper/moovit"
-	"./lib/scraper/openstreetmap"
-	"./lib/scraper/waze"
-	"./lib/scraper/car2go"
-	"./lib/scraper/enjoy"
-	"./lib/scraper/sharengo"
-	"./lib/trip"
-	"./lib/util"
+	"./lib/scraper"
 
-	"crypto/sha256"
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
-	"os/exec"
 	"time"
 )
 
-const (
-	DEBUGGING = false
-)
-
 func main() {
-	// Arguments
-	if len(os.Args) < 4 {
-		fmt.Println("usage:\n\t scrapemaster [richieste.json] [scraped_data_dir] [output_dir]")
-		os.Exit(0)
-	}
-	jsonRequestsFilename := os.Args[1]
-	scrapedDataDir := os.Args[2]
+	checkParams(os.Args)
+	requestFile := os.Args[1]
+	carsharingDataDir := os.Args[2]
 	outputDir := os.Args[3]
 
-	// Logfile
-	logfile := createFile(outputDir, "scraper_error.log")
-	log.SetOutput(logfile)
+	logfile := createFile(outputDir + "/scraper_error.log")
 	defer logfile.Close()
+	log.SetOutput(logfile)
 
-	// Read requests
-	requests := readJsonRequests(jsonRequestsFilename)
-	for i := 0; true; i++ { // i = ~ 10 minuti
-		timeNow := time.Now()
-		switch timeNow.Weekday() {
-		case time.Saturday, time.Sunday:
-			if timeNow.Hour() >= 2 && timeNow.Hour() < 6 { // weekend sleep from 2:00 to 6:00
-				time.Sleep(4 * time.Hour)
+	for i := 0; true; i++ {
+		resultFile := scraper.ResultFile{Id: i, Date: time.Now().Format("2006-01-02 15:04:05")}
+
+		for _, request := range scraper.ReadRequests(requestFile) {
+			result := scraper.Result {
+				FromLat: request.From[0],
+				FromLon: request.From[1],
+				ToLat: request.To[0],
+				ToLon: request.To[1],
 			}
-		default:
-			if timeNow.Hour() >= 1 && timeNow.Hour() < 6 { // workweek sleep from 1:00 to 6:00
-				time.Sleep(5 * time.Hour)
-			}
+
+			result.BigResult = scraper.GetRoutesFromAllServices(
+				request.From[0], request.From[1],
+				request.To[0], request.To[1],
+				carsharingDataDir)
+
+			resultFile.Results = append(resultFile.Results, result)
+			time.Sleep(30 * time.Second)
 		}
 
-		var resultFileStruct trip.ResultFile
-		resultFileStruct.Id = i
-		resultFileStruct.Date = time.Now().Format("2006-01-02 15:04:05")
+		scraper.SaveResult(resultFile, outputDir)
 
-		for _, request := range requests {
-			var resultStruct trip.Result
-			resultStruct.FromLat = request.From[0]
-			resultStruct.FromLon = request.From[1]
-			resultStruct.ToLat = request.To[0]
-			resultStruct.ToLon = request.To[1]
-			resultStruct.BigResult = getRoutesFromAllServices(
-				resultStruct.FromLat, resultStruct.FromLon,
-				resultStruct.ToLat, resultStruct.ToLon,
-				scrapedDataDir)
-
-			resultFileStruct.Results = append(resultFileStruct.Results, resultStruct)
-			time.Sleep(30 * time.Second) // 20 richieste = 20 * 30s = 10 minuti
-		}
-		saveResults(resultFileStruct, outputDir)
-
-		if i % 12 == 0 { // ogni 2 ore
-			refreshSessions()
+		if hour := time.Now().Hour(); hour == 1 {
+			time.Sleep(6 * time.Hour) // wait 07:00
+			scraper.RefreshSessions()
 		}
 	}
 }
 
-func getRoutesFromAllServices(fromLat, fromLon, toLat, toLon string, scrapedDataDir string) trip.BigJson {
-	moovitResult := moovit.GetRoutes(fromLat, fromLon, toLat, toLon)
-	openstreetmapBikeResult := openstreetmap.GetBikeRoutes(fromLat, fromLon, toLat, toLon)
-	openstreetmapFootResult := openstreetmap.GetFootRoutes(fromLat, fromLon, toLat, toLon)
-	wazeResult := waze.GetRoutes(fromLat, fromLon, toLat, toLon)
-	car2goResult := car2go.GetRoutes(fromLat, fromLon, toLat, toLon, scrapedDataDir)
-	sharengoResult := sharengo.GetRoutes(fromLat, fromLon, toLat, toLon, scrapedDataDir)
-	enjoyResult := enjoy.GetRoutes(fromLat, fromLon, toLat, toLon, scrapedDataDir)
+func checkParams(args []string) {
+	if len(args) < 4 {
+		fmt.Println("usage:\n\t scrapemaster [requests.json] [scraped_data_dir] [output_dir]")
+		os.Exit(0)
+	}
 
-	var results trip.BigJson
-	results.MoovitRoutes = moovitResult
-	results.OpenStreetMapBikeRoutes = openstreetmapBikeResult
-	results.OpenStreetMapFootRoutes = openstreetmapFootResult
-	results.WazeRoutes = wazeResult
-	results.Car2GoRoutes = car2goResult
-	results.EnjoyRoutes = enjoyResult
-	results.SharengoRoutes = sharengoResult
-	return results
+	requestFile := args[1]
+	carsharingDataDir := args[2]
+	outputDir := args[3]
+
+	if _, err := os.Stat(requestFile); os.IsNotExist(err) {
+		fmt.Println("scrapemaster: " + requestFile + " doesn't exist:", err)
+		os.Exit(-1)
+	}
+
+	if _, err := os.Stat(carsharingDataDir); os.IsNotExist(err) {
+		fmt.Println("scrapemaster: " + carsharingDataDir + " doesn't exist:", err)
+		os.Exit(-1)
+	}
+
+	if _, err := os.Stat(outputDir); os.IsNotExist(err) {
+		log.Println("scrapemaster: " + outputDir + " doesn't exist. Creating one...")
+
+		if err := os.Mkdir(outputDir, 0755); err != nil {
+			fmt.Println("scrapemaster: can't create output directory:", err)
+			os.Exit(-1)
+		}
+	}
 }
 
-func compressFile(dir, filename string) error {
-	// pwd, cd
-	currentDir, err := os.Getwd()
+func createFile(f string) *os.File {
+	file, err := os.OpenFile(f, os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
 	if err != nil {
-		return err
-	}
-	if err := os.Chdir(dir); err != nil {
-		fmt.Println("scrapemaster: cd failed", err)
-		return err
-	}
-
-	// exec, wait
-	cmd := exec.Command("tar", "-cJf", filename + ".tar.xz", filename)
-	if err := cmd.Start(); err != nil {
-		return err
-	}
-	if err := cmd.Wait(); err != nil {
-		return err
-	}
-
-	// cd ..
-	if err := os.Chdir(currentDir); err != nil {
-		fmt.Println("scrapemaster: pwd failed", err)
-		return err
-	}
-	return nil
-}
-
-func readJsonRequests(jsonFilename string) trip.JsonRequestsFile {
-	// read file
-	requestsData, err := ioutil.ReadFile(jsonFilename)
-	if err != nil {
-		fmt.Println("scrapemaster: can't open input file " + jsonFilename + ":", err)
-		os.Exit(1)
-	}
-
-	// unmarshal
-	var requests trip.JsonRequestsFile
-	if err := json.Unmarshal(requestsData, &requests); err != nil {
-		fmt.Println("scrapemaster: can't unmarshal json file " + jsonFilename + ":", err)
-		os.Exit(1)
-	}
-	return requests
-}
-
-func createFile(dir, filename string) *os.File {
-	// pwd, cd
-	currentDir, err := os.Getwd()
-	if err != nil {
-		fmt.Println("scrapemaster: pwd failed:", err)
-		os.Exit(1)
-	}
-	if err := os.Chdir(dir); err != nil {
-		fmt.Println("scrapemaster: chdir failed:", err)
-		os.Exit(1)
-	}
-
-	// open append / create append
-	file, err := os.OpenFile(filename, os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
-	if err != nil {
-		fmt.Println("scrapemaster: can't open/create file" + dir + "/" + filename + ":", err)
-		os.Exit(1)
-	}
-
-	// cd ..
-	if err := os.Chdir(currentDir); err != nil {
-		fmt.Println("scrapemaster: chdir failed:", err)
+		fmt.Println("scrapemaster: can't open/create file " + f + ":", err)
 		os.Exit(1)
 	}
 	return file
-}
-
-func saveResults(rf trip.ResultFile, dir string) {
-	resultFilename := "scrapemaster_" + util.FormattedData(time.Now()) + ".json"
-	resultFile := createFile(dir, resultFilename)
-
-	var data []byte
-	if DEBUGGING { // debugging ? indent : don't indent, save space
-		data, _ = json.MarshalIndent(rf.Results, "", "\t")
-		rf.ResultsSha256Sum = fmt.Sprintf("%x", sha256.Sum256(data))
-		data, _ = json.MarshalIndent(rf, "", "\t")
-	} else {
-		data, _ = json.Marshal(rf.Results)
-		rf.ResultsSha256Sum = fmt.Sprintf("%x", sha256.Sum256(data))
-		data, _ = json.Marshal(rf)
-	}
-
-	if _, err := resultFile.Write(data); err != nil {
-		log.Println("scrapemaster: can't write to file" + dir + "/" + resultFilename, err)
-	}
-
-	if err := resultFile.Close(); err != nil {
-		log.Println("scrapemaster: can't close file" + dir + "/" + resultFilename, err)
-	}
-
-	if err := compressFile(dir, resultFilename); err != nil {
-		log.Println("scrapemaster: can't compress file" + dir + "/" + resultFilename, err)
-	} else {
-		if err := os.Remove(dir + "/" + resultFilename); err != nil {
-			log.Println("scrapemaster: can't delete file" + dir + "/" + resultFilename, err)
-		}
-	}
-}
-
-func refreshSessions() {
-	err := moovit.GetWebPage()
-	for err != nil {
-		log.Println("moovit: failed to get webpage:", err)
-		time.Sleep(1 * time.Minute)
-		err = moovit.GetWebPage()
-	}
-
-	err = waze.GetWebPage()
-	for err != nil {
-		log.Println("waze: failed to get webpage:", err)
-		time.Sleep(1 * time.Minute)
-		err = waze.GetWebPage()
-	}
-
-	err = openstreetmap.GetWebPage()
-	for err != nil {
-		log.Println("openstreetmap: failed to get webpage:", err)
-		time.Sleep(1 * time.Minute)
-		err = openstreetmap.GetWebPage()
-	}
 }

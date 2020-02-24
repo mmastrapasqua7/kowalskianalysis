@@ -87,16 +87,45 @@ type JsonFile struct {
 	} `json:"data"`
 }
 
-func (r *Result) Print() {
-	car := r.ChosenCar
-	fmt.Println("Provider: SHARENGO")
-	fmt.Printf("Car position: %s, %s\n", car.Latitude, car.Longitude)
-	fmt.Println("Manufacturer:", car.Manufactures)
-	fmt.Println("Car model:", car.Model, "\n")
-
-	fmt.Println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-	r.WalkResult.Print()
-	fmt.Println()
-	r.CarResult.Print()
-	fmt.Println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+func (r *Result) CarPosition() string {
+	return fmt.Sprintf("%s, %s", r.ChosenCar.Latitude, r.ChosenCar.Longitude)
 }
+
+func (r *Result) CarManufacturer() string {
+	return fmt.Sprint(r.ChosenCar.Manufactures)
+}
+
+func (r *Result) CarModel() string {
+	return fmt.Sprint(r.ChosenCar.Model)
+}
+
+func (r *Result) EngineType() string {
+	return fmt.Sprint("Benzina")
+}
+
+func (r *Result) CostPerMinute() string {
+	return fmt.Sprint("to be defined")
+}
+
+func (r *Result) String() string {
+	return fmt.Sprint("Provider:", "SHARENGO",
+		"\nPosition:", r.CarPosition(),
+		"\nManufacturer:", r.CarManufacturer(),
+		"\nModel:", r.CarModel(),
+		"\nEngine:", r.EngineType(),
+		"\nCost/minute:", r.CostPerMinute(), "\n")
+}
+
+// func (r *Result) Print() {
+// 	car := r.ChosenCar
+// 	fmt.Println("Provider: SHARENGO")
+// 	fmt.Printf("Car position: %s, %s\n", car.Latitude, car.Longitude)
+// 	fmt.Println("Manufacturer:", car.Manufactures)
+// 	fmt.Println("Car model:", car.Model, "\n")
+//
+// 	fmt.Println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+// 	r.WalkResult.Print()
+// 	fmt.Println()
+// 	r.CarResult.Print()
+// 	fmt.Println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+// }

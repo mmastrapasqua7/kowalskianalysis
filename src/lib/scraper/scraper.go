@@ -1,12 +1,12 @@
-package trip
+package scraper
 
 import (
-	"../scraper/moovit"
-	"../scraper/openstreetmap"
-	"../scraper/waze"
-	"../scraper/car2go"
-	"../scraper/enjoy"
-	"../scraper/sharengo"
+	"./moovit"
+	"./openstreetmap"
+	"./waze"
+	"./car2go"
+	"./enjoy"
+	"./sharengo"
 	"../util"
 
 	"crypto/sha256"
