@@ -1,12 +1,5 @@
 package openstreetmap
 
-import (
-	"../../util"
-
-	"fmt"
-	"time"
-)
-
 type Result struct {
 	Code      string `json:"code"`
 	Waypoints []struct {
@@ -51,17 +44,17 @@ type Result struct {
 	} `json:"routes"`
 }
 
-func (r *Result) Print() {
-	fmt.Println("Provider: OPENSTREETMAP")
-
-	for _, route := range r.Routes {
-		startTime := time.Now()
-		endTime := startTime.Add(time.Duration(route.Duration) * time.Second)
-		duration := endTime.Sub(startTime)
-
-		fmt.Println("Start time:", startTime.Format("02/01/06 15:04"))
-		fmt.Println("End time:  ", endTime.Format("02/01/06 15:04"))
-		fmt.Println("Duration:  ", util.HumanizeDuration(duration))
-		fmt.Println("Distance:", route.Distance)
-	}
-}
+// func (r *Result) Print() {
+// 	fmt.Println("Provider: OPENSTREETMAP")
+//
+// 	for _, route := range r.Routes {
+// 		startTime := time.Now()
+// 		endTime := startTime.Add(time.Duration(route.Duration) * time.Second)
+// 		duration := endTime.Sub(startTime)
+//
+// 		fmt.Println("Start time:", startTime.Format("02/01/06 15:04"))
+// 		fmt.Println("End time:  ", endTime.Format("02/01/06 15:04"))
+// 		fmt.Println("Duration:  ", util.HumanizeDuration(duration))
+// 		fmt.Println("Distance:", route.Distance)
+// 	}
+// }

@@ -3,8 +3,6 @@ package sharengo
 import (
 	"../openstreetmap"
 	"../waze"
-
-	"fmt"
 )
 
 type Result struct {
@@ -87,16 +85,16 @@ type JsonFile struct {
 	} `json:"data"`
 }
 
-func (r *Result) Print() {
-	car := r.ChosenCar
-	fmt.Println("Provider: SHARENGO")
-	fmt.Printf("Car position: %s, %s\n", car.Latitude, car.Longitude)
-	fmt.Println("Manufacturer:", car.Manufactures)
-	fmt.Println("Car model:", car.Model, "\n")
-
-	fmt.Println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-	r.WalkResult.Print()
-	fmt.Println()
-	r.CarResult.Print()
-	fmt.Println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-}
+// func (r *Result) Print() {
+// 	car := r.ChosenCar
+// 	fmt.Println("Provider: SHARENGO")
+// 	fmt.Printf("Car position: %s, %s\n", car.Latitude, car.Longitude)
+// 	fmt.Println("Manufacturer:", car.Manufactures)
+// 	fmt.Println("Car model:", car.Model, "\n")
+//
+// 	fmt.Println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+// 	r.WalkResult.Print()
+// 	fmt.Println()
+// 	r.CarResult.Print()
+// 	fmt.Println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+// }

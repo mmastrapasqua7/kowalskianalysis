@@ -3,8 +3,6 @@ package enjoy
 import (
 	"../openstreetmap"
 	"../waze"
-
-	"fmt"
 )
 
 type Result struct {
@@ -29,15 +27,15 @@ type JsonEntry struct {
 
 type JsonFile []JsonEntry
 
-func (r *Result) Print() {
-	car := r.ChosenCar
-	fmt.Println("Provider: ENJOY")
-	fmt.Printf("Car position: %.06f, %.06f\n", car.Lat, car.Lon)
-	fmt.Println("Car name:", car.CarName, "\n")
-
-	fmt.Println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-	r.WalkResult.Print()
-	fmt.Println()
-	r.CarResult.Print()
-	fmt.Println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-}
+// func (r *Result) Print() {
+// 	car := r.ChosenCar
+// 	fmt.Println("Provider: ENJOY")
+// 	fmt.Printf("Car position: %.06f, %.06f\n", car.Lat, car.Lon)
+// 	fmt.Println("Car name:", car.CarName, "\n")
+//
+// 	fmt.Println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+// 	r.WalkResult.Print()
+// 	fmt.Println()
+// 	r.CarResult.Print()
+// 	fmt.Println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+// }
