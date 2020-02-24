@@ -54,6 +54,7 @@ func main() {
 
 		if hour := time.Now().Hour(); hour == 1 {
 			time.Sleep(6 * time.Hour) // wait 07:00
+			refreshSessions()
 		}
 	}
 }
