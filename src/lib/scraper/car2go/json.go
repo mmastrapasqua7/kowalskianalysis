@@ -63,5 +63,5 @@ func (r *Result) String() string {
 		"\nManufacturer:", r.CarManufacturer(),
 		"\nModel:", r.CarModel(),
 		"\nEngine:", r.EngineType(),
-		"\nCost/minute:", r.CostPerMinute())
+		"\nCost/minute:", r.CostPerMinute(), "\n")
 }

@@ -249,26 +249,7 @@ type Result struct {
 }
 
 func (r Result) Duration(i int) time.Duration {
-	times := make([]int64, 0)
-
-	for _, leg := range r.Results[i].Result.Itinerary.Legs {
-		if timestamp := leg.WalkLeg.Time; timestamp.StartTime != 0 && timestamp.EndTime != 0 {
-			times = append(times, timestamp.StartTime)
-			times = append(times, timestamp.EndTime)
-		} else if timestamp := leg.PathwayWalkLeg.Time; timestamp.StartTime != 0 && timestamp.EndTime != 0 {
-			times = append(times, timestamp.StartTime)
-			times = append(times, timestamp.EndTime)
-		} else if timestamp := leg.WaitToMultiLineLeg.Time; timestamp.StartTime != 0 && timestamp.EndTime != 0 {
-			times = append(times, timestamp.StartTime)
-			times = append(times, timestamp.EndTime)
-		}
-	}
-
-	startTime := time.Unix(0, times[0] * int64(time.Millisecond))
-	startTime = timeIn(startTime, "Europe/London")
-	endTime := time.Unix(0, times[len(times)-1] * int64(time.Millisecond))
-	endTime = timeIn(endTime, "Europe/London")
-	return endTime.Sub(startTime)
+	return r.Arrival(i).Sub(r.Departure(i))
 }
 
 func (r Result) Departure(i int) time.Time {
@@ -314,11 +295,11 @@ func (r Result) Arrival(i int) time.Time {
 func (r *Result) String() string {
 	toString := ""
 
-	for i, _ := range r.Results {
+	for i, _ := range r.Results[1:] {
 		toString += fmt.Sprintln("Provider:", "MOOVIT",
-			"\nDuration:", r.Duration(i),
-			"\nDeparture:", r.Departure(i),
-			"\nArrival:", r.Arrival(i))
+			"\nDuration:", r.Duration(i+1),
+			"\nDeparture:", r.Departure(i+1),
+			"\nArrival:", r.Arrival(i+1), "\n")
 	}
 
 	return toString

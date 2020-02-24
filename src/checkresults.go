@@ -14,7 +14,7 @@ import (
 
 func main() {
 	// var rf scraper.ResultFile
-	files, err := ioutil.ReadDir(".")
+	files, err := ioutil.ReadDir("results")
 	if err != nil {
 		fmt.Println("main: error while reading directory:", err)
 		os.Exit(1)
@@ -23,7 +23,7 @@ func main() {
 	resultFileNames := make([]string, 0)
 	for _, file := range files {
 		if strings.Contains(file.Name(), ".json") {
-			resultFileNames = append(resultFileNames, file.Name())
+			resultFileNames = append(resultFileNames, "results/" + file.Name())
 		}
 	}
 
@@ -66,25 +66,25 @@ func extractXZFile(filename string) error {
 
 func checkResults(rf scraper.ResultFile) {
 	printRow()
-	fmt.Println("ID:", rf.Id)
-	fmt.Println("DATE:", rf.Date)
+	fmt.Println("# ID:", rf.Id)
+	fmt.Println("# DATE:", rf.Date)
 
 	data, _ := json.Marshal(rf.Results)
 	dataChecksum := fmt.Sprintf("%x", sha256.Sum256(data))
 	fileChecksum := rf.ResultsSha256Sum
 	if dataChecksum == fileChecksum {
-		fmt.Println("CHECKSUM: OK")
+		fmt.Println("# CHECKSUM: OK")
 	} else {
-		fmt.Println("CHECKSUM: FAILED!!!")
-		fmt.Printf("%x\n%x\n", dataChecksum, fileChecksum)
+		fmt.Println("# CHECKSUM: FAILED!!!")
+		fmt.Printf("# %x\n%x\n", dataChecksum, fileChecksum)
 		printRow()
 		fmt.Println()
 		return
 	}
 
 	for _, result := range rf.Results {
-		fmt.Println("From: " + result.FromLat + ", " + result.FromLon)
-		fmt.Println("To:   " + result.ToLat + ", " + result.ToLon)
+		fmt.Println("# From:", result.FromLat + ", " + result.FromLon)
+		fmt.Println("# To:  ", result.ToLat + ",", result.ToLon, "\n")
 
 		fmt.Println(result.BigResult.MoovitRoutes.String())
 		fmt.Println(result.BigResult.OpenStreetMapBikeRoutes.String())

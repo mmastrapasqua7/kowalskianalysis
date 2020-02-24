@@ -93,7 +93,7 @@ func (r *Result) String() string {
 		toString += fmt.Sprintln("Provider:", "WAZE",
 			"\nDuration:", r.Duration(i),
 			"\nDeparture:", r.Departure(),
-			"\nArrival:", r.Arrival(i))
+			"\nArrival:", r.Arrival(i), "\n")
 	}
 
 	return toString
