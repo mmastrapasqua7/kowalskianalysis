@@ -1,12 +1,23 @@
 # Scraper del traffico
 
-##### Build
-
-```bash
-$ go build scrapemaster.go
-$ ./scrapemaster ./requests.json [carsharing_data_dir] [save_dir]
+### Compilazione
+```sh
+$ go build -o scrapemaster.out scrapemaster.go
+$ go build -o checkresults.out checkresults.go
 ```
-##### Esempio
+
+### Uso
+Per lanciare lo scraper
+```sh
+$ ./scrapemaster.out [requests.json] [scraped_data_dir] [output_dir]
+```
+Per testare i risultati prodotti
+```sh
+$ ./checkresults.out [output_dir]
+```
+
+### Esempio
 ```bash
-$ ./scrapemaster ./requests.json ./bin/scraped_data ./bin/results
+$ ./scrapemaster.out requests.json bin/scraped_data bin/results
+$ ./checkresults.out bin/results
 ```

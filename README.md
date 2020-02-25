@@ -41,11 +41,37 @@
 |id|numero sequenziale inserimento|
 
 ### Scraper
-Per testare lo scraper, serve una cartella `bin` contenente un file di nome `richieste.json` con le richieste, una cartella `scraped_data` con i .json raccolti dai servizi di car sharing e una cartella `results` dove verranno salvati i risultati (compressi in formato .tar.xz)
+#### Struttura directory
+Per testare lo scraper tramite il Makefile, serve una cartella `bin` strutturata nel seguente modo:
+```
+bin/
+├─ richieste.json
+├─ results/
+├─ scraped_data/
+   ├─ car2go/
+   ├─ enjoy/
+   ├─ sharengo/
+```
+dove `scraped_data` contiene i dump degli scraper del car sharing di Losacco F.
 
+#### Uso (Makefile)
+Per testare lo scraper
 ```sh
-$ make
 $ make test-scraper
 ```
+Per testare i risultati visivamente
+```sh
+$ make check-scraper
+```
 
-TODO: togliere l'hard coded
+#### Uso (Stand-alone)
+Per usare lo scraper
+```sh
+$ go build -o scrapemaster.out src/scrapemaster.go
+$ ./scrapemaster.out [richieste.json] [scraped_data_dir] [output_dir]
+```
+Per testare i risultati visivamente
+```sh
+$ go build -o checkresults.out src/checkresults.go
+$ ./checkresults.out [output_dir]
+```
