@@ -16,6 +16,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"strings"
 	"time"
 )
 
@@ -91,7 +92,7 @@ func SaveResult(rf ResultFile, outputDir string) {
 	}
 
 	// compress
-	compressFile(resultFile.Name())
+	compressFile(outputDir, resultFile.Name())
 }
 
 func RefreshSessions() {
@@ -121,7 +122,12 @@ func createFile(f string) *os.File {
 	return file
 }
 
-func compressFile(f string) {
+func compressFile(dir, f string) {
+	oldDir := chdir(dir)
+
+	strings := strings.Split(f, "/")
+	f = strings[len(strings)-1]
+
 	// exec and wait
 	cmd := exec.Command("tar", "-cJf", f + ".tar.xz", f)
 	if err := cmd.Start(); err != nil {
@@ -138,4 +144,21 @@ func compressFile(f string) {
 		log.Println("scrapemaster: can't delete uncompressed file" + f + ":", err)
 		os.Exit(-1)
 	}
+
+	chdir(oldDir)
+}
+
+func chdir(d string) string {
+	currentDir, err := os.Getwd()
+	if err != nil {
+		log.Println("trip: can't get working directory:", err)
+		os.Exit(-1)
+	}
+
+	if err := os.Chdir(d); err != nil {
+		log.Println("trip: can't change working directory:", err)
+		os.Exit(-1)
+	}
+
+	return currentDir
 }

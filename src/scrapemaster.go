@@ -23,7 +23,7 @@ func main() {
 		resultFile := scraper.ResultFile{Id: i, Date: time.Now().Format("2006-01-02 15:04:05")}
 
 		for _, request := range scraper.ReadRequests(requestFile) {
-			result := scraper.Result {
+			result := scraper.Result{
 				FromLat: request.From[0],
 				FromLon: request.From[1],
 				ToLat: request.To[0],
