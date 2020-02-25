@@ -124,6 +124,7 @@ func createFile(f string) *os.File {
 
 func compressFile(dir, f string) {
 	oldDir := chdir(dir)
+	defer chdir(oldDir)
 
 	strings := strings.Split(f, "/")
 	f = strings[len(strings)-1]
@@ -144,8 +145,6 @@ func compressFile(dir, f string) {
 		log.Println("scrapemaster: can't delete uncompressed file" + f + ":", err)
 		os.Exit(-1)
 	}
-
-	chdir(oldDir)
 }
 
 func chdir(d string) string {
