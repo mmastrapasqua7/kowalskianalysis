@@ -1,5 +1,5 @@
-bin/
-scrapers_error.log
+bin/scrapemaster.out
+bin/checkresults.out
 latex/Template.aux
 latex/Template.bbl
 latex/Template.blg
