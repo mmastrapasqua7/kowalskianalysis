@@ -7,14 +7,20 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"strings"
 	"os"
 	"os/exec"
 )
 
 func main() {
-	// var rf scraper.ResultFile
-	files, err := ioutil.ReadDir("results")
+	if len(os.Args) < 2 {
+		fmt.Println("usage:\n\t checkresults [result_dir]")
+		os.Exit(0)
+	}
+	resultDir := os.Args[1]
+
+	files, err := ioutil.ReadDir(resultDir)
 	if err != nil {
 		fmt.Println("main: error while reading directory:", err)
 		os.Exit(1)
@@ -23,9 +29,12 @@ func main() {
 	resultFileNames := make([]string, 0)
 	for _, file := range files {
 		if strings.Contains(file.Name(), ".json") {
-			resultFileNames = append(resultFileNames, "results/" + file.Name())
+			resultFileNames = append(resultFileNames, file.Name())
 		}
 	}
+
+	oldDir := chdir(resultDir)
+	defer chdir(oldDir)
 
 	for _, resultFileName := range resultFileNames {
 		extractXZFile(resultFileName)
@@ -33,13 +42,13 @@ func main() {
 
 		data, err := ioutil.ReadFile(jsonFilename)
 		if err != nil {
-			fmt.Println("main: error while reading file" + jsonFilename, err)
+			fmt.Println("main: error while reading file", jsonFilename, err)
 			continue
 		}
 
 		var rf scraper.ResultFile
 		if err := json.Unmarshal(data, &rf); err != nil {
-			fmt.Println("main: error while unmarshaling json" + jsonFilename, err)
+			fmt.Println("main: error while unmarshaling json", jsonFilename, err)
 			continue
 		}
 
@@ -47,7 +56,7 @@ func main() {
 		checkResults(rf)
 
 		if err := os.Remove(jsonFilename); err != nil {
-			fmt.Println("main: error while removing json file " + jsonFilename, err)
+			fmt.Println("main: error while removing json file", jsonFilename, err)
 			continue
 		}
 	}
@@ -61,6 +70,7 @@ func extractXZFile(filename string) error {
 	if err := cmd.Wait(); err != nil {
 		return err
 	}
+
 	return nil
 }
 
@@ -100,4 +110,19 @@ func checkResults(rf scraper.ResultFile) {
 
 func printRow() {
 	fmt.Println("---------------------------------------------------------------")
+}
+
+func chdir(d string) string {
+	currentDir, err := os.Getwd()
+	if err != nil {
+		log.Println("trip: can't get working directory:", err)
+		os.Exit(-1)
+	}
+
+	if err := os.Chdir(d); err != nil {
+		log.Println("trip: can't change working directory:", err)
+		os.Exit(-1)
+	}
+
+	return currentDir
 }
