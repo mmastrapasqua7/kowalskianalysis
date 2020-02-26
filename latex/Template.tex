@@ -67,7 +67,7 @@
 	}
 
 	{\large
-		L'idea alla base del confronto è quella di simulare in tempo reale, ripetutamente a intervalli regolari, la percorrenza di alcune tratte prestabilite lungo l'arco della giornata, per un arco di tempo di qualche mese, dove per ogni simulazione di percorrenza di una tratta vengono calcolate diverse soluzioni ognuna con un mezzo di trasporto diverso. I dati collezionati da questa simulazione mi permetterebbero di fare le dovute analisi sui termini di paragone scelti per confrontare i mezzi, traendo infine le conclusioni.
+		L'idea alla base del confronto è quella di simulare in tempo reale lungo l'arco della giornata, ripetutamente a intervalli regolari, per un arco di tempo di qualche mese, la percorrenza di alcune tratte prestabilite e non, dove per ogni simulazione di percorrenza di una tratta vengono calcolate diverse soluzioni ognuna con un mezzo di trasporto diverso. I dati collezionati da questa simulazione mi permetterebbero di fare le dovute analisi sui termini di paragone scelti per confrontare i mezzi, traendo infine le conclusioni.
 	}
 
 	\section{Mezzi a confronto}
@@ -100,7 +100,7 @@
 	}
 
 	{\large
-		I servizi di Car Sharing invece mettono a disposizione delle API per i dati in tempo reale delle macchine parcheggiate libere, ma non del tempo di percorrenza e/o del raggiungimento delle auto. Le API sono nella forma:
+		I servizi di Car Sharing invece mettono a disposizione delle API per i dati in tempo reale delle macchine parcheggiate libere che sono nella forma:
 		\begin{verbatim}
 			getCars() List[CarPosition]
 		\end{verbatim}
@@ -132,14 +132,14 @@
 	\subsection{Tratte più percorse dagli utenti del car sharing}
 	(studente/collega/qualcuno) colleziona i dati delle macchine parcheggiate libere da più di 5 anni tramite le API dei servizi di car sharing. Da questi dati, campionati a intervalli regolari di circa 1 minuto, è possibile ricavare le tratte percorse dagli utilizzatori. Per farlo, è sufficiente applicare il seguente algoritmo a ogni macchina: (cit)
 	\begin{verbatim}
-	sia R una rilevazione di una macchina contenente data del campionamento
-	e posizione geografica della macchina
-	
-	sia L una lista di rilevazioni R ordinate in ordine crescente sulla base
-	dell'attributo della data di campionamento
-	
-	salva tutte rilevazioni L[i] ed L[i+1] sotto forma di tupla T (R1, R2)
-	se e solo se: L[i].posizione != L[i+1].posizione
+		sia R una rilevazione di una macchina contenente data
+		del campionamento e posizione geografica della macchina
+		
+		sia L una lista di rilevazioni R ordinate in ordine crescente
+		sulla base dell'attributo della data di campionamento
+		
+		salva tutte rilevazioni L[i] ed L[i+1] sotto forma di
+		tupla (R1, R2) se e solo se: L[i].posizione != L[i+1].posizione
 	\end{verbatim}
 	In questo modo ottengo una lista di tratte percorse dagli utenti del car sharing, dove \texttt{T.R1.posizione} è il punto di partenza, \texttt{T.R2.posizione} è il punto di arrivo e \texttt{T.R2.data - T.R1.data} è il tempo impiegato a percorrerla, con uno scarto di massimo 2 minuti (cit).
 	
@@ -150,6 +150,14 @@
 	Una volta applicato il DBSCAN e trovato dei punti significativi, mi occuperò di unire questi punti tramite l'uso di un contatore per trovare le tratte più percorse dagli utenti del car sharing.
 	
 	\subsection{Generatore pseudorandom di tratte}
+	Un altro modo di ottenere delle tratte su cui fare i confronti è quello di programmare un generatore di tratte pseudorandom che soddisfino alcuni constraints: 
+	\begin{itemize}
+		\item la tratta generata deve iniziare e finire dentro l'area operativa dei mezzi e servizi messi a confronto, che corrisponde con l'area del Comune di Milano;
+		\item la tratta deve essere lunga più di un tot di kilometri (da definire) in via aerea.
+	\end{itemize}
+	
+	\subsection{Strade più e meno trafficate del Comune di Milano}
+	Come ultimo modo, creerò delle tratte da utilizzare nei confronti ispirandomi dai dati del traffico, cercando le strade più e meno trafficate e creando delle tratte ad hoc che in qualche modo le comprendano.	
 
 	\bibliographystyle{plain}
 	\bibliography{Biblio}
