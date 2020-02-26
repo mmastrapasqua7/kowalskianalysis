@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"math/rand"
+	"time"
 )
 
 type Point struct {
@@ -26,20 +28,37 @@ var (
 )
 
 func main() {
+	rand.Seed(time.Now().UnixNano())
+
+	centroStoricoPoints := make([]Point, 0)
 	fmt.Println("Area centro storico", centroStorico)
 	for i := 0; i < 20; i++ {
-		p := NewCentroStoricoPoint()
+		p := newCentroStoricoPoint()
 		fmt.Printf("%.06f, %.06f ", p.x, p.y)
 		fmt.Print(p.isInsideRectangle(centroStorico), " ")
 		fmt.Println(p.isInsideRectangle(areaOperativa))
+		centroStoricoPoints = append(centroStoricoPoints, p)
 	}
 
+	areaOperativaPoints := make([]Point, 0)
 	fmt.Println("\nArea operativa", areaOperativa)
 	for i := 0; i < 20; i++ {
-		p := NewAreaOperativaPoint()
+		p := newAreaOperativaPoint()
 		fmt.Printf("%.06f, %.06f ", p.x, p.y)
 		fmt.Print(p.isInsideRectangle(centroStorico), " ")
 		fmt.Println(p.isInsideRectangle(areaOperativa))
+		areaOperativaPoints = append(areaOperativaPoints, p)
+	}
+
+	fmt.Println()
+	for i := 0; i < 20; i++ {
+		p := centroStoricoPoints[i]
+		q := areaOperativaPoints[i]
+		d := distance(p.x, p.y, q.x, q.y)
+
+		if d >= 2.0 { // km
+			fmt.Printf("%.04f km\n", d)
+		}
 	}
 }
 
@@ -51,7 +70,7 @@ func (p Point) isInsideRectangle(r Rectangle) bool {
 	}
 }
 
-func NewCentroStoricoPoint() Point {
+func newCentroStoricoPoint() Point {
 	startPoint := centroStorico.bottomLeft
 	x := rand.Float64() - 0.6
 	y := rand.Float64() - 0.9
@@ -67,7 +86,7 @@ func NewCentroStoricoPoint() Point {
 	return Point{startPoint.x + x, startPoint.y + y}
 }
 
-func NewAreaOperativaPoint() Point {
+func newAreaOperativaPoint() Point {
 	startPoint := areaOperativa.bottomLeft
 	x := rand.Float64() - 0.2
 	y := rand.Float64() - 0.9
@@ -81,4 +100,28 @@ func NewAreaOperativaPoint() Point {
 	}
 
 	return Point{startPoint.x + x, startPoint.y + y}
+}
+
+func distance(lat1 float64, lng1 float64, lat2 float64, lng2 float64) float64 {
+	const PI float64 = 3.141592653589793
+
+	radlat1 := float64(PI * lat1 / 180)
+	radlat2 := float64(PI * lat2 / 180)
+
+	theta := float64(lng1 - lng2)
+	radtheta := float64(PI * theta / 180)
+
+	dist := math.Sin(radlat1) * math.Sin(radlat2) + math.Cos(radlat1) * math.Cos(radlat2) * math.Cos(radtheta)
+
+	if dist > 1 {
+		dist = 1
+	}
+
+	dist = math.Acos(dist)
+	dist = dist * 180 / PI
+	dist = dist * 60 * 1.1515
+
+	dist = dist * 1.609344
+
+	return dist
 }
