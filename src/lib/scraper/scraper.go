@@ -20,11 +20,13 @@ import (
 	"time"
 )
 
-type JsonRequestsFile []struct {
+type Request struct {
 	From    []string `json:"from"`
 	To      []string `json:"to"`
 	Comment string   `json:"_comment"`
 }
+
+type JsonRequestsFile []Request
 
 type ResultFile struct {
 	Id               int
