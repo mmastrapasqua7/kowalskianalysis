@@ -1,5 +1,6 @@
 bin/scrapemaster.out
 bin/checkresults.out
+tmp.go
 latex/Template.aux
 latex/Template.bbl
 latex/Template.blg
