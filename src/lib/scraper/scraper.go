@@ -38,6 +38,7 @@ type ResultFile struct {
 type Result struct {
 	FromLat, FromLon string
 	ToLat, ToLon     string
+	DistanceInKm     float64
 	BigResult        BigJson
 }
 

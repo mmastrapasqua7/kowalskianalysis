@@ -2,6 +2,7 @@ package main
 
 import (
 	"./lib/scraper"
+	"./lib/util"
 
 	"fmt"
 	"log"
@@ -29,6 +30,9 @@ func main() {
 				ToLat: request.To[0],
 				ToLon: request.To[1],
 			}
+
+			result.DistanceInKm = util.DistanceInKilometersFromStrings(
+				result.FromLat, result.FromLon, result.ToLat, result.ToLon)
 
 			result.BigResult = scraper.GetRoutesFromAllServices(
 				request.From[0], request.From[1],
