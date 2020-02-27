@@ -20,10 +20,11 @@ func main() {
 	defer logfile.Close()
 	log.SetOutput(logfile)
 
+	requests := scraper.ReadRequests(requestFile)
 	for i := 0; true; i++ {
 		resultFile := scraper.ResultFile{Id: i, Date: time.Now().Format("2006-01-02 15:04:05")}
 
-		for _, request := range scraper.ReadRequests(requestFile) {
+		for _, request := range requests {
 			result := scraper.Result{
 				FromLat: request.From[0],
 				FromLon: request.From[1],
