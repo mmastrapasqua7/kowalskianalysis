@@ -55,19 +55,16 @@ func TestAreaOperativaPoints(t *testing.T) {
 
 func TestDistanceRandomRouteGenerator(t *testing.T) {
 	var tests = []struct {
-		jrf   JsonRequestsFile
-		want  bool
+		distance float64
+		jrf      JsonRequestsFile
+		want     bool
 	}{
-		{GetRandomRoutes(1), true},
-		{GetRandomRoutes(2), true},
-		{GetRandomRoutes(3), true},
-		{GetRandomRoutes(4), true},
-		{GetRandomRoutes(5), true},
-		{GetRandomRoutes(6), true},
-		{GetRandomRoutes(7), true},
-		{GetRandomRoutes(8), true},
-		{GetRandomRoutes(9), true},
-		{GetRandomRoutes(10), true},
+		{1.5, GetRandomRoutes(1, 1.5), true},
+		{1.6, GetRandomRoutes(2, 1.6), true},
+		{1.7, GetRandomRoutes(3, 1.7), true},
+		{1.8, GetRandomRoutes(4, 1.8), true},
+		{1.9, GetRandomRoutes(5, 1.9), true},
+		{2.0, GetRandomRoutes(6, 2.0), true},
 	}
 
 	for _, test := range tests {
@@ -75,7 +72,7 @@ func TestDistanceRandomRouteGenerator(t *testing.T) {
 			got := util.DistanceInKilometersFromStrings(
 				request.From[0], request.From[1], request.To[0], request.To[1])
 
-			if (got >= 2.0) != test.want {
+			if (got >= test.distance) != test.want {
 				t.Errorf("La tratta non e' di almeno 2km: %v", request)
 			}
 		}

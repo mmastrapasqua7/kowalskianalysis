@@ -34,7 +34,7 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-func GetRandomRoutes(n int) JsonRequestsFile {
+func GetRandomRoutes(n int, minDistance float64) JsonRequestsFile {
 	randomNumber := rand.Int() % 4
 	var start, end PointGenerator
 
@@ -55,7 +55,23 @@ func GetRandomRoutes(n int) JsonRequestsFile {
 	routes := JsonRequestsFile{}
 	for i := 0; i < n; i++ {
 		p, q := start(), end()
-		for util.DistanceInKilometers(p.x, p.y, q.x, q.y) < 2.0 {
+		for util.DistanceInKilometers(p.x, p.y, q.x, q.y) < minDistance {
+			randomNumber = rand.Int() % 4
+
+			if randomNumber == 0 {
+				start = NewCentroStoricoPoint
+				end = NewCentroStoricoPoint
+			} else if randomNumber == 1 {
+				start = NewCentroStoricoPoint
+				end = NewAreaOperativaPoint
+			} else if randomNumber == 2 {
+				start = NewAreaOperativaPoint
+				end = NewAreaOperativaPoint
+			} else {
+				start = NewAreaOperativaPoint
+				end = NewCentroStoricoPoint
+			}
+
 			p, q = start(), end()
 		}
 		route := Request{}
@@ -74,6 +90,19 @@ func (p Point) IsInsideRectangle(r Rectangle) bool {
 	} else {
 		return false
 	}
+}
+
+func (p *Point) SetCoordinate(x, y float64) {
+	p.x = x
+	p.y = y
+}
+
+func (p *Point) X() float64 {
+	return p.x
+}
+
+func (p *Point) Y() float64 {
+	return p.y
 }
 
 func NewCentroStoricoPoint() Point {
