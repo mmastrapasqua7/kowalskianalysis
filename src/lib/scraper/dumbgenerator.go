@@ -1,4 +1,4 @@
-package dumbgenerator
+package scraper
 
 import (
 	"../util"
@@ -19,12 +19,12 @@ type Rectangle struct {
 type PointGenerator func() Point
 
 var (
-	centroStorico = Rectangle{
+	CentroStorico = Rectangle{
 		Point{45.450562, 9.158959},
 		Point{45.482032, 9.206763},
 	}
 
-	areaOperativa = Rectangle{
+	AreaOperativa = Rectangle{
 		Point{45.437106, 9.145674},
 		Point{45.506513, 9.230533},
 	}
@@ -34,7 +34,7 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-func GetRandomRoutes(n int) scraper.JsonRequestsFile {
+func GetRandomRoutes(n int) JsonRequestsFile {
 	randomNumber := rand.Int() % 4
 	var start, end PointGenerator
 
@@ -52,13 +52,13 @@ func GetRandomRoutes(n int) scraper.JsonRequestsFile {
 		end = NewCentroStoricoPoint
 	}
 
-	routes := scraper.JsonRequestsFile{}
+	routes := JsonRequestsFile{}
 	for i := 0; i < n; i++ {
 		p, q := start(), end()
 		for util.DistanceInKilometers(p.x, p.y, q.x, q.y) < 2.0 {
 			p, q = start(), end()
 		}
-		route := scraper.Request{}
+		route := Request{}
 		route.From = []string{fmt.Sprintf("%.06f", p.x), fmt.Sprintf("%.06f", p.y)}
 		route.To = []string{fmt.Sprintf("%.06f", q.x), fmt.Sprintf("%.06f", q.y)}
 
@@ -77,12 +77,12 @@ func (p Point) IsInsideRectangle(r Rectangle) bool {
 }
 
 func NewCentroStoricoPoint() Point {
-	startPoint := centroStorico.bottomLeft
+	startPoint := CentroStorico.bottomLeft
 	x := rand.Float64() - 0.6
 	y := rand.Float64() - 0.9
 
 	p := Point{startPoint.x + x, startPoint.y + y}
-	for !p.IsInsideRectangle(centroStorico) {
+	for !p.IsInsideRectangle(CentroStorico) {
 		x = rand.Float64() - 0.6
 		y = rand.Float64() - 0.9
 		p.x = startPoint.x + x
@@ -93,12 +93,12 @@ func NewCentroStoricoPoint() Point {
 }
 
 func NewAreaOperativaPoint() Point {
-	startPoint := areaOperativa.bottomLeft
+	startPoint := AreaOperativa.bottomLeft
 	x := rand.Float64() - 0.2
 	y := rand.Float64() - 0.9
 
 	p := Point{startPoint.x + x, startPoint.y + y}
-	for !p.IsInsideRectangle(areaOperativa) {
+	for !p.IsInsideRectangle(AreaOperativa) {
 		x = rand.Float64() - 0.6
 		y = rand.Float64() - 0.9
 		p.x = startPoint.x + x
