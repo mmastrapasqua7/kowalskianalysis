@@ -63,7 +63,7 @@ func findTheClosestCar(fromLat, fromLon, dirName string) (JsonEntry, error) {
 		latestJsonDumpFilename = dirName + "/" + files[len(files) - 3].Name()
 	}
 
-	file, err := os.Open(latestJsonDumpFilename)
+	file, err := os.OpenFile(latestJsonDumpFilename, os.O_RDONLY, 0755)
 	if err != nil {
 		return closestCar, err
 	}
