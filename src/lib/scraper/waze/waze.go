@@ -43,7 +43,7 @@ func GetRoutes(fromLat, fromLon, toLat, toLon string) Result {
 	}
 
 	if len(routes.Alternatives) == 0 {
-		log.Println("waze: no routes found")
+		log.Println("waze: no routes found from", fromLat, ",", fromLon, "to", toLat, ",", toLon)
 		return empty
 	}
 

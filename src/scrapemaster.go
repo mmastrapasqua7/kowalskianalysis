@@ -13,7 +13,7 @@ import (
 const (
 	RANDOM_ROUTES_COUNT = 20
 	RANDOM_ROUTES_MIN_DISTANCE = 2.0 // km
-	REPEAT_INTERVAL = 10 // min
+	REPEAT_INTERVAL = 10.0 // min
 )
 
 func main() {
@@ -38,6 +38,9 @@ func main() {
 		requests = scraper.ReadRequests(requestFile)
 	}
 
+	timeToSleep := int((REPEAT_INTERVAL / float64(len(requests))) * 60.0)
+	ticker := time.NewTicker(time.Duration(timeToSleep) * time.Second)
+
 	for i := 0; true; i++ {
 		resultFile := scraper.ResultFile{Id: i, Date: time.Now().Format("2006-01-02 15:04:05")}
 
@@ -50,17 +53,16 @@ func main() {
 			}
 
 			result.DistanceInKm = util.DistanceInKilometersFromStrings(
-				result.FromLat, result.FromLon, result.ToLat, result.ToLon)
+				request.From[0], request.From[1], request.To[0], request.To[1])
 
 			result.BigResult = scraper.GetRoutesFromAllServices(
-				result.FromLat, result.FromLon,
-				result.ToLat, result.ToLon,
+				request.From[0], request.From[1],
+				request.To[0], request.To[1],
 				carsharingDataDir)
 
 			resultFile.Results = append(resultFile.Results, result)
 
-			timeToSleep := (REPEAT_INTERVAL / len(requests)) * 60
-			time.Sleep(time.Duration(timeToSleep) * time.Second)
+			_ = <-ticker.C
 		}
 
 		scraper.SaveResult(resultFile, outputDir)

@@ -60,7 +60,7 @@ func GetRoutesFromAllServices(fromLat, fromLon, toLat, toLon string, carsharingD
 		waze.GetRoutes(fromLat, fromLon, toLat, toLon),
 		car2go.GetRoutes(fromLat, fromLon, toLat, toLon, carsharingDataDir),
 		enjoy.GetRoutes(fromLat, fromLon, toLat, toLon, carsharingDataDir),
-		sharengo.GetRoutes(fromLat, fromLon, toLat, toLon, carsharingDataDir)}
+		sharengo.Result{}}
 }
 
 func ReadRequests(f string) JsonRequestsFile {

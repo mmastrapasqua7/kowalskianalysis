@@ -57,6 +57,10 @@ func findTheClosestCar(fromLat, fromLon string, dirName string) (JsonEntry, erro
 	}
 	latestJsonDumpFilename := dirName + "/" + files[len(files) - 3].Name()
 
+	for i := 3; (files[len(files) - i].Size() < 1000) && (i < len(files)-1); i++ {
+		latestJsonDumpFilename = dirName + "/" + files[len(files) - (i+1)].Name()
+	}
+
 	latestJsonDump, err := ioutil.ReadFile(latestJsonDumpFilename)
 	if err != nil {
 		return closestCar, err
@@ -73,6 +77,10 @@ func findTheClosestCar(fromLat, fromLon string, dirName string) (JsonEntry, erro
 	fromLonFloat, _ := strconv.ParseFloat(fromLon, 64)
 
 	// lat, lon
+	if len(enjoyResult) == 0 {
+		return closestCar, fmt.Errorf("no cars found")
+	}
+
 	closestCar = enjoyResult[0]
 	minimumDistance := util.Distance(fromLatFloat, fromLonFloat, closestCar.Lat, closestCar.Lon)
 

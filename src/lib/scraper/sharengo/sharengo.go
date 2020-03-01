@@ -70,12 +70,12 @@ func findTheClosestCar(fromLat, fromLon, dirName string) (JsonEntry, error) {
 	fromLonFloat, err := strconv.ParseFloat(fromLon, 64)
 
 	// lat, lon string
-	closestCar = sharengoResult.Data.Data[0]
+	closestCar = sharengoResult.Data[0]
 	closestCarLatFloat, _ := strconv.ParseFloat(closestCar.Latitude, 64)
 	closestCarLonFloat, _ := strconv.ParseFloat(closestCar.Longitude, 64)
 	minimumDistance := util.Distance(fromLatFloat, fromLonFloat, closestCarLatFloat, closestCarLonFloat)
 
-	for _, result := range sharengoResult.Data.Data[1:] {
+	for _, result := range sharengoResult.Data[1:] {
 		closestCarLatResult, _ := strconv.ParseFloat(result.Latitude, 64)
 		closestCarLonResult, _ := strconv.ParseFloat(result.Longitude, 64)
 

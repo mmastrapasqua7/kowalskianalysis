@@ -79,12 +79,9 @@ type JsonEntry struct {
 }
 
 type JsonFile struct {
-	Time string `json:"time"`
-	Data struct {
-		Status int         `json:"status"`
-		Reason string      `json:"reason"`
-		Data   []JsonEntry `json:"data"`
-	} `json:"data"`
+	Status int         `json:"status"`
+	Reason string      `json:"reason"`
+	Data   []JsonEntry `json:"data"`
 }
 
 func (r *Result) CarPosition() string {
