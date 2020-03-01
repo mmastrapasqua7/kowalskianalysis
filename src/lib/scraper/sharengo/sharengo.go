@@ -52,7 +52,7 @@ func findTheClosestCar(fromLat, fromLon, dirName string) (JsonEntry, error) {
 	if err != nil {
 		return closestCar, err
 	}
-	latestJsonDumpFilename := dirName + "/" + files[len(files) - 2].Name()
+	latestJsonDumpFilename := dirName + "/" + files[len(files) - 3].Name()
 
 	latestJsonDump, err := ioutil.ReadFile(latestJsonDumpFilename)
 	if err != nil {
