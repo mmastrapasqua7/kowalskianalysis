@@ -6,6 +6,17 @@
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{lipsum}
+\usepackage{todonotes}
+\usepackage{refcheck}
+
+% potrebbero essere utili anche:
+%\usepackage{listings}
+%\usepackage{paralist}
+%\usepackage{tikz}
+
+% prove per un draft più leggibile
+\usepackage[a4paper,top=2cm,bottom=2cm,outer=5cm,verbose,headheight=1cm,heightrounded]{geometry}
+\setlength{\marginparwidth}{4.5cm} %per farci stare todonotes
 
 \begin{document}
 	\begin{titlepage}
@@ -50,25 +61,25 @@
 	\end{titlepage}
 
 	\tableofcontents
+	\listoftodos
 	
 	\chapter{Introduzione}
 	{\LARGE
 		PER PROF: questa è una bozza di partenza per la stesura delle idee. Sto man mano studiando i vari articoli (sul repo: kowalskianalysis/docs/pdf\_articoli\_accademici) per poi creare il .bib e inserire le citazioni. Devo ancora scrivere delle formule per formalizzare ragionamenti e algoritmi.
-	}
+	}\todo{atrent: esatto, ci vorrà una bella sezione ``state of the art''}\todo{atrent: formalizzazione sicuramente, così (sotto) è in forma di ``appunti interni''}
 	\linebreak
 
 
-	TCP/IP over Avian Carriers\cite{waitzman1990standard}
 	TCP/IP over Avian Carriers\cite{waitzman1990standard}
 	
 	\chapter{Confronto}
 	{\large
 		L'obiettivo di questo studio è di mettere a confronto in termini di velocità, prezzo, rapporto velocità/prezzo e altri parametri i diversi mezzi di trasporto a disposizione nel Comune di Milano per spostarsi al suo interno. Anche se può sembrare ovvio che un'automobile sia più veloce di un tram o che quest'ultimo sia più veloce di una persona a piedi, questi fatti potrebbero non sussistere all'interno di una città come Milano per via delle proprietà intrinsiche che accomunano ogni città di medie e grandi dimensioni: traffico, deviazioni di percorso, incidenti, eventi di massa e ore di punta.
-	}
+	}\todo{atrent: attenzione allo spelling}\todo{atrent: perché il large?}
 
 	{\large
 		L'idea alla base del confronto è quella di simulare in tempo reale lungo l'arco della giornata, ripetutamente a intervalli regolari, per un arco di tempo di qualche mese, la percorrenza di alcune tratte prestabilite e non, dove per ogni simulazione di percorrenza di una tratta vengono calcolate diverse soluzioni ognuna con un mezzo di trasporto diverso. I dati collezionati da questa simulazione mi permetterebbero di fare le dovute analisi sui termini di paragone scelti per confrontare i mezzi, traendo infine le conclusioni.
-	}
+	}\todo{atrent: in generale va usato l'impersonale}\todo{atrent: maggior precisione sulle domande che ti poni, ad es. vuoi confrontare prezzi, tempi, ``scomodità'' ecc. cioè quali sono i fattori che vuoi ``mettere in tabella''?}
 
 	\section{Mezzi a confronto}
 	{\large
@@ -127,7 +138,7 @@
 			\item generatore pseudorandom con alcuni vincoli
 			\item strade più e meno trafficate di Milano
 		\end{itemize}
-	}
+	}\todo{atrent: citare lavoro di Federico}
 
 	\subsection{Tratte più percorse dagli utenti del car sharing}
 	(studente/collega/qualcuno) colleziona i dati delle macchine parcheggiate libere da più di 5 anni tramite le API dei servizi di car sharing. Da questi dati, campionati a intervalli regolari di circa 1 minuto, è possibile ricavare le tratte percorse dagli utilizzatori. Per farlo, è sufficiente applicare il seguente algoritmo a ogni macchina: (cit)
@@ -143,7 +154,7 @@
 	\end{verbatim}
 	In questo modo ottengo una lista di tratte percorse dagli utenti del car sharing, dove \texttt{T.R1.posizione} è il punto di partenza, \texttt{T.R2.posizione} è il punto di arrivo e \texttt{T.R2.data - T.R1.data} è il tempo impiegato a percorrerla, con uno scarto di massimo 2 minuti (cit).
 	
-	Una volta collezionate tutte le tratte percorse, utilizzerò un algoritmo di clustering per ridurre l'insieme e trovare delle tratte rappresentative che hanno in comune coordinate di partenza e di arrivo molto vicine. Sebbene l'algoritmo di clustering K-means sia tra i migliori algoritmi per dei dati multidimensionali e sia in grado di trovare dei punti significativi detti centroidi, non è il migliore per quanto riguarda i dati geospaziali (cit).
+	Una volta collezionate tutte le tratte percorse, utilizzerò un algoritmo di clustering per ridurre l'insieme e trovare delle tratte rappresentative che hanno in comune coordinate di partenza e di arrivo molto vicine. Sebbene l'algoritmo di clustering K-means sia tra i migliori algoritmi per dei dati multidimensionali e sia in grado di trovare dei punti significativi detti centroidi, non è il migliore per quanto riguarda i dati geospaziali (cit).\todo{atrent: non solo cit. anche spiegare in breve perché non va bene}
 	
 	L'algoritmo migliore in questo caso è il DBSCAN, algoritmo di clustering basato sulla densità. Questo tipo di clusterizzazione però non trova dei centroidi, ma solamente i cluster. Infatti questo algoritmo è in grado di trovare cluster di qualsiasi forma oltre a quella circolare gaussiana dove il K-means da il meglio. Quando il cluster ha una forma diversa da quella tipica di una distribuzione gaussiana, il concetto di centroide perde di significato. Nonostante questo, come è stato dimostrato da altri lavori (cit/ref), usando i giusti parametri in funzione della grandezza dello spazio dimensionale analizzato, è possibile indurre il DBSCAN a trovare dei cluster di piccola dimensione dove la definizione di un centroide torna ad aver significato. Ad esempio, se trovassi un cluster di macchine parcheggiate di forma allungata, simile a un segmento, che corrisponde geograficamente a una via o vialone, avrebbe senso poter prendere il punto medio di quel cluster e affermare che quella via è una destinazione rappresentativa che accomuna alcuni degli utenti del car sharing. Questa cosa vale anche per le piazze e per le strade a più carreggiate. Al contrario, in un cluster della stessa forma ma che copre una vasta area rapportata alla dimensione dell'area analizzata non avrebbe senso trovare il punto medio. Ad esempio: in un cluster di forma circolare che copre tutta la periferia di Milano, il centroide sarebbe indicato come il centro della città, il Duomo, il che non ha senso.
 	
