@@ -10,17 +10,34 @@ import (
 	"time"
 )
 
+const (
+	RANDOM_ROUTES_COUNT = 20
+	RANDOM_ROUTES_MIN_DISTANCE = 2.0 // km
+	REPEAT_INTERVAL = 10 // min
+)
+
 func main() {
 	checkParams(os.Args)
 	requestFile := os.Args[1]
 	carsharingDataDir := os.Args[2]
 	outputDir := os.Args[3]
 
+	random := false
+	if len(os.Args) > 4 {
+		random = true
+	}
+
 	logfile := createFile(outputDir + "/scraper_error.log")
 	defer logfile.Close()
 	log.SetOutput(logfile)
 
-	requests := scraper.ReadRequests(requestFile)
+	var requests scraper.JsonRequestsFile
+	if random {
+		requests = scraper.GetRandomRoutes(RANDOM_ROUTES_COUNT, RANDOM_ROUTES_MIN_DISTANCE)
+	} else {
+		requests = scraper.ReadRequests(requestFile)
+	}
+
 	for i := 0; true; i++ {
 		resultFile := scraper.ResultFile{Id: i, Date: time.Now().Format("2006-01-02 15:04:05")}
 
@@ -36,12 +53,14 @@ func main() {
 				result.FromLat, result.FromLon, result.ToLat, result.ToLon)
 
 			result.BigResult = scraper.GetRoutesFromAllServices(
-				request.From[0], request.From[1],
-				request.To[0], request.To[1],
+				result.FromLat, result.FromLon,
+				result.ToLat, result.ToLon,
 				carsharingDataDir)
 
 			resultFile.Results = append(resultFile.Results, result)
-			time.Sleep(30 * time.Second)
+
+			timeToSleep := (REPEAT_INTERVAL / len(requests)) * 60
+			time.Sleep(time.Duration(timeToSleep) * time.Second)
 		}
 
 		scraper.SaveResult(resultFile, outputDir)
@@ -50,12 +69,16 @@ func main() {
 			time.Sleep(6 * time.Hour) // wait 07:00
 			scraper.RefreshSessions()
 		}
+
+		if random {
+			requests = scraper.GetRandomRoutes(RANDOM_ROUTES_COUNT, RANDOM_ROUTES_MIN_DISTANCE)
+		}
 	}
 }
 
 func checkParams(args []string) {
 	if len(args) < 4 {
-		fmt.Println("usage:\n\t scrapemaster [requests.json] [scraped_data_dir] [output_dir]")
+		fmt.Println("usage:\n\t scrapemaster <requests.json> <scraped_data_dir> <output_dir> [random]")
 		os.Exit(0)
 	}
 

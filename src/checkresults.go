@@ -94,7 +94,8 @@ func checkResults(rf scraper.ResultFile) {
 
 	for _, result := range rf.Results {
 		fmt.Println("# From:", result.FromLat + ", " + result.FromLon)
-		fmt.Println("# To:  ", result.ToLat + ",", result.ToLon, "\n")
+		fmt.Println("# To:  ", result.ToLat + ",", result.ToLon)
+		fmt.Printf("# Distance: %.03f km\n\n", result.DistanceInKm)
 
 		fmt.Println(result.BigResult.MoovitRoutes.String())
 		fmt.Println(result.BigResult.OpenStreetMapBikeRoutes.String())

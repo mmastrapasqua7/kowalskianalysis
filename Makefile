@@ -24,6 +24,10 @@ run-scraper:
 	make scrapemaster
 	bin/scrapemaster.out bin/richieste.json bin/scraped_data bin/results
 
+run-scraper-random:
+	make scrapemaster
+	bin/scrapemaster.out bin/richieste.json bin/scraped_data bin/results random
+
 run-check:
 	make checkresults
 	bin/checkresults.out bin/results
