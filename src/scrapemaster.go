@@ -39,7 +39,8 @@ func main() {
 	}
 
 	timeToSleep := int((REPEAT_INTERVAL / float64(len(requests))) * 60.0)
-	ticker := time.NewTicker(time.Duration(timeToSleep) * time.Second)
+	requestTicker := time.NewTicker(time.Duration(timeToSleep) * time.Second)
+	refreshSessionsTicker := time.NewTicker(1 * time.Hour)
 
 	for i := 0; true; i++ {
 		resultFile := scraper.ResultFile{Id: i, Date: time.Now().Format("2006-01-02 15:04:05")}
@@ -62,14 +63,19 @@ func main() {
 
 			resultFile.Results = append(resultFile.Results, result)
 
-			_ = <-ticker.C
+			_ = <-requestTicker.C
 		}
 
 		scraper.SaveResult(resultFile, outputDir)
 
 		if hour := time.Now().Hour(); hour == 1 {
 			time.Sleep(6 * time.Hour) // wait 07:00
+		}
+
+		select {
+		case <-refreshSessionsTicker.C:
 			scraper.RefreshSessions()
+		default:
 		}
 
 		if random {

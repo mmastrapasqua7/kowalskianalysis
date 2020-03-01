@@ -169,14 +169,14 @@ func getLocationInfo(locationName string, refererHeaderParams url.Values, rbzidC
 
 	response, err := httpwrap.Get(urlMoovit, header, params, []*http.Cookie{rbzidCookie})
 	if err != nil {
-		return LocationResult{}, err
+		return LocationResult{}, fmt.Errorf("getlocationinfo: failed to get http response", err)
 	}
 	defer response.Body.Close() // response Body is gzipped!
 
 	var location Location
 	err = json.NewDecoder(response.Body).Decode(&location)
 	if err != nil {
-		return LocationResult{}, err
+		return LocationResult{}, fmt.Errorf("getlocationinfo: failed to decode body", err)
 	}
 
 	return location.Results[0], nil

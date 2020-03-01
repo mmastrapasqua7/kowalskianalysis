@@ -53,7 +53,7 @@ func findTheClosestCar(fromLat, fromLon string, dirName string) (JsonEntry, erro
 	var closestCar JsonEntry
 	files, err := ioutil.ReadDir(dirName)
 	if err != nil {
-		return closestCar, err
+		return closestCar, fmt.Errorf("findtheclosestcar: failed to read directory " + dirName, err)
 	}
 	latestJsonDumpFilename := dirName + "/" + files[len(files) - 3].Name()
 
@@ -63,13 +63,13 @@ func findTheClosestCar(fromLat, fromLon string, dirName string) (JsonEntry, erro
 
 	latestJsonDump, err := ioutil.ReadFile(latestJsonDumpFilename)
 	if err != nil {
-		return closestCar, err
+		return closestCar, fmt.Errorf("findtheclosestcar: failed to read the file " + latestJsonDumpFilename, err)
 	}
 
 	enjoyResult := JsonFile{}
 	err = json.Unmarshal(latestJsonDump, &enjoyResult)
 	if err != nil {
-		return closestCar, err
+		return closestCar, fmt.Errorf("findtheclosestcar: failed to unmarshal file " + latestJsonDumpFilename, err)
 	}
 
 	// Coordinate float64
