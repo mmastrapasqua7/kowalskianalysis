@@ -49,6 +49,7 @@ func GetRoutes(fromLat, fromLon, toLat, toLon string) Result {
 	}
 
 	_, _ = getMagicKey(headerParams, cookie) // not needed (?)
+
 	fromMetadata, err := getLocationInfo(fromName, headerParams, cookie)
 	if err != nil {
 		log.Println("moovit: failed to get location info:", err)

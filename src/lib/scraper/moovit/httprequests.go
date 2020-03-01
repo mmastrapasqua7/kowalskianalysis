@@ -5,6 +5,7 @@ import (
 
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -176,7 +177,7 @@ func getLocationInfo(locationName string, refererHeaderParams url.Values, rbzidC
 	var location Location
 	err = json.NewDecoder(response.Body).Decode(&location)
 	if err != nil {
-		return LocationResult{}, fmt.Errorf("getlocationinfo: failed to decode body", err)
+		return LocationResult{}, fmt.Errorf("getlocationinfo: failed to decode body", err, ": " + fmt.Sprintf("%v", response.Body))
 	}
 
 	return location.Results[0], nil
@@ -221,12 +222,12 @@ func getMagicToken(fromLocation, endLocation LocationResult, referHeaderParams u
 
 	response, err := httpwrap.Get(urlMoovit, header, params, []*http.Cookie{rbzidCookie})
 	if err != nil {
-		return Token{}, err
+		return Token{}, fmt.Errorf("getmagictoken: failed to get http resopnse", err)
 	}
 	defer response.Body.Close()
 
 	if err := json.NewDecoder(response.Body).Decode(&token); err != nil {
-		return Token{}, err
+		return Token{}, fmt.Errorf("getmagictoken: failed to decode body", err)
 	}
 
 	return token, nil
@@ -261,7 +262,7 @@ func getSuggestedRoutes(fromLocation, toLocation LocationResult, token Token, rb
 	header := newCommonHeader()
 	header.Add("Accept", "application/json, text/plain, */*")
 	header.Add("Referer", "https://moovitapp.com/?" + headerParams.Encode())
-	header.Add("MOOVIT_USER_KEY", "F36562")
+	header.Add("MOOVIT_USER_KEY", "F27213")
 	header.Add("MOOVIT_METRO_ID", "223")
 	header.Add("MOOVIT_CLIENT_VERSION", "5.5.0.1/V567")
 	header.Add("MOOVIT_APP_TYPE", "WEB_TRIP_PLANNER")
