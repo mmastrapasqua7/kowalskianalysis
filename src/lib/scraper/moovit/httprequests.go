@@ -177,7 +177,7 @@ func getLocationInfo(locationName string, refererHeaderParams url.Values, rbzidC
 	var location Location
 	err = json.NewDecoder(response.Body).Decode(&location)
 	if err != nil {
-		return LocationResult{}, fmt.Errorf("getlocationinfo: failed to decode body", err, ": " + fmt.Sprintf("%v", response.Body))
+		return LocationResult{}, fmt.Errorf("getlocationinfo: failed to decode body", err)
 	}
 
 	return location.Results[0], nil
