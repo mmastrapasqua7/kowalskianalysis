@@ -1,5 +1,4 @@
-bin/scrapemaster.out
-bin/checkresults.out
+bin/*.out
 bin/results
 tmp.go
 latex/Template.aux

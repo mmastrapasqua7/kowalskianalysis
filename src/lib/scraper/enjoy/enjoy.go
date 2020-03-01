@@ -17,12 +17,10 @@ import (
 	"../waze"
 	"../../util"
 
-	"compress/gzip"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
-	"os"
 	"strconv"
 )
 
@@ -59,19 +57,7 @@ func findTheClosestCar(fromLat, fromLon string, dirName string) (JsonEntry, erro
 	}
 	latestJsonDumpFilename := dirName + "/" + files[len(files) - 2].Name()
 
-	file, err := os.OpenFile(latestJsonDumpFilename, os.O_RDONLY, 0755)
-	if err != nil {
-		return closestCar, err
-	}
-	defer file.Close()
-
-	gzReader, err := gzip.NewReader(file)
-	if err != nil {
-		return closestCar, err
-	}
-	defer gzReader.Close()
-
-	latestJsonDump, err := ioutil.ReadAll(gzReader)
+	latestJsonDump, err := ioutil.ReadFile(latestJsonDumpFilename)
 	if err != nil {
 		return closestCar, err
 	}
