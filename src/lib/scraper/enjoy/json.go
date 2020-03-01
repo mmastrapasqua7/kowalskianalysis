@@ -50,10 +50,10 @@ func (r *Result) CostPerMinute() string {
 }
 
 func (r *Result) String() string {
-	return fmt.Sprint("Provider:", "ENJOY",
-		"\nPosition:", r.CarPosition(),
-		"\nManufacturer:", r.CarManufacturer(),
-		"\nModel:", r.CarModel(),
-		"\nEngine:", r.EngineType(),
-		"\nCost/minute:", r.CostPerMinute(), "\n")
+	return fmt.Sprint("Provider: ", "ENJOY",
+		"\nPosition: ", r.CarPosition(),
+		"\nManufacturer: ", r.CarManufacturer(),
+		"\nModel: ", r.CarModel(),
+		"\nEngine: ", r.EngineType(),
+		"\nCost/minute: ", r.CostPerMinute(), "\n")
 }
