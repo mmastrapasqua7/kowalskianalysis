@@ -38,8 +38,9 @@ func main() {
 		requests = scraper.ReadRequests(requestFile)
 	}
 
-	timeToSleep := int((REPEAT_INTERVAL / float64(len(requests))) * 60.0)
-	requestTicker := time.NewTicker(time.Duration(timeToSleep) * time.Second)
+	// timeToSleep := int((REPEAT_INTERVAL / float64(len(requests))) * 60.0)
+	// requestTicker := time.NewTicker(time.Duration(timeToSleep) * time.Second)
+	requestTicker := time.NewTicker(60 * time.Second)
 	refreshSessionsTicker := time.NewTicker(1 * time.Hour)
 
 	for i := 0; true; i++ {

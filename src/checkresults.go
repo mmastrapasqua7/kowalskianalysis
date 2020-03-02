@@ -97,13 +97,13 @@ func checkResults(rf scraper.ResultFile) {
 		fmt.Println("# To:  ", result.ToLat + ",", result.ToLon)
 		fmt.Printf("# Distance: %.03f km\n\n", result.DistanceInKm)
 
-		fmt.Println(result.BigResult.MoovitRoutes.String())
+		// fmt.Println(result.BigResult.MoovitRoutes.String()) // Rotto
 		fmt.Println(result.BigResult.OpenStreetMapBikeRoutes.String())
 		fmt.Println(result.BigResult.OpenStreetMapFootRoutes.String())
 		fmt.Println(result.BigResult.WazeRoutes.String())
 		fmt.Println(result.BigResult.Car2GoRoutes.String())
 		fmt.Println(result.BigResult.EnjoyRoutes.String())
-		fmt.Println(result.BigResult.SharengoRoutes.String())
+		// fmt.Println(result.BigResult.SharengoRoutes.String()) // Rotto
 	}
 	printRow()
 	fmt.Println()
