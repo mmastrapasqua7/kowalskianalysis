@@ -14,42 +14,47 @@ import (
 	"time"
 )
 
-func GetBearerTokenSBS() error {
+func GetBearerTokenSBS(secret string) error {
+	// 1. base string
 	time := fmt.Sprintf("%v", time.Now().Unix())
+	nonce := "DIOMERDA"
 
-	urlApi := url.QueryEscape("https://account.api.here.com/oauth2/token")
+	method := "POST"
+	urlApi := "https://account.api.here.com/oauth2/token"
 	parametersList := "grant_type=client_credentials" +
-		url.QueryEscape("&oauth_consumer_key=Vt91yht0GtgVQrSMWrYI4A" +
-			"&oauth_nonce=DIOeAN" +
-			"&oauth_signature_method=HMAC-SHA256" +
-			"&oauth_timestamp=" + time +
-			"&oauth_version=1.0")
+		"&oauth_consumer_key=Vt91yht0GtgVQrSMWrYI4A" +
+		"&oauth_nonce=" + nonce +
+		"&oauth_signature_method=HMAC-SHA256" +
+		"&oauth_timestamp=" + time +
+		"&oauth_version=1.0"
 
-	baseString := "POST" + "&" + urlApi + "&" + parametersList
+	baseString := method + "&" + url.QueryEscape(urlApi) + "&" + url.QueryEscape(parametersList)
 
-	secret := url.QueryEscape("hCSd0VqC13yEEjUkGIjDSI1kJgPF58DgR0O9gIGlD_dvU205Ne74XYYmDOU2YXJZ0YWoZuaJ00_K5ZzR3_8RKA") + "&"
+	// 2. secret
+	secret = url.QueryEscape(secret) + "&"
 
+	// 3. signature
 	mac := hmac.New(sha256.New, []byte(secret))
 	mac.Write([]byte(baseString))
 	hmacResult := mac.Sum(nil)
 	signature := base64.StdEncoding.EncodeToString(hmacResult)
 
+	// 4. get token
 	request, err := http.NewRequest("POST", "https://account.api.here.com/oauth2/token", nil)
 
 	header := http.Header{}
-	header.Add("Host", "account.api.here.com")
+	header.Add("Content-Type", "application/x-www-form-urlencoded")
 	header.Add("Authorization", "OAuth " +
 		"oauth_consumer_key=" + "\"Vt91yht0GtgVQrSMWrYI4A\"," +
-		"oauth_nonce=" + "DIOeAN," +
-		"oauth_signature=" + "\"" + signature + "\"," +
+		"oauth_nonce=" + "\"" + nonce + "\"," +
+		"oauth_signature=" + "\"" + url.QueryEscape(signature) + "\"," +
 		"oauth_signature_method=" + "\"HMAC-SHA256\"," +
 		"oauth_timestamp=" + "\"" + time + "\"," +
 		"oauth_version=" + "\"1.0\"")
-	header.Add("Cache-Control", "no-cache")
-	header.Add("Content-Type", "application/x-www-form-urlencoded")
 	request.Header = header
 
-	body := ioutil.NopCloser(bytes.NewReader([]byte("grant_type=client_credentials")))
+	bodyString := "grant_type=client_credentials"
+	body := ioutil.NopCloser(bytes.NewReader([]byte(bodyString)))
 	request.Body = body
 
 	client := &http.Client{}
@@ -57,7 +62,6 @@ func GetBearerTokenSBS() error {
 	if err != nil {
 		return fmt.Errorf("getbearertoken: can't get http body: ", err)
 	}
-
 	responseBody, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		return fmt.Errorf("getbearertoken: can't read body (token): ", err)
