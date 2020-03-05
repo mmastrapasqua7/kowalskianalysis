@@ -54,7 +54,7 @@ type BigJson struct {
 
 func GetRoutesFromAllServices(fromLat, fromLon, toLat, toLon string, carsharingDataDir string) BigJson {
 	return BigJson{
-		moovit.GetRoutes(fromLat, fromLon, toLat, toLon),
+		moovit.Result{},
 		openstreetmap.GetBikeRoutes(fromLat, fromLon, toLat, toLon),
 		openstreetmap.GetFootRoutes(fromLat, fromLon, toLat, toLon),
 		waze.GetRoutes(fromLat, fromLon, toLat, toLon),
