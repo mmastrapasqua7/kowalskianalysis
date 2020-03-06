@@ -88,7 +88,36 @@ type Result struct {
 	} `json:"routes"`
 }
 
-func GetBearerToken(secret string) (TokenResponse, error) {
+const (
+	secretKey = "hCSd0VqC13yEEjUkGIjDSI1kJgPF58DgR0O9gIGlD_dvU205Ne74XYYmDOU2YXJZ0YWoZuaJ00_K5ZzR3_8RKA"
+)
+
+var (
+	bearerToken = ""
+)
+
+func init() {
+	err := GetWebPage()
+	if err != nil {
+		log.Println("herewego: failed to get access token to API ", err)
+		log.Println("ERROR: look at the logfile for more details. Sleeping.")
+
+		for {
+			time.Sleep(24 * time.Hour)
+		}
+	}
+}
+
+func GetWebPage() error {
+	response, err := GetBearerToken()
+	if err != nil {
+		return err
+	}
+	bearerToken = response.AccessToken
+	return nil
+}
+
+func GetBearerToken() (TokenResponse, error) {
 	var token TokenResponse
 
 	// 1. base string
@@ -107,7 +136,7 @@ func GetBearerToken(secret string) (TokenResponse, error) {
 	baseString := method + "&" + url.QueryEscape(urlApi) + "&" + url.QueryEscape(parametersList)
 
 	// 2. secret
-	secret = url.QueryEscape(secret) + "&"
+	secret := url.QueryEscape(secretKey) + "&"
 
 	// 3. signature
 	mac := hmac.New(sha256.New, []byte(secret))
@@ -151,18 +180,13 @@ func GetBearerToken(secret string) (TokenResponse, error) {
 	return token, nil
 }
 
-func GetRoutes(fromLat, fromLon, toLat, toLon, secret string) Result {
+func GetRoutes(fromLat, fromLon, toLat, toLon string) Result {
 	var result Result
-	token, err := GetBearerToken(secret)
-	if err != nil {
-		log.Println("herewego: failed to get token", err)
-		return result
-	}
 
 	urlHerewego := "https://transit.router.hereapi.com/v1/routes?"
 
 	header := http.Header{}
-	header.Add("Authorization", "Bearer " + token.AccessToken)
+	header.Add("Authorization", "Bearer " + bearerToken)
 
 	params := url.Values{}
 	params.Add("origin", fromLat[:len(fromLat)-1] + "," + fromLon[:len(fromLon)-1])
