@@ -7,17 +7,93 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
+	"math/rand"
 	"net/http"
 	"net/url"
 	"time"
 )
 
-func GetBearerTokenSBS(secret string) error {
+type TokenResponse struct {
+	AccessToken string `json:"access_token"`
+	TokenType   string `json:"token_type"`
+	ExpiresIn   int    `json:"expires_in"`
+}
+
+type Result struct {
+	Routes []struct {
+		ID       string `json:"id"`
+		Sections []struct {
+			ID      string `json:"id"`
+			Type    string `json:"type"`
+			Actions []struct {
+				Action      string `json:"action"`
+				Duration    int    `json:"duration"`
+				Instruction string `json:"instruction"`
+				Offset      int    `json:"offset"`
+				Direction   string `json:"direction,omitempty"`
+				Severity    string `json:"severity,omitempty"`
+			} `json:"actions,omitempty"`
+			TravelSummary struct {
+				Duration int `json:"duration"`
+				Length   int `json:"length"`
+			} `json:"travelSummary"`
+			Polyline  string `json:"polyline"`
+			Departure struct {
+				Time  time.Time `json:"time"`
+				Place struct {
+					Type     string `json:"type"`
+					Location struct {
+						Lat float64 `json:"lat"`
+						Lng float64 `json:"lng"`
+					} `json:"location"`
+				} `json:"place"`
+			} `json:"departure"`
+			Arrival struct {
+				Time  time.Time `json:"time"`
+				Place struct {
+					Name     string `json:"name"`
+					Type     string `json:"type"`
+					Location struct {
+						Lat float64 `json:"lat"`
+						Lng float64 `json:"lng"`
+					} `json:"location"`
+					ID string `json:"id"`
+				} `json:"place"`
+			} `json:"arrival"`
+			Transport struct {
+				Mode      string `json:"mode"`
+				Name      string `json:"name"`
+				Category  string `json:"category"`
+				Color     string `json:"color"`
+				TextColor string `json:"textColor"`
+				Headsign  string `json:"headsign"`
+			} `json:"transport,omitempty"`
+			IntermediateStops []interface{} `json:"intermediateStops,omitempty"`
+			Agency            struct {
+				ID      string `json:"id"`
+				Name    string `json:"name"`
+				Website string `json:"website"`
+			} `json:"agency,omitempty"`
+			Attributions []struct {
+				ID   string `json:"id"`
+				Href string `json:"href"`
+				Text string `json:"text"`
+				Type string `json:"type"`
+			} `json:"attributions,omitempty"`
+		} `json:"sections"`
+	} `json:"routes"`
+}
+
+func GetBearerToken(secret string) (TokenResponse, error) {
+	var token TokenResponse
+
 	// 1. base string
 	time := fmt.Sprintf("%v", time.Now().Unix())
-	nonce := "DIOMERDA"
+	nonce := randomString(6)
 
 	method := "POST"
 	urlApi := "https://account.api.here.com/oauth2/token"
@@ -60,22 +136,33 @@ func GetBearerTokenSBS(secret string) error {
 	client := &http.Client{}
 	response, err := client.Do(request)
 	if err != nil {
-		return fmt.Errorf("getbearertoken: can't get http body: ", err)
+		return token, fmt.Errorf("getbearertoken: can't get http body: ", err)
 	}
+
 	responseBody, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		return fmt.Errorf("getbearertoken: can't read body (token): ", err)
+		return token, fmt.Errorf("getbearertoken: can't read body (token): ", err)
 	}
-	fmt.Println(string(responseBody))
 
-	return nil
+	if err := json.Unmarshal(responseBody, &token); err != nil {
+		return token, fmt.Errorf("getbearertoken: can't unmarshal response: ", err)
+	}
+
+	return token, nil
 }
 
-func GetRoutes(fromLat, fromLon, toLat, toLon, apiKey string) error {
+func GetRoutes(fromLat, fromLon, toLat, toLon, secret string) Result {
+	var result Result
+	token, err := GetBearerToken(secret)
+	if err != nil {
+		log.Println("herewego: failed to get token", err)
+		return result
+	}
+
 	urlHerewego := "https://transit.router.hereapi.com/v1/routes?"
 
 	header := http.Header{}
-	header.Add("Authorization", "Bearer " + apiKey)
+	header.Add("Authorization", "Bearer " + token.AccessToken)
 
 	params := url.Values{}
 	params.Add("origin", fromLat[:len(fromLat)-1] + "," + fromLon[:len(fromLon)-1])
@@ -83,14 +170,32 @@ func GetRoutes(fromLat, fromLon, toLat, toLon, apiKey string) error {
 
 	response, err := httpwrap.Get(urlHerewego, header, params, nil)
 	if err != nil {
-		return fmt.Errorf("getroutes: can't get http body: ", err)
+		log.Println("herewego: can't get http body: ", err)
+		return result
 	}
 
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		return fmt.Errorf("getroutes: can't read body: ", err)
+		log.Println("herewego: can't read body: ", err)
+		return result
 	}
-	fmt.Println(string(body))
 
-	return nil
+	if err := json.Unmarshal(body, &result); err != nil {
+		log.Println("herewego: can't unmarshal response: ", err)
+		return result
+	}
+
+	return result
+}
+
+func randomString(length int) string {
+	charset := "abcdefghijklmnopqrstuvwxyz0123456789"
+	b := make([]byte, length)
+	rand.Seed(time.Now().UnixNano())
+
+	for i := range b {
+		b[i] = charset[rand.Intn(len(charset))]
+	}
+
+	return string(b)
 }
