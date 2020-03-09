@@ -1,12 +1,13 @@
 package scraper
 
 import (
-	"./moovit"
-	"./openstreetmap"
-	"./waze"
 	"./car2go"
 	"./enjoy"
-	"./sharengo"
+	"./herewego"
+	// "./moovit"
+	"./openstreetmap"
+	// "./sharengo"
+	"./waze"
 	"../util"
 
 	"crypto/sha256"
@@ -43,24 +44,24 @@ type Result struct {
 }
 
 type BigJson struct {
-	MoovitRoutes            moovit.Result
+	// MoovitRoutes            moovit.Result
+	HerewegoRoutes          herewego.Result
 	OpenStreetMapBikeRoutes openstreetmap.Result
 	OpenStreetMapFootRoutes openstreetmap.Result
 	WazeRoutes              waze.Result
 	Car2GoRoutes            car2go.Result
 	EnjoyRoutes             enjoy.Result
-	SharengoRoutes          sharengo.Result
+	// SharengoRoutes          sharengo.Result
 }
 
 func GetRoutesFromAllServices(fromLat, fromLon, toLat, toLon string, carsharingDataDir string) BigJson {
 	return BigJson{
-		moovit.Result{},
+		herewego.GetRoutes(fromLat, fromLon, toLat, toLon),
 		openstreetmap.GetBikeRoutes(fromLat, fromLon, toLat, toLon),
 		openstreetmap.GetFootRoutes(fromLat, fromLon, toLat, toLon),
 		waze.GetRoutes(fromLat, fromLon, toLat, toLon),
 		car2go.GetRoutes(fromLat, fromLon, toLat, toLon, carsharingDataDir),
-		enjoy.GetRoutes(fromLat, fromLon, toLat, toLon, carsharingDataDir),
-		sharengo.Result{}}
+		enjoy.GetRoutes(fromLat, fromLon, toLat, toLon, carsharingDataDir)}
 }
 
 func ReadRequests(f string) JsonRequestsFile {
@@ -99,19 +100,23 @@ func SaveResult(rf ResultFile, outputDir string) {
 }
 
 func RefreshSessions() {
-	for err := moovit.GetWebPage(); err != nil; err = waze.GetWebPage() {
-		log.Println("moovit: failed to get webpage:", err)
-		time.Sleep(1 * time.Minute)
-	}
-
+	// for err := moovit.GetWebPage(); err != nil; err = waze.GetWebPage() {
+	// 	log.Println("moovit: failed to get webpage:", err)
+	// 	time.Sleep(1 * time.Minute)
+	// }
 
 	for err := waze.GetWebPage(); err != nil; err = waze.GetWebPage() {
 		log.Println("waze: failed to get webpage:", err)
 		time.Sleep(1 * time.Minute)
 	}
 
-	for err := openstreetmap.GetWebPage(); err != nil; openstreetmap.GetWebPage() {
+	for err := openstreetmap.GetWebPage(); err != nil; err = openstreetmap.GetWebPage() {
 		log.Println("openstreetmap: failed to get webpage:", err)
+		time.Sleep(1 * time.Minute)
+	}
+
+	for err := herewego.GetWebPage(); err != nil; err = herewego.GetWebPage() {
+		log.Println("herewego: failed to get webpage:", err)
 		time.Sleep(1 * time.Minute)
 	}
 }
