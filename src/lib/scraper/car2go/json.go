@@ -11,6 +11,7 @@ type Result struct {
 	ChosenCar  JsonEntry
 	WalkResult openstreetmap.Result
 	CarResult  waze.Result
+	FreeCars   int
 }
 
 type JsonEntry struct {

@@ -38,6 +38,10 @@ func GetRoutes(fromLat, fromLon, toLat, toLon string, dirName string) Result {
 	routes.ChosenCar = closestCar
 	routes.WalkResult = osmRoutes
 	routes.CarResult = wazeRoutes
+	routes.FreeCars = carCounter
+
+	carCounter = 0
+	
 	return routes
 }
 
@@ -86,5 +90,6 @@ func findTheClosestCar(fromLat, fromLon, dirName string) (JsonEntry, error) {
 		}
 	}
 
+	carCounter = len(sharengoResult)
 	return closestCar, nil
 }

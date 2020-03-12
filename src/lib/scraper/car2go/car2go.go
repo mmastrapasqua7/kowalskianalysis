@@ -24,6 +24,8 @@ import (
 	"strconv"
 )
 
+var carCounter = 0
+
 func GetRoutes(fromLat, fromLon, toLat, toLon string, dirName string) Result {
 	var routes Result
 
@@ -41,6 +43,10 @@ func GetRoutes(fromLat, fromLon, toLat, toLon string, dirName string) Result {
 	routes.ChosenCar = closestCar
 	routes.WalkResult = osmRoutes
 	routes.CarResult = wazeRoutes
+	routes.FreeCars = carCounter
+
+	carCounter = 0
+	
 	return routes
 }
 
@@ -88,5 +94,6 @@ func findTheClosestCar(fromLat, fromLon string, dirName string) (JsonEntry, erro
 		}
 	}
 
+	carCounter = len(car2goResult)
 	return closestCar, nil
 }
