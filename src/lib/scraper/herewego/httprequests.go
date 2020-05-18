@@ -183,7 +183,7 @@ func GetBearerToken() (TokenResponse, error) {
 func GetRoutes(fromLat, fromLon, toLat, toLon string) Result {
 	var result Result
 
-	urlHerewego := "https://transit.router.hereapi.com/v1/routes?"
+	urlHerewego := "https://transit.router.hereapi.com/v8/routes?"
 
 	header := http.Header{}
 	header.Add("Authorization", "Bearer " + bearerToken)
