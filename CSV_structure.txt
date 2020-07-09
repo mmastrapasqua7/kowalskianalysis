@@ -3,7 +3,7 @@ Lot
 ELat
 Elon
 
-AirDistance // distanza in via aerea della tratta
+AirDistance // distanza in via aerea della tratta in km
 
 Year   // data e ora esatta della richiesta di tragitto
 Month
@@ -11,7 +11,7 @@ Day
 Hour
 Minute
 
-Public // durata del viaggio in base al mezzo: trasporto pubblico (2 perche' moovit dava i numeri sul primo risultato)
+Public // durata del viaggio (minuti) in base al mezzo: trasporto pubblico (2 perche' moovit dava i numeri sul primo risultato)
 Public2
 PrivateCar // macchina privata
 Bike // in bicicletta
