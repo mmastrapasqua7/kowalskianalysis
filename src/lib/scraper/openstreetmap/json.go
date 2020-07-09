@@ -50,7 +50,12 @@ type Result struct {
 }
 
 func (r *Result) Duration() time.Duration {
-	return time.Duration(r.Routes[0].Duration) * time.Second
+	if len(r.Routes) == 0 {
+		t, _ := time.ParseDuration("0m")
+		return t
+	} else {
+		return time.Duration(r.Routes[0].Duration) * time.Second
+	}
 }
 
 func (r *Result) Departure() time.Time {
@@ -62,10 +67,11 @@ func (r *Result) Arrival() time.Time {
 }
 
 func (r *Result) String() string {
-	return fmt.Sprintln("Provider:", "OPENSTREETMAP",
-		"\nDuration:", r.Duration(),
-		"\nDeparture:", r.Departure(),
-		"\nArrival:", r.Arrival())
+	// return fmt.Sprintln("Provider:", "OPENSTREETMAP",
+	// 	"\nDuration:", r.Duration(),
+	// 	"\nDeparture:", r.Departure(),
+	// 	"\nArrival:", r.Arrival())
+	return fmt.Sprintf("%.0f", r.Duration().Minutes())
 }
 
 

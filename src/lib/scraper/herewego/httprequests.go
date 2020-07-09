@@ -223,3 +223,23 @@ func randomString(length int) string {
 
 	return string(b)
 }
+
+func (r *Result) String() string {
+	if len(r.Routes) < 1 {
+		return "0,0"
+	} else if len(r.Routes) < 2 {
+		sections := r.Routes[0].Sections
+		first := sections[0].Departure.Time
+		last := sections[len(sections)-1].Arrival.Time
+		return fmt.Sprintf("%.0f,0", last.Sub(first).Minutes())
+	} else {
+		sections := r.Routes[0].Sections
+		first := sections[0].Departure.Time
+		last := sections[len(sections)-1].Arrival.Time
+
+		sections1 := r.Routes[1].Sections
+		first1 := sections1[1].Departure.Time
+		last1 := sections1[len(sections1)-1].Arrival.Time
+		return fmt.Sprintf("%.0f,%.0f", last.Sub(first).Minutes(), last1.Sub(first1).Minutes())
+	}
+}

@@ -295,11 +295,16 @@ func (r Result) Arrival(i int) time.Time {
 func (r *Result) String() string {
 	toString := ""
 
-	for i, _ := range r.Results[1:] {
-		toString += fmt.Sprintln("Provider:", "MOOVIT",
-			"\nDuration:", r.Duration(i+1),
-			"\nDeparture:", r.Departure(i+1),
-			"\nArrival:", r.Arrival(i+1), "\n")
+	// for i, _ := range r.Results[1:] {
+	// 	toString += fmt.Sprintln("Provider:", "MOOVIT",
+	// 		"\nDuration:", r.Duration(i+1),
+	// 		"\nDeparture:", r.Departure(i+1),
+	// 		"\nArrival:", r.Arrival(i+1), "\n")
+	// }
+	if len(r.Results) < 3 {
+		toString += "0,0"
+	} else {
+		toString += fmt.Sprintf("%.0f,%.0f", r.Duration(1).Minutes(), r.Duration(2).Minutes())
 	}
 
 	return toString

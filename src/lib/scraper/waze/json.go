@@ -89,11 +89,16 @@ func (r *Result) Arrival(i int) time.Time {
 func (r *Result) String() string {
 	toString := ""
 
-	for i, _ := range r.Alternatives {
-		toString += fmt.Sprintln("Provider:", "WAZE",
-			"\nDuration:", r.Duration(i),
-			"\nDeparture:", r.Departure(),
-			"\nArrival:", r.Arrival(i), "\n")
+	// for i, _ := range r.Alternatives {
+	// 	toString += fmt.Sprintln("Provider:", "WAZE",
+	// 		"\nDuration:", r.Duration(i),
+	// 		"\nDeparture:", r.Departure(),
+	// 		"\nArrival:", r.Arrival(i), "\n")
+	// }
+	if len(r.Alternatives) == 0 {
+		toString += "0"
+	} else {
+		toString += fmt.Sprintf("%.0f", r.Duration(0).Minutes())
 	}
 
 	return toString

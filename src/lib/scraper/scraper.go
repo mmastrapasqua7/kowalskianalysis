@@ -4,7 +4,7 @@ import (
 	"./car2go"
 	"./enjoy"
 	"./herewego"
-	// "./moovit"
+	"./moovit"
 	"./openstreetmap"
 	// "./sharengo"
 	"./waze"
@@ -168,4 +168,31 @@ func chdir(d string) string {
 	}
 
 	return currentDir
+}
+
+// OLD PASTICCIO
+
+type ResultFile1 struct {
+	Id               int
+	Date             string
+	ResultsSha256Sum string
+	Results          []Result1
+}
+
+type Result1 struct {
+	FromLat, FromLon string
+	ToLat, ToLon     string
+	DistanceInKm     float64
+	BigResult        BigJson1
+}
+
+type BigJson1 struct {
+	MoovitRoutes            moovit.Result
+	// HerewegoRoutes          herewego.Result
+	OpenStreetMapBikeRoutes openstreetmap.Result
+	OpenStreetMapFootRoutes openstreetmap.Result
+	WazeRoutes              waze.Result
+	Car2GoRoutes            car2go.Result
+	EnjoyRoutes             enjoy.Result
+	// SharengoRoutes          sharengo.Result
 }

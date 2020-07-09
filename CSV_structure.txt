@@ -1,0 +1,20 @@
+Lat // punto di partenza e di arrivo
+Lot
+ELat
+Elon
+AirDistance // distanza in via aerea della tratta
+
+Year   // data e ora esatta della richiesta di tragitto
+Month
+Day
+Hour
+Minute
+
+Public // durata del viaggio in base al mezzo: trasporto pubblico
+PrivateCar // macchina privata
+Bike // in bicicletta
+Foot // a piedi
+Car2Go // con car2go
+Enjoy // con l'enjoy
+MacchineLibereCar2GO // numero di macchine libere al momento della richiesta
+MacchineLibereEnjoy

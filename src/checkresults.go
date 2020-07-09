@@ -101,7 +101,7 @@ func checkResults(rf scraper.ResultFile) {
 		fmt.Println(result.BigResult.OpenStreetMapBikeRoutes.String())
 		fmt.Println(result.BigResult.OpenStreetMapFootRoutes.String())
 		fmt.Println(result.BigResult.WazeRoutes.String())
-		fmt.Println(result.BigResult.Car2GoRoutes.String())
+		fmt.Println(result.BigResult.Car2GoRoutes.WString())
 		fmt.Println(result.BigResult.EnjoyRoutes.String())
 		// fmt.Println(result.BigResult.SharengoRoutes.String()) // Rotto
 	}
