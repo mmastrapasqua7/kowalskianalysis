@@ -1,4 +1,4 @@
-Lat,Lon,Elat,Elon,Distance,Year,Month,Day,Hour,Minute,Public,Public2,Car,Bike,Foot,Car2Go,Enjoy,Car2GoFreeCars,EnjoyFreeCars
+Lat,Lon,Elat,Elon,Length,Year,Month,Day,Hour,Minute,Public,Public2,Car,Bike,Foot,Car2Go,Enjoy,Car2GoFreeCars,EnjoyFreeCars
 45.502865,9.176148,45.451561,9.159576,5.848961,2020,06,30,10,40,17,54,0,34,99,20,32,26,936,791
 45.457768,9.227384,45.481564,9.161210,5.798784,2020,06,30,10,40,17,32,0,33,91,23,24,0,936,0
 45.482620,9.224249,45.475088,9.183048,3.319536,2020,06,30,10,40,17,22,0,22,55,16,24,30,936,786
