@@ -4,7 +4,7 @@ import (
 	"./car2go"
 	"./enjoy"
 	"./herewego"
-	"./moovit"
+	// "./moovit"
 	"./openstreetmap"
 	// "./sharengo"
 	"./waze"
@@ -187,8 +187,8 @@ type Result1 struct {
 }
 
 type BigJson1 struct {
-	MoovitRoutes            moovit.Result
-	// HerewegoRoutes          herewego.Result
+	// MoovitRoutes            moovit.Result
+	HerewegoRoutes          herewego.Result
 	OpenStreetMapBikeRoutes openstreetmap.Result
 	OpenStreetMapFootRoutes openstreetmap.Result
 	WazeRoutes              waze.Result

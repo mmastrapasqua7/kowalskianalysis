@@ -32,7 +32,7 @@ func CSVilize(jsonFile string) {
 
 		fmt.Printf("%s,", Date(&results))
 
-		fmt.Printf("%s,", r.BigResult.MoovitRoutes.String())
+		fmt.Printf("%s,", r.BigResult.HerewegoRoutes.String())
 
 		fmt.Printf("%s,", r.BigResult.OpenStreetMapBikeRoutes.String())
 
