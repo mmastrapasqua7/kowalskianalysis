@@ -74,6 +74,14 @@ func (r *Result) String() string {
 	return fmt.Sprintf("%.0f", r.Duration().Minutes())
 }
 
+func (r *Result) Distance() string {
+	if len(r.Routes) == 0 {
+		return "0"
+	} else {
+		return fmt.Sprintf("%f", r.Routes[0].Distance / 1000.)
+	}
+}
+
 
 // func (r *Result) Print() {
 // 	fmt.Println("Provider: OPENSTREETMAP")

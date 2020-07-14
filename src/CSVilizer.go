@@ -30,6 +30,8 @@ func CSVilize(jsonFile string) {
 
 		fmt.Printf("%f,", r.DistanceInKm)
 
+		fmt.Printf("%s,", r.BigResult.OpenStreetMapFootRoutes.Distance())
+
 		fmt.Printf("%s,", Date(&results))
 
 		fmt.Printf("%s,", r.BigResult.HerewegoRoutes.String())
@@ -53,7 +55,7 @@ func CSVilize(jsonFile string) {
 	}
 }
 
-func Date(rf *scraper.ResultFile1) string {
+func Date(rf *scraper.ResultFile) string {
 	date := strings.Split(rf.Date, "-")
 	result := fmt.Sprintf("%s,%s,%s", date[0], date[1], date[2][:2])
 
@@ -64,7 +66,7 @@ func Date(rf *scraper.ResultFile1) string {
 }
 
 func printCSVHeader() {
-	fmt.Println("Lat,Lon,Elat,Elon,Distance,Year,Month,Day,Hour,Minute,Public,Public2,Car,Bike,Foot,Car2Go,Enjoy,Car2GoFreeCars,EnjoyFreeCars")
+	fmt.Println("Lat,Lon,Elat,Elon,ADistance,FDistance,Year,Month,Day,Hour,Minute,Second,Public,Public2,Bike,Foot,Car,Car2Go,Enjoy,Car2GoFreeCars,EnjoyFreeCars")
 }
 
 func selectJsonFiles(files []os.FileInfo) []string {
@@ -77,13 +79,13 @@ func selectJsonFiles(files []os.FileInfo) []string {
 	return jsonFiles
 }
 
-func parse(jsonFile string) scraper.ResultFile1 {
+func parse(jsonFile string) scraper.ResultFile {
 	data, err := ioutil.ReadFile(jsonFile)
 	if err != nil {
 		fmt.Println("main: error while reading file", jsonFile, err)
 	}
 
-	var rf scraper.ResultFile1
+	var rf scraper.ResultFile
 	if err := json.Unmarshal(data, &rf); err != nil {
 		fmt.Println("main: error while unmarshaling json", jsonFile, err)
 	}
