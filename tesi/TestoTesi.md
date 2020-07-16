@@ -49,7 +49,9 @@ type Solution struct {
 
 ##### Car sharing
 
-Dato che non sono stati trovati servizi per stimare la percorrenza di una tratta col car sharing, che includesse la ricerca di una macchina vicina al punto di partenza e infine una stima del percorso, ne è stato programmato uno ad hoc. In particolare, il servizio ... offre tramite un A.P.I una lista aggiornata in tempo reale di tutte le macchine parcheggiate, libere di essere prenotate.
+Dato che non sono stati trovati servizi per stimare la percorrenza di una tratta col car sharing, che includesse la ricerca di una macchina vicina al punto di partenza e infine una stima del percorso, ne è stato programmato uno ad hoc.
+
+Il servizio ... offre tramite un A.P.I una lista aggiornata in tempo reale di tutte le macchine parcheggiate, libere di essere prenotate.
 
 ```go
 Service.GetFreeCars() []Car
@@ -85,4 +87,20 @@ Dato un utente "U" che vuole andare da un punto "A" a un punto "B" in car sharin
 
 Per questione di semplicità, la ricerca della macchina più vicina è stata implementata con una algoritmo greedy che cerca la macchina fisicamente più vicina al punto di partenza, ignorando totalmente il verso di marcia del tragitto, possibilmente aumentando il tempo di percorrenza in macchina.
 
-#### Attuazione delle richieste
+#### Attuazione delle richieste e salvataggio risultati
+
+La simulazione è stata programmata nel seguente modo
+
+- ogni 60 secondi viene generata una tratta a random col generatore precedentemente discusso
+
+- parallelamente viene richiesto a tutti i servizi di fornire la soluzione migliore per percorrere tale tratta
+
+- il risultato viene salvato sotto forma di file JSON e compresso. Il processo riparte
+
+E' stato scelto un intervallo di 60 secondi per permettere a tutti i servizi di risolvere la richiesta tramite A.P.I e per non eccedere il limite massimo di richieste mensili offerte gratuitamente dal servizio di HereWeGo.
+
+### Raccolta dati
+
+La simulazione è stata programmata per andare in esecuzione dalle ore 7:00 alle ore 23:59 di ogni giorno per avere un confronto più alla pari. Infatti, prima delle ore 7:00 i mezzi pubblici operano con orario ridotto e con molti meno mezzi a disposizione, vista la bassissima richiesta in quella fascia oraria.
+
+I dati riguardanti la simulazione sono stati raccolti a partire dall'1 marzo 2020 per un periodo di circa 4 mesi, fino al 10 luglio 2020. Vista l'emergenza per epidemia da coronavirus (giusto scritto così?), tutta l'Italia è entrata in uno stato di lockdown annunciato per decreto legge dal 12 marzo 2020, allentando gradualmente le restrizioni a partire dal 4 maggio 2020. I dati all'interno di questo intervallo sono quindi da considerarsi poco utili all'analisi. 
