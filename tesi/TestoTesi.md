@@ -81,4 +81,8 @@ func GetCarSharingRoute(A, B) Solution {
 }
 ```
 
-Dato un utente "U" che vuole andare da un punto "A" a un punto "B" in car sharing, il servizio creato appositamente procede nel scaricare la lista aggiornata delle macchine libere, cerca tra queste la macchina più vicina al punto di partenza desiderato "A" e ne calcola il tragitto a piedi per raggiungerla, dopodichè calcola il resto del tragitto, dalla posizione della macchina al punto di destinazione desiderato "B", in macchina. Con questo metodo si è ottenuta una stima in tempo reale della percorrenza in car sharing per ogni tratta, che ha permesso a posteriori di ricavare altre informazioni utili, come per esempio il tempo medio per raggiungere un auto.
+Dato un utente "U" che vuole andare da un punto "A" a un punto "B" in car sharing, il servizio creato appositamente procede nel scaricare la lista aggiornata delle macchine libere, cerca tra queste la macchina più vicina al punto di partenza desiderato "A" e ne calcola il tragitto a piedi per raggiungerla (punto "C"), dopodichè calcola il resto del tragitto, dalla posizione della macchina "C" al punto di destinazione desiderato "B", in macchina. Con questo metodo si è ottenuta una stima in tempo reale della percorrenza in car sharing per ogni tratta, che ha permesso a posteriori di ricavare altre informazioni utili, come per esempio il tempo medio per raggiungere un auto.
+
+Per questione di semplicità, la ricerca della macchina più vicina è stata implementata con una algoritmo greedy che cerca la macchina fisicamente più vicina al punto di partenza, ignorando totalmente il verso di marcia del tragitto, possibilmente aumentando il tempo di percorrenza in macchina.
+
+#### Attuazione delle richieste
