@@ -1,23 +1,22 @@
-# Scraper del traffico
+# Scraper dei servizi di navigazione
 
 ### Compilazione
+
 ```sh
-$ go build -o scrapemaster.out scrapemaster.go
-$ go build -o checkresults.out checkresults.go
+$ go build scrapemaster.go
+$ go build CSVilizer.go
 ```
 
 ### Uso
+
 Per lanciare lo scraper
+
 ```sh
-$ ./scrapemaster.out [requests.json] [scraped_data_dir] [output_dir]
-```
-Per testare i risultati prodotti
-```sh
-$ ./checkresults.out [output_dir]
+$ ./scrapemaster <requests.json> <carsharing_dir> <save_dir> [random]
 ```
 
-### Esempio
-```bash
-$ ./scrapemaster.out requests.json bin/scraped_data bin/results
-$ ./checkresults.out bin/results
+Per tradurre i risultati JSON in CSV (current dir.)
+
+```shell
+$ ./CSVilizer > file.csv
 ```

@@ -1,77 +1,21 @@
-# Kowalski, analysis!
+# Analisi della mobilità nel Comune di Milano su dati di servizi di navigazione
 
-## Confronto tra mezzi pubblici e privati nell'area di Milano basato su dati estratti da servizi
-### Università degli Studi di Milano. Tesi di Mauro Mastrapasqua
+## Università degli Studi di Milano. Tesi di Mauro Mastrapasqua
 
-#### Domande a cui voglio rispondere
-- Qual è il mezzo più economico per spostarsi nella città di Milano?
-	- nei giorni feriali
-	- nel weekend
-- Qual è il mezzo più veloce per spostarsi nella città di Milano?
-	- nei giorni feriali
-	- nel weekend
-- Esistono orari con eccezioni?
-- Esistono giorni con eccezioni?
-- Esistono aree con eccezioni?
-- Qual è il mezzo migliore in rapporto soldi/velocità?
-- Qual è il mezzo migliore in rapporto (soldi/velocità)/inquinamento?
+### Cosa posso ricavare dai dati
 
-#### Dati a disposizione (da Losacco Federico)
-
-##### Elenco dati raccolti
-|Nome|Inizio|Fine|Pause|Veicoli|
-|-|-|-|-|-|
-|Enjoy|luglio 2015|-|Si|Auto,Scooter|
-|SharenGo|luglio 2015|-|Si|Auto|
-|Car2Go|luglio 2015|-|Si|Auto|
-|Twistcar|?|dismesso|?|Auto|
-
-##### Normalizzazione (MongoDB)
-|Attributi|Descrizione|
-|-|-|
-|car_plate|identificativo veicolo(targa)|
-|latitude|latitudine|
-|longitude|longitudine|
-|loc|indice geospaziale|
-|service_name|nome servizio|
-|date|timestamp rilevazione (ogni 1 o 5 min)
-|fuel|carburante attuale (liquido o elettrico)|
-|engine|tipo di motore (combustione o elettrico)|
-|type_v|tipo di vettura (auto o motorino)|
-|id|numero sequenziale inserimento|
-
-### Scraper
-#### Struttura directory
-Per testare lo scraper tramite il Makefile, serve una cartella `bin` strutturata nel seguente modo:
-```
-bin/
-├─ richieste.json
-├─ results/
-├─ scraped_data/
-   ├─ car2go/
-   ├─ enjoy/
-   ├─ sharengo/
-```
-dove `scraped_data` contiene i dump degli scraper del car sharing di Losacco F.
-
-#### Uso (Makefile)
-Per testare lo scraper
-```sh
-$ make test-scraper
-```
-Per testare i risultati visivamente
-```sh
-$ make check-scraper
-```
-
-#### Uso (Stand-alone)
-Per usare lo scraper
-```sh
-$ go build -o scrapemaster.out src/scrapemaster.go
-$ ./scrapemaster.out [richieste.json] [scraped_data_dir] [output_dir]
-```
-Per testare i risultati visivamente
-```sh
-$ go build -o checkresults.out src/checkresults.go
-$ ./checkresults.out [output_dir]
-```
+- Velocità media di ogni mezzo
+- Variazione della velocità media coi vari mezzi
+  - durante il giorno
+  - dal lunedì al venerdì, il weekend
+  - settimana dopo settimana
+- Tempo medio per raggiungere una macchina in car sharing
+- Variazione del tempo medio per raggiungere una macchina
+  - durante il giorno
+  - da lunedì al venerdì, nel weekend
+  - settimana dopo settimana
+- Volte in cui il tempo di percorrenza in macchina e/o car sharing ha superato quello coi mezzi pubblici / in bici / a piedi
+  - se esistono, analizzarne i dati come frequenza, ora del giorno, velocità media ecc...
+- Vedere se la distanza della tratta (partenza, arrivo, punto medio) dal centro della città influenza i tempi di percorrenza dei mezzi
+- Vedere se la lunghezza della tratta influenza i tempi di percorrenza dei mezzi
+- Fare tutte queste analisi nel periodo pre lockdown e nel post lockdown, differenze?
