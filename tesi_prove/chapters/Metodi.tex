@@ -52,7 +52,7 @@ Per creare un servizio in grado di fornire una soluzione di percorrenza in car s
 \begin{lstlisting}[language=Go]
 func GetCarSharingRoute(A, B) Solution {
 	freeCars = CarSharingService.GetFreeCars()
-	C = findClosestCar(freeCars)
+	C = findClosestCar(freeCars, A)
 	
 	footRoute = OpenStreetMap.GetRoute(A, C)
 	carRoute = Waze.GetRoute(C, B)
