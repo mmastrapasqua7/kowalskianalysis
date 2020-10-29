@@ -1,0 +1,38 @@
+(malchiodi) heatmap: studiare come fare delle heatmap
+FATTO
+
+(malchiodi) posso crearmi delle tratte e chiedermi quale sia il miglior modo per attraversala in base ai dati storici
+TODO
+
+(malchiodi) grafico a barre to grafico linea continua con discretizzazione al minuto o mezzora
+FATTO: la discretizzazione l'ho lasciata all'ora perche' il grafico verrebbe troppo a zig zag
+
+(malchiodi) tabella anova 4x4 settimana dopo settimana post-lockdown
+TODO
+
+(malchiodi) foglio 4: t.medio in base alla lunghezza della tratta nosense, da levare
+FATTO
+
+(malchiodi) fogli confronto 6 e 7: usare frequenze relative nei grafici
+FATTO
+
+(malchiodi) foglio 8: invertire l'equazione della stima della media campionaria. Ho gia' la numerosita', devo trovare la probabilita' di avere un errore entro una certa soglia
+TODO
+
+(malchiodi) aggiungere errore nelle barre
+TODO
+
+(trentini) sovrapposizione grafici per confronto mezzo-mezzo
+FATTO
+
+(trentini) verifica del grafico della bicicletta: perche' tempo non costante?
+FATTO: Non ho il dato della distanza percorsa in bicicletta, per cui la velocita' media viene calcolata sulla base della distanza percorsa in macchina. Alla fine il grafico risulta costante, i cambi di colore equivalgono a una differenza di 0.1 km/h di media (irrilevante)
+
+(trentini) grafico car2go macchine libere: strano, verificare
+FATTO: Il numero di macchine libere Car2Go e' costante. Da buttare
+
+(trentini) CDistance to FDistance
+FATTO: vedi verifica grafico in biciletta
+
+(trentini & malchiodi) qualche statistica descrittiva in piu' sui dati (varianza, media, distribuzione ecc...)
+FATTO
