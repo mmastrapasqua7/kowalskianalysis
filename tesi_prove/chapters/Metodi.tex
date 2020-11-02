@@ -11,22 +11,46 @@ Intorno alla grande aleatorietà a cui sono soggetti gli spostamenti è stato mo
 
 Qui di seguito sono riportati tutti gli step che hanno portato allo sviluppo dello studio, dalla progettazione a livello teorico di ogni elemento all'avvio del software per la raccolta dati.
 
-\section{Percorsi da confrontare}
+\section{Mezzi di trasporto e relativi servizi}
 
-La scelta dei percorsi sulla quale basare i confronti è stata fatta analizzando due approcci possibili: generazione a random; tragitti prefissati. Fin da subito, l'approccio della scelta a priori delle tratte è risultata problematica per diversi motivi.
+Per lo studio in questione sono stati presi in considerazione i principali mezzi di trasporto con cui spostarsi all'interno della città di Milano e per ognuno si è selezionato un servizio di navigazione in grado di offrire stime di percorrenza dinamiche, ovvero calcolate in tempo reale, basate su tale mezzo. Qui di seguito sono riportati i mezzi e i relativi servizi selezionati:
 
-In primo luogo, la scelta stessa avrebbe introdotto bias cognitivi riguardo il possibile utente del percorso, per esempio selezionando tratte che portano a delle università, il che avrebbe portato ad analizzare la mobilità solamente dal punto di vista di uno studente o dipendente presso quelle determinate strutture.
+\begin{itemize}
+	\item mezzi pubblici ATM e passanti ferroviari;
+	\begin{itemize}
+		\item HERE WeGo REST API\cite{herewegoapi}
+	\end{itemize}
+	\item automobile di proprietà;
+	\begin{itemize}
+		\item Waze API\cite{wazeapi}
+	\end{itemize}
+	\item bicicletta di proprietà;
+	\begin{itemize}
+		\item OpenStreetMap\cite{openstreetmap}
+	\end{itemize}
+	\item a piedi;
+	\begin{itemize}
+		\item OpenStreetMap\cite{openstreetmap}
+	\end{itemize}
+	\item car sharing Enjoy;
+	\begin{itemize}
+		\item Enjoy Map\cite{enjoycarsharing}
+	\end{itemize}
+\end{itemize}
 
-Seconda problematica molto più rilevante sarebbe stata quella di selezionare involontariamente dei percorsi che favorissero un mezzo piuttosto che un altro. Nella città di Milano infatti si contanto numerosi tratti stradali di questo genere: strade con corsia preferenziale per mezzi pubblici e taxi; vie per cui non passano mezzi pubblici; strade a singola corsia e con numerosi semafori (quindi più soggetta a incolonnamenti); tangenziali; tratti coperti da passanti ferroviari. Tale scelta mi avrebbe portato ad analizzare dati non rappresentativi di tutta città, con conseguenti risultati in un certo senso "falsati".
 
 
-L'idea alla base della simulazione è quella di simulare un utente "U" che si trova in un dato punto "A" di coordinate (w, x) che vuole dirigersi in un punto B di coordinate (y, z) chiedendo a un ipotetico servizio di navigazione di fornire, sulla base di dati in tempo reale (come traffico, orari dei mezzi pubblici, incidenti e strade chiuse), le migliori soluzioni di percorrenza di tale tratta per ogni mezzo di trasporto preso in considerazione, salvandone i risultati. Il tutto eseguito più volte durante l'arco della giornata, con diversi punti di partenza e di arrivo e di diversa lunghezza.
+\section{Scelta tra percorsi random e prefissati}
 
-\todo{atrent: qui ci sarà da disquisire sulla scelta delle tratte: random arbitrarie o reali}
+La scelta dei percorsi sul quale basare i confronti è stata fatta analizzando due sorgenti possibili: generazione a random; tragitti prefissati. Fin da subito, l'approccio della scelta a priori delle tratte è risultato problematico per diversi motivi.
 
-\section{Simulazione (implementazione)}
+In primo luogo, la scelta della destinazione avrebbe introdotto bias cognitivi riguardo il possibile utente del percorso, per esempio selezionando tratte che portano a delle università, il che avrebbe portato ad analizzare la mobilità solamente dal punto di vista di una determinata utenza, nel caso dell'esempio la categoria di studenti e dipendenti presso quelle determinate strutture. Altri problemi affini sarebbero sorti nello scegliere la partenza, la lunghezza, la distanza dal centro città e numerosità delle tratte.
 
-\subsection{Generazione delle tratte}
+Seconda problematica molto più rilevante sarebbe stata quella di selezionare involontariamente dei percorsi che favorissero un mezzo piuttosto che un altro. Nella città di Milano infatti si contanto numerosi tratti stradali di questo genere: strade con corsia preferenziale per mezzi pubblici e taxi; strade a singola corsia e con numerosi semafori (quindi più soggetta a incolonnamenti); tangenziali; tratti coperti da passanti ferroviari (più veloci delle metropolitane e con meno fermate). Tale scelta avrebbe portato ad analizzare dati non rappresentativi della città, con conseguenti risultati in un certo senso "falsati".
+
+Usando l'approccio della generazione a random non solo si sarebbero evitati tali problemi, ma i problemi stessi si sarebbero trasformati in analisi da poter eseguire a posteriori, per esempio selezionando da tutte le tratte generate a random quelle che hanno portato nei pressi di un'università, o tratte che in linea d'aria hanno coperto particolari strade favorevoli a determinati mezzi di trasporto. Visti i vantaggi e la flessibilità dell'approccio, si è optato per quest'ultimo.
+
+\section{Generatore random dei percorsi}
 
 Ogni singola simulazione di percorrenza è stata effettuata con una tratta generata su richiesta con una funzione random. La funzione progettata per la generazione delle tratte crea due coordinate A e B a random e utilizza alcuni constraint per decidere se restituire la tratta o ripetere il processo di generazione. I constraint utilizzati per questo studio sono i seguenti: le tratte generate devono essere lunghe almeno 2km in via aerea; i punti di partenza e di arrivo delle tratte devono essere all'interno del Comune di Milano.
 
