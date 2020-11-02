@@ -1,17 +1,24 @@
 Quando bisogna recarsi presso una via mai sentita prima, solitamente ci si affida a servizi di navigazione per ottenere informazioni sul percorso più veloce da intraprendere.
 Il mezzo di trasporto invece, nella maggior parte dei casi, viene scelto a priori dall'utente per diversi motivi come abitudine, differenza di prezzo o mancanza di interesse per le alternative, nonostante esistano servizi come Google che di default offrono soluzioni per ogni mezzo possibile.
 
-Lo stato attuale della tecnologia permette ai provider di questi servizi di avere una stima del tempo di percorrenza molto precisa e realistica, grazie a dati in tempo reale su traffico, incidenti, deviazioni di percorso e anche grazie allo storico delle tratte percorse dalle loro centinaia di migliaia di utenti.
+Lo stato attuale della tecnologia permette ai provider di questi servizi di avere una stima del tempo di percorrenza molto precisa e realistica, grazie a dati in tempo reale su traffico, incidenti, deviazioni di percorso e grazie allo storico delle tratte percorse dalle loro migliaia di utenti.
 
 Presa nota di questa dinamicità dei dati offerti dai provider e presi in considerazione tutti i mezzi possibili per affrontare un tragitto, la domanda alla base di questo studio è stata quella di chiedersi come queste stime di percorrenza varino lungo l'arco della giornata e delle settimane, per capire se esiste un mezzo universalmente migliore per ogni possibile tragitto e per studiarne eventuali variazioni.
 
-Sebbene sia ragionevole dare per certo che l'auto di proprietà sia più veloce dei mezzi pubblici e delle biciclette, questo ragionamento potrebbe non reggere all'interno di una città come Milano. Infatti, come riportato dagli studi annuali svolti da TomTomIndex, in particolare l'ultimo del 2019\cite{tomtomindexmilan}, Milano rientra tra le prime 100 città a livello globale per livello di congestione stradale, con un traffico tale da far raddoppiare i tempi di percorrenza in auto durante le ore di punta del mattino e del tardo pomeriggio. In aggiunta al fatto che alcuni mezzi non soffrono minimamente di questo problema, come le metropolitane, o ne soffrono parzialmente, come le biciclette, questo ha reso l'ipotesi di partenza sempre più discutibile.
+Sebbene sia ragionevole dare per certo che l'auto di proprietà sia più veloce dei mezzi pubblici e delle biciclette, questo ragionamento potrebbe non reggere all'interno di una città come Milano. Infatti, come riportato dagli studi annuali svolti da TomTomIndex, in particolare l'ultimo del 2019\cite{tomtomindexmilan}, Milano rientra tra le prime 100 città su scala globale per livello di congestione stradale, con un traffico tale da far quasi raddoppiare i tempi di percorrenza in auto durante le ore di punta del mattino e del tardo pomeriggio. In aggiunta al fatto che alcuni mezzi non soffrono minimamente di questo problema, come le metropolitane, o ne soffrono parzialmente, come le biciclette, questo ha reso l'ipotesi di partenza sempre più discutibile.
 
-Intorno alla grande aleatorietà a cui sono soggetti gli spostamenti è stato modellato questo studio, che ha l'obbiettivo di catturare di ora in ora le variazioni dovute a questi fenomeni urbani, mettendo a confronto i tempi di percorrenza stimati dai provider per ogni mezzo di trasporto su un percorso comune, e tale processo ripetuto più volte di ora in ora e per diversi percorsi.
+Intorno alla grande aleatorietà a cui sono soggetti gli spostamenti è stato modellato questo studio, che ha l'obbiettivo di catturare di ora in ora le variazioni dovute a questi fenomeni urbani, mettendo a confronto i tempi di percorrenza stimati dai provider per ogni mezzo di trasporto su un percorso comune, ripetendo tale processo più volte e per diversi percorsi.
 
-\section{Generazione delle tratte}
+Qui di seguito sono riportati tutti gli step che hanno portato allo sviluppo dello studio, dalla progettazione a livello teorico di ogni elemento all'avvio del software per la raccolta dati.
 
-Per fare un confronto alla pari di ogni opzione di spostamento è stata costruita una simulazione via software.
+\section{Percorsi da confrontare}
+
+La scelta dei percorsi sulla quale basare i confronti è stata fatta analizzando due approcci possibili: generazione a random; tragitti prefissati. Fin da subito, l'approccio della scelta a priori delle tratte è risultata problematica per diversi motivi.
+
+In primo luogo, la scelta stessa avrebbe introdotto bias cognitivi riguardo il possibile utente del percorso, per esempio selezionando tratte che portano a delle università, il che avrebbe portato ad analizzare la mobilità solamente dal punto di vista di uno studente o dipendente presso quelle determinate strutture.
+
+Seconda problematica molto più rilevante sarebbe stata quella di selezionare involontariamente dei percorsi che favorissero un mezzo piuttosto che un altro. Nella città di Milano infatti si contanto numerosi tratti stradali di questo genere: strade con corsia preferenziale per mezzi pubblici e taxi; vie per cui non passano mezzi pubblici; strade a singola corsia e con numerosi semafori (quindi più soggetta a incolonnamenti); tangenziali; tratti coperti da passanti ferroviari. Tale scelta mi avrebbe portato ad analizzare dati non rappresentativi di tutta città, con conseguenti risultati in un certo senso "falsati".
+
 
 L'idea alla base della simulazione è quella di simulare un utente "U" che si trova in un dato punto "A" di coordinate (w, x) che vuole dirigersi in un punto B di coordinate (y, z) chiedendo a un ipotetico servizio di navigazione di fornire, sulla base di dati in tempo reale (come traffico, orari dei mezzi pubblici, incidenti e strade chiuse), le migliori soluzioni di percorrenza di tale tratta per ogni mezzo di trasporto preso in considerazione, salvandone i risultati. Il tutto eseguito più volte durante l'arco della giornata, con diversi punti di partenza e di arrivo e di diversa lunghezza.
 
