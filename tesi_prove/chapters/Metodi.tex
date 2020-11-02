@@ -1,19 +1,8 @@
-Quando bisogna recarsi presso una via mai sentita prima, solitamente ci si affida a servizi di navigazione per ottenere informazioni sul percorso più veloce da intraprendere.
-Il mezzo di trasporto invece, nella maggior parte dei casi, viene scelto a priori dall'utente per diversi motivi come abitudine, differenza di prezzo o mancanza di interesse per le alternative, nonostante esistano servizi come Google che di default offrono soluzioni per ogni mezzo possibile.
-
-Lo stato attuale della tecnologia permette ai provider di questi servizi di avere una stima del tempo di percorrenza molto precisa e realistica, grazie a dati in tempo reale su traffico, incidenti, deviazioni di percorso e grazie allo storico delle tratte percorse dalle loro migliaia di utenti.
-
-Presa nota di questa dinamicità dei dati offerti dai provider e presi in considerazione tutti i mezzi possibili per affrontare un tragitto, la domanda alla base di questo studio è stata quella di chiedersi come queste stime di percorrenza varino lungo l'arco della giornata e delle settimane, per capire se esiste un mezzo universalmente migliore per ogni possibile tragitto e per studiarne eventuali variazioni.
-
-Sebbene sia ragionevole dare per certo che l'auto di proprietà sia più veloce dei mezzi pubblici e delle biciclette, questo ragionamento potrebbe non reggere all'interno di una città come Milano. Infatti, come riportato dagli studi annuali svolti da TomTomIndex, in particolare l'ultimo del 2019\cite{tomtomindexmilan}, Milano rientra tra le prime 100 città su scala globale per livello di congestione stradale, con un traffico tale da far quasi raddoppiare i tempi di percorrenza in auto durante le ore di punta del mattino e del tardo pomeriggio. In aggiunta al fatto che alcuni mezzi non soffrono minimamente di questo problema, come le metropolitane, o ne soffrono parzialmente, come le biciclette, questo ha reso l'ipotesi di partenza sempre più discutibile.
-
-Intorno alla grande aleatorietà a cui sono soggetti gli spostamenti è stato modellato questo studio, che ha l'obbiettivo di catturare di ora in ora le variazioni dovute a questi fenomeni urbani, mettendo a confronto i tempi di percorrenza stimati dai provider per ogni mezzo di trasporto su un percorso comune, ripetendo tale processo più volte e per diversi percorsi.
-
-Qui di seguito sono riportati tutti gli step che hanno portato allo sviluppo dello studio, dalla progettazione a livello teorico di ogni elemento all'avvio del software per la raccolta dati.
+...introduzione a quello che si trova sotto...
 
 \section{Mezzi di trasporto e relativi servizi}
 
-Per lo studio in questione sono stati presi in considerazione i principali mezzi di trasporto con cui spostarsi all'interno della città di Milano e per ognuno si è selezionato un servizio di navigazione in grado di offrire stime di percorrenza dinamiche, ovvero calcolate in tempo reale, basate su tale mezzo. Qui di seguito sono riportati i mezzi e i relativi servizi selezionati:
+Per lo studio in questione si sono presi in considerazione i principali mezzi di trasporto con cui spostarsi all'interno del Comune di Milano e per ognuno si è selezionato un servizio di navigazione in grado di offrire stime di percorrenza dinamiche, ovvero calcolate in tempo reale, basate su tale mezzo, in particolare:
 
 \begin{itemize}
 	\item mezzi pubblici ATM e passanti ferroviari;
@@ -42,13 +31,18 @@ Per lo studio in questione sono stati presi in considerazione i principali mezzi
 
 \section{Scelta tra percorsi random e prefissati}
 
-La scelta dei percorsi sul quale basare i confronti è stata fatta analizzando due sorgenti possibili: generazione a random; tragitti prefissati. Fin da subito, l'approccio della scelta a priori delle tratte è risultato problematico per diversi motivi.
+In questo studio si usano diverse tratte sul quale effettuare il confronto allo scopo di ricoprire a livello topografico una buona parte del Comune di Milano e di diversificare i confronti in base alle caratteristiche delle tratte quali lunghezza, coordinate geografiche di partenza e destinazione.
+
+
+Per prendere serve una sorgente dal quale pescarle in modo automatico. Vengono presi in considerazione tre principali sorgenti: generazione a random; tragitti prefissati. Fin da subito, l'approccio della scelta a priori delle tratte è risultato problematico per diversi motivi.
 
 In primo luogo, la scelta della destinazione avrebbe introdotto bias cognitivi riguardo il possibile utente del percorso, per esempio selezionando tratte che portano a delle università, il che avrebbe portato ad analizzare la mobilità solamente dal punto di vista di una determinata utenza, nel caso dell'esempio la categoria di studenti e dipendenti presso quelle determinate strutture. Altri problemi affini sarebbero sorti nello scegliere la partenza, la lunghezza, la distanza dal centro città e numerosità delle tratte.
 
 Seconda problematica molto più rilevante sarebbe stata quella di selezionare involontariamente dei percorsi che favorissero un mezzo piuttosto che un altro. Nella città di Milano infatti si contanto numerosi tratti stradali di questo genere: strade con corsia preferenziale per mezzi pubblici e taxi; strade a singola corsia e con numerosi semafori (quindi più soggetta a incolonnamenti); tangenziali; tratti coperti da passanti ferroviari (più veloci delle metropolitane e con meno fermate). Tale scelta avrebbe portato ad analizzare dati non rappresentativi della città, con conseguenti risultati in un certo senso "falsati".
 
 Usando l'approccio della generazione a random non solo si sarebbero evitati tali problemi, ma i problemi stessi si sarebbero trasformati in analisi da poter eseguire a posteriori, per esempio selezionando da tutte le tratte generate a random quelle che hanno portato nei pressi di un'università, o tratte che in linea d'aria hanno coperto particolari strade favorevoli a determinati mezzi di trasporto. Visti i vantaggi e la flessibilità dell'approccio, si è optato per quest'ultimo.
+
+DA QUI SOTTO IN POI E' ROBA VECCHIA
 
 \section{Generatore random dei percorsi}
 
