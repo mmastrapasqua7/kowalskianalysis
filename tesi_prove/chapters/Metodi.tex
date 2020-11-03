@@ -1,8 +1,10 @@
 ...introduzione a quello che si trova sotto...
 
+\section{Progettazione dello studio}
+
 \section{Mezzi di trasporto e relativi servizi}
 
-Per lo studio in questione si sono presi in considerazione i principali mezzi di trasporto con cui spostarsi all'interno del Comune di Milano e per ognuno si è selezionato un servizio di navigazione in grado di offrire stime di percorrenza dinamiche, ovvero calcolate in tempo reale, basate su tale mezzo, in particolare:
+Sono stati presi in considerazione i principali mezzi di trasporto con cui è possibile spostarsi all'interno del Comune di Milano, e per ognuno di essi è stato selezionato un servizio di navigazione in grado di offrire stime del tempo di percorrenza dinamiche per tale mezzo. Nello specifico:
 
 \begin{itemize}
 	\item mezzi pubblici ATM e passanti ferroviari;
@@ -27,14 +29,11 @@ Per lo studio in questione si sono presi in considerazione i principali mezzi di
 	\end{itemize}
 \end{itemize}
 
-
-
 \section{Scelta tra percorsi random e prefissati}
 
-In questo studio si usano diverse tratte sul quale effettuare il confronto allo scopo di ricoprire a livello topografico una buona parte del Comune di Milano e di diversificare i confronti in base alle caratteristiche delle tratte quali lunghezza, coordinate geografiche di partenza e destinazione.
+Si è scelto di usare diverse tratte su cui basare il confronto per ricoprire a livello topografico una buona parte del Comune di Milano e di diversificare i confronti in base alle caratteristiche delle tratte quali lunghezza, coordinate geografiche di partenza e destinazione, con l'intenzione di simulare al meglio un possibile utente che vuole andare in un qualsiasi punto della mappa partendo da un qualsiasi punto.
 
-
-Per prendere serve una sorgente dal quale pescarle in modo automatico. Vengono presi in considerazione tre principali sorgenti: generazione a random; tragitti prefissati. Fin da subito, l'approccio della scelta a priori delle tratte è risultato problematico per diversi motivi.
+Per effettuare la raccolta dati prendere serve una sorgente dal quale pescarle in modo automatico. Vengono presi in considerazione tre principali sorgenti: generazione a random; tragitti prefissati. Fin da subito, l'approccio della scelta a priori delle tratte è risultato problematico per diversi motivi.
 
 In primo luogo, la scelta della destinazione avrebbe introdotto bias cognitivi riguardo il possibile utente del percorso, per esempio selezionando tratte che portano a delle università, il che avrebbe portato ad analizzare la mobilità solamente dal punto di vista di una determinata utenza, nel caso dell'esempio la categoria di studenti e dipendenti presso quelle determinate strutture. Altri problemi affini sarebbero sorti nello scegliere la partenza, la lunghezza, la distanza dal centro città e numerosità delle tratte.
 
