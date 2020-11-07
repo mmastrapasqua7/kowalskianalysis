@@ -1,5 +1,3 @@
-...introduzione a quello che si trova sotto...
-
 \section{Progettazione dello studio}
 
 Per poter confrontare 
@@ -33,29 +31,25 @@ Sono stati presi in considerazione i principali mezzi di trasporto con cui è po
 
 \section{Scelta tra percorsi random e prefissati}
 
-Si è scelto di usare diverse tratte su cui basare il confronto per ricoprire a livello topografico una buona parte del Comune di Milano e di diversificare i confronti in base alle caratteristiche delle tratte quali lunghezza, coordinate geografiche di partenza e destinazione, con l'intenzione di simulare al meglio un possibile utente che vuole andare in un qualsiasi punto della mappa partendo da un qualsiasi punto.
+Si è scelto di usare diverse tratte su cui basare il confronto allo scopo di ricoprire a livello topografico una buona parte del Comune di Milano e di diversificare i confronti in base alle caratteristiche delle tratte quali lunghezza, coordinate geografiche di partenza e destinazione, per simulare al meglio la posizione di un possibile utente nella mappa.
 
-Per effettuare la raccolta dati prendere serve una sorgente dal quale pescarle in modo automatico. Vengono presi in considerazione tre principali sorgenti: generazione a random; tragitti prefissati. Fin da subito, l'approccio della scelta a priori delle tratte è risultato problematico per diversi motivi.
+Per rendere automatiche le richieste da inoltrare ai servizi di navigazione è stata creata una sorgente dal quale pescare le tratte. Sono stati presi in considerazione tre principali approcci per creare tale sorgente: hardcoded random; hardcoded di tratte realmente percorse; generazione a random just-in-time. I primi due approcci sono risultati fin da subito problematici.
 
-In primo luogo, la scelta della destinazione avrebbe introdotto bias cognitivi riguardo il possibile utente del percorso, per esempio selezionando tratte che portano a delle università, il che avrebbe portato ad analizzare la mobilità solamente dal punto di vista di una determinata utenza, nel caso dell'esempio la categoria di studenti e dipendenti presso quelle determinate strutture. Altri problemi affini sarebbero sorti nello scegliere la partenza, la lunghezza, la distanza dal centro città e numerosità delle tratte.
+In primo luogo, la scelta della destinazione avrebbe introdotto bias cognitivi riguardo il possibile utente del percorso, per esempio, selezionando tratte con delle università come punto di arrivo avrebbe portato ad analizzare la mobilità solamente dal punto di vista di una determinata utenza, nel caso dell'esempio, la categoria di studenti e dipendenti presso quelle determinate strutture. Altri problemi simili sarebbero sorti nello scegliere la partenza, la lunghezza, la distanza dal centro città e numerosità delle tratte.
 
-Seconda problematica molto più rilevante sarebbe stata quella di selezionare involontariamente dei percorsi che favorissero un mezzo piuttosto che un altro. Nella città di Milano infatti si contanto numerosi tratti stradali di questo genere: strade con corsia preferenziale per mezzi pubblici e taxi; strade a singola corsia e con numerosi semafori (quindi più soggetta a incolonnamenti); tangenziali; tratti coperti da passanti ferroviari (più veloci delle metropolitane e con meno fermate). Tale scelta avrebbe portato ad analizzare dati non rappresentativi della città, con conseguenti risultati in un certo senso "falsati".
+Seconda problematica molto più rilevante è che, involontariamente, si sarebbero introdotti dei percorsi che avrebbero favorito un mezzo piuttosto che un altro. Nella città di Milano infatti si contanto numerosi tratti stradali di questo genere: strade con corsia preferenziale per mezzi pubblici e taxi; strade a singola corsia e con numerosi semafori (quindi più soggetta a incolonnamenti); tangenziali; tratti coperti da passanti ferroviari (più veloci delle metropolitane e con meno fermate). Tale scelta avrebbe portato ad analizzare dati non rappresentativi della città, con conseguenti risultati in un certo senso "falsati".
 
 Usando l'approccio della generazione a random non solo si sarebbero evitati tali problemi, ma i problemi stessi si sarebbero trasformati in analisi da poter eseguire a posteriori, per esempio selezionando da tutte le tratte generate a random quelle che hanno portato nei pressi di un'università, o tratte che in linea d'aria hanno coperto particolari strade favorevoli a determinati mezzi di trasporto. Visti i vantaggi e la flessibilità dell'approccio, si è optato per quest'ultimo.
 
-DA QUI SOTTO IN POI E' ROBA VECCHIA
-
 \section{Generatore random dei percorsi}
 
-Ogni singola simulazione di percorrenza è stata effettuata con una tratta generata su richiesta con una funzione random. La funzione progettata per la generazione delle tratte crea due coordinate A e B a random e utilizza alcuni constraint per decidere se restituire la tratta o ripetere il processo di generazione. I constraint utilizzati per questo studio sono i seguenti: le tratte generate devono essere lunghe almeno 2km in via aerea; i punti di partenza e di arrivo delle tratte devono essere all'interno del Comune di Milano.
+Prima ancora di scrivere una funzione per generare tratte a random è stata scelta l'area geografica all'interno della quale generarle. Siccome il servizio di car sharing Enjoy non permette di usare la propria flotta al di fuori del Comune di Milano, tale area è stata selezionata come terreno per i confronti, rappresentata sotto forma di rettangolo per questioni di semplicità nella programmazione. Nello specifico, sono state scelte le coordinate (45.450562\textdegree, 9.158959\textdegree) e (45.482032\textdegree, 9.206763\textdegree) rispettivamente come vertice in basso a sinistra e in alto a destra del rettangolo rappresentativo dell'area selezionata. In questo modo la generazione di punti a random è stata ridotta alla generazione di coordinate maggiori o uguali della prima e minori o uguali della seconda.
 
-Il primo constraint è stato scelto appositamente per simulare delle tratte scomode da fare a piedi, ovvero tratte che supererebbero i 20/30 minuti di camminata per essere coperte e, allo stesso modo, per avere tratte che giustificherebbero l'uso della macchina, evitando quindi tratte 5 minuti di macchina.
+Una volta scritta la funzione per la generazione a random delle tratte, è stato introdotto un constraint appositamente per simulare dei percorsi scomodi da fare a piedi, ovvero per generare tratte che supererebbero i 20 minuti di camminata per essere coperte, e al tempo stesso che giustificherebbero l'utilizzo della macchina. Si è scelto di usare 2 km in linea d'aria dal punto di partenza a quello di destinazione come misura minima della lunghezza di una tratta.
 
-Il secondo constraint è dovuto ai termini di servizio del car sharing, che obbliga l'utente a utilizzare i mezzi a disposizione del servizio solamente all'interno del Comune di Milano, escludendo le varie zone dell'hinterland che fanno provincia. Per fare un confronto alla pari sulle stesse tratte ho dovuto quindi escludere la periferia della città.
+Un secondo constraint è stato introdotto per introdurre equamente 4 tipologie diverse di viaggio...TODO...
 
-La generazione random delle tratte è stata scelta per non incentrare indirettamente lo studio su particolari categorie di utente, come strade piene di uffici per i lavoratori, strade con scuole e università per gli studenti o strade particolarmente trafficate per via della topografia della città. Il tentativo è stato quello di rendere la simulazione più neutra possibile, considerando una qualsiasi tipologia di utente.
-
-\todo{atrent: in particolare qui, io metterei un collegamento col lavoro di Federico e fare anche qualche simulazione usando "tratte medie" estratte dai suoi campionamenti}
+...DA QUI IN POI E' ROBA VECCHIA...
 
 \subsection{Acquisizione dei dati}
 
