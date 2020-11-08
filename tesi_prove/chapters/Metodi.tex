@@ -23,11 +23,20 @@ Sono stati presi in considerazione i principali mezzi di trasporto con cui è po
 	\begin{itemize}
 		\item OpenStreetMap\cite{openstreetmap}
 	\end{itemize}
-	\item car sharing Enjoy;
+	\item car sharing Enjoy.
 	\begin{itemize}
 		\item Enjoy Map\cite{enjoycarsharing}
 	\end{itemize}
 \end{itemize}
+
+I servizi di navigazione HERE, Waze e OpenStreetMap offrono una API in cui sono presenti delle richieste di servizio nella forma:
+\begin{lstlisting}[language=Go]
+func stimaTragitto(a, b coordinate) durata
+\end{lstlisting}
+dove ricevono in input le coordinate di partenza e di destinazione e restituiscono in output una stima di percorrenza del tragitto in formato JSON.
+
+Il servizio di Enjoy offre solamente una lista aggiornata delle auto libere presenti nella città. Le stime di percorrenza basate su tale mezzo sono state calcolate utilizzando il servizio di OpenStreetMap e di Waze. Nello specifico, date le coordinate di partenza del tragitto, viene richiesto a OpenStreetMap di calcolare il tempo di percorrenza a piedi verso la macchina più vicina dal punto di partenza. Una volta trovata l'auto più vicina, viene richiesto a Waze di calcolare il restante tempo di percorrenza a partire dalle coordinate della macchina fino al punto di destinazione. Nei risultati viene salvata la somma dei due tempi di percorrenza.
+
 
 \section{Scelta tra percorsi random e prefissati}
 
@@ -45,63 +54,34 @@ Usando l'approccio della generazione a random non solo si sarebbero evitati tali
 
 Prima ancora di scrivere una funzione per generare tratte a random è stata scelta l'area geografica all'interno della quale generarle. Siccome il servizio di car sharing Enjoy non permette di usare la propria flotta al di fuori del Comune di Milano, tale area è stata selezionata come terreno per i confronti, rappresentata sotto forma di rettangolo per questioni di semplicità nella programmazione. Nello specifico, sono state scelte le coordinate (45.450562\textdegree, 9.158959\textdegree) e (45.482032\textdegree, 9.206763\textdegree) rispettivamente come vertice in basso a sinistra e in alto a destra del rettangolo rappresentativo dell'area selezionata. In questo modo la generazione di punti a random è stata ridotta alla generazione di coordinate maggiori o uguali della prima e minori o uguali della seconda.
 
-Una volta scritta la funzione per la generazione a random delle tratte, è stato introdotto un constraint appositamente per simulare dei percorsi scomodi da fare a piedi, ovvero per generare tratte che supererebbero i 20 minuti di camminata per essere coperte, e al tempo stesso che giustificherebbero l'utilizzo della macchina. Si è scelto di usare 2 km in linea d'aria dal punto di partenza a quello di destinazione come misura minima della lunghezza di una tratta.
+Una volta scritta la funzione per la generazione a random delle tratte, è stato introdotto un constraint per simulare dei percorsi scomodi da fare a piedi, ovvero per generare tratte che supererebbero i 20 minuti di camminata per essere coperte, e al tempo stesso che giustificherebbero l'utilizzo della macchina. Si è scelto di usare 2 km in linea d'aria dal punto di partenza a quello di destinazione come misura minima della lunghezza di una tratta.
 
-Un secondo constraint è stato introdotto per introdurre equamente 4 tipologie diverse di viaggio...TODO...
+Un secondo constraint è stato introdotto per avere una maggiore eterogeneità delle tratte generate a livello geografico. Molte delle linee principali dei mezzi pubblici infatti attraversano il centro storico di Milano, inoltre l'area del centro storico rappresenta più della metà dell'area selezionata dal constraint precedente. Siccome è stato scelto di ricoprire a livello topografico tutta l'area di Milano, si è programmato il generatore in modo da creare in maniera equidistribuita le seguenti tipologie di tratte: da dentro il centro storico a fuori; da dentro a dentro; da fuori a fuori; da fuori a dentro.
 
-...DA QUI IN POI E' ROBA VECCHIA...
+\section{Pseudocodice del programma}
 
-\subsection{Acquisizione dei dati}
-
-I dati alla base di questo studio sono stati forniti tramite A.P.I dai seguenti servizi: HereWeGo (here.com) per le soluzioni di percorrenza coi mezzi pubblici ATM; Waze (waze.com) per la percorrenza in macchina; OpenStreetMap (openstreetmap.org) per la percorrenza in bici e a piedi; ... per il car sharing.
-
-\subsubsection{Soluzioni di percorrenza}
-
-HereWeGo e Waze forniscono soluzioni di percorrenza in tempo reale, tenendo conto delle condizioni attuali del traffico e della posizione dei mezzi. In particolare, Waze prende in considerazione il traffico, gli incidenti, le strade chiuse per lavori e le deviazioni, mentre HereWeGo prende in considerazione la posizione dei mezzi pubblici in tempo reale, indicando tempi di attesa, rallentamenti e deviazioni di percorso. OpenStreetMap invece fornisce soluzioni di percorrenza statiche, sia pedovia che in bicicletta, che non dipendono quindi dal traffico o da altre condizioni stradali. I dati di quest'ultimo infatti sono stati usati solamente come termini di riferimento. Le A.P.I di tali servizi sono nella forma:
 \begin{lstlisting}[language=Go]
-Service.GetRoute(A, B coordinate) Solution
-\end{lstlisting}
-dove il risultato restituito, in formato JSON, contiene la miglior soluzione di percorrenza per il servizio richiesto. Tra i dati contenuti nel risultato sono presenti informazioni come durata stimata del tragitto, step di navigazione, avvisi e alternative.
+var a, b, c coordinate
 
-\subsubsection{Car sharing}
-
-Dato che non sono stati trovati servizi per stimare la percorrenza di una tratta col car sharing, che includesse la ricerca di una macchina vicina al punto di partenza e infine una stima del percorso, ne è stato programmato uno ad hoc. Il servizio ... offre tramite un A.P.I una lista aggiornata in tempo reale di tutte le macchine parcheggiate, libere di essere prenotate:
-\begin{lstlisting}[language=Go]
-Service.GetFreeCars() []CarInfo
-\end{lstlisting}
-dove per ogni entry nella lista sono presenti i dati della macchina e le coordinate geografiche della posizione.
-
-Per creare un servizio in grado di fornire una soluzione di percorrenza in car sharing basata su dati in tempo reale sono stati uniti tre servizi, quello di OpenStreetMap per la percorrenza a piedi, quello di Waze per la percorrenza in macchina e quello di ... per avere la lista aggiornata delle macchine libere. Sono stati usati nel seguente modo:
-\begin{lstlisting}[language=Go]
-func GetCarSharingRoute(A, B) Solution {
-	freeCars = CarSharingService.GetFreeCars()
-	C = findClosestCar(freeCars, A)
+for {
+	a, b = creaTragittoRandom()
+	c = enjoy.trovaAutoPiuVicina(a)
 	
-	footRoute = OpenStreetMap.GetRoute(A, C)
-	carRoute = Waze.GetRoute(C, B)
-	
-	return Solution{
-		footRoute.EstimatedTravelTime +
-			carRoute.EstimatedTravelTime,
-		...
+	risultato := []stime{
+		here.stimaTragitto(a, b),
+		waze.stimaTragitto(a, b),
+		osm.stimaTragitto(a, b, "foot"),
+		osm.stimaTragitto(a, b, "bike"),
+		osm.stimaTragitto(a, c, "foot") +
+			waze.stimaTragitto(c, b)
 	}
+	
+	save(risultato)
+	sleep(1 * time.Minute)
 }
 \end{lstlisting}
-Dato un utente "U" che vuole andare da un punto "A" a un punto "B" in car sharing, il servizio creato appositamente procede nel scaricare la lista aggiornata delle macchine libere, cerca tra queste la macchina più vicina al punto di partenza desiderato "A" e ne calcola il tragitto a piedi per raggiungerla (punto "C"), dopodichè calcola il resto del tragitto, dalla posizione della macchina "C" al punto di destinazione desiderato "B", in macchina. Con questo metodo si è ottenuta una stima in tempo reale della percorrenza in car sharing per ogni tratta, che ha permesso a posteriori di ricavare altre informazioni utili, come per esempio il tempo medio per raggiungere un auto.
 
-Per questione di semplicità, la ricerca della macchina più vicina è stata implementata con una algoritmo greedy che cerca la macchina fisicamente più vicina al punto di partenza, ignorando totalmente il verso di marcia del tragitto, possibilmente aumentando il tempo di percorrenza in macchina.
-
-\subsection{Attuazione delle richieste e salvataggio}
-
-La simulazione è stata programmata nel seguente modo:
-\begin{enumerate}
-\item ogni 60 secondi viene generata una tratta a random col generatore precedentemente discusso
-\item parallelamente viene richiesto a tutti i servizi di fornire la soluzione migliore per percorrere tale tratta
-\item il risultato viene salvato sotto forma di file JSON e compresso. Il processo si ripete
-\end{enumerate}
-E' stato scelto un intervallo di 60 secondi per permettere a tutti i servizi di risolvere la richiesta tramite A.P.I e per non eccedere il limite massimo di richieste mensili offerte gratuitamente dal servizio di HereWeGo.
-
-
+...DA QUI IN POI E' ROBA VECCHIA...
 
 \section{Raccolta dati}
 
