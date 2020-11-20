@@ -1,179 +1,83 @@
-\documentclass[a4paper]{report}
-
+\documentclass[12pt]{report}
 \usepackage[utf8]{inputenc}
-\usepackage[english,italian]{babel}
-\usepackage[hyphens]{url}
-\usepackage{hyperref}
 \usepackage{graphicx}
-\usepackage{lipsum}
+\usepackage{listings}
 \usepackage{todonotes}
-\usepackage{refcheck}
+\usepackage{xcolor}
+\usepackage{url}
+\usepackage{textcomp}
+\graphicspath{{img/}}
 
-% potrebbero essere utili anche:
-%\usepackage{listings}
-%\usepackage{paralist}
-%\usepackage{tikz}
-
-% prove per un draft più leggibile
-\usepackage[a4paper,top=2cm,bottom=2cm,outer=5cm,verbose,headheight=1cm,heightrounded]{geometry}
-\setlength{\marginparwidth}{4.5cm} %per farci stare todonotes
+% copia e incolla da overleaf
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},   
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\ttfamily\footnotesize,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=2
+}
+\lstset{style=mystyle}
 
 \begin{document}
-	\begin{titlepage}
-		\begin{center}
-			\includegraphics[width=\textwidth]{Logo.jpg}\\
-			{\large{\bf Corso di Laurea Magistrale in Informatica}}
-		\end{center}
-	
-		\vspace{14mm}
-		\begin{center}
-			{\LARGE{\bf ANALISI PRESTAZIONI}}\\
-			\vspace{3mm}
-			{\LARGE{\bf DEI MEZZI DI TRASPORTO}}\\
-			\vspace{4mm}
-			{\LARGE{\bf NEL COMUNE DI MILANO}}\\
-			\vspace{4mm}
-			{\LARGE{\bf BASATA SU DATI DI SERVIZI}}\\
-			\vspace{4mm}
-			{\LARGE{\bf DI NAVIGAZIONE}}\\
-		\end{center}
-	
-		\vspace{14mm}
-		\begin{center}
-			{\large{\bf Tesi di Laurea di}}\\
-			\vspace{3mm}
-			{\Large{\bf MAURO MASTRAPASQUA}}\\
-			\vspace{2mm}
-			{\large{\bf Matricola 892629}}\\
-		\end{center}
-	
-		\vspace{14mm}
-		\begin{flushleft}
-			{\normalsize{\bf Relatore}}\\
-			\vspace{1mm}
-			{\large{\bf Alessandro Magno}}\\
-			\vspace{4mm}
-			{\normalsize{\bf Correlatore}}\\
-			\vspace{1mm}
-			{\large{\bf Carlo Magno}}\\
-		\end{flushleft}
-	
-		\vspace{14mm}
-		\begin{center}
-			{\large{\bf Anno Accademico 4000 a.C}}
-		\end{center}
-	\end{titlepage}
-
-	\tableofcontents
-	\listoftodos
-	
-	\chapter{Introduzione}
-	{\LARGE
-		PER PROF: questa è una bozza di partenza per la stesura delle idee. Sto man mano studiando i vari articoli (sul repo: kowalskianalysis/docs/pdf\_articoli\_accademici) per poi creare il .bib e inserire le citazioni. Devo ancora scrivere delle formule per formalizzare ragionamenti e algoritmi.
-	}\todo{atrent: esatto, ci vorrà una bella sezione ``state of the art''}\todo{atrent: formalizzazione sicuramente, così (sotto) è in forma di ``appunti interni''}
-	\linebreak
-
-
-	TCP/IP over Avian Carriers\cite{waitzman1990standard}
-	
-	\chapter{Confronto}
-	{\large
-		L'obiettivo di questo studio è di mettere a confronto in termini di velocità, prezzo, rapporto velocità/prezzo e altri parametri i diversi mezzi di trasporto a disposizione nel Comune di Milano per spostarsi al suo interno. Anche se può sembrare ovvio che un'automobile sia più veloce di un tram o che quest'ultimo sia più veloce di una persona a piedi, questi fatti potrebbero non sussistere all'interno di una città come Milano per via delle proprietà intrinsiche che accomunano ogni città di medie e grandi dimensioni: traffico, deviazioni di percorso, incidenti, eventi di massa e ore di punta.
-	}\todo{atrent: attenzione allo spelling}\todo{atrent: perché il large?}
-
-	{\large
-		L'idea alla base del confronto è quella di simulare in tempo reale lungo l'arco della giornata, ripetutamente a intervalli regolari, per un arco di tempo di qualche mese, la percorrenza di alcune tratte prestabilite e non, dove per ogni simulazione di percorrenza di una tratta vengono calcolate diverse soluzioni ognuna con un mezzo di trasporto diverso. I dati collezionati da questa simulazione mi permetterebbero di fare le dovute analisi sui termini di paragone scelti per confrontare i mezzi, traendo infine le conclusioni.
-	}\todo{atrent: in generale va usato l'impersonale}\todo{atrent: maggior precisione sulle domande che ti poni, ad es. vuoi confrontare prezzi, tempi, ``scomodità'' ecc. cioè quali sono i fattori che vuoi ``mettere in tabella''?}
-
-	\section{Mezzi a confronto}
-	{\large
-		I mezzi di trasporto presi in considerazione per questo confronto sono:
-		\begin{itemize}
-			\item servizio di trasporto pubblico ATM (metro, bus, filobus e passanti Trenord)
-			\item servizi di car sharing
-			\begin{itemize}
-				\item ShareNOW (CAR2GO) (Smart for2, Smart for4)
-				\item Enjoy (Fiat 500)
-				\item Sharengo (veicoli elettrici)
-			\end{itemize}
-			\item macchina di proprietà
-			\item bicicletta di proprietà
-			\item propri piedi
-		\end{itemize}
-	}
-	
-	\section{Stima in tempo reale}
-	{\large
-		Per simulare la percorrenza di una tratta userò le API messe a disposizione di alcuni servizi: Moovit per il trasporto pubblico ATM, Waze per gli spostamenti su veicoli, OpenStreetMap per gli spostamenti a piedi e in bicicletta. Queste API richiedono in input le coordinate geografiche di partenza e di arrivo desiderate e forniscono in output un file formato .json contenente le tratte più veloci calcolate. Queste API sono nella sostanza di forma:
-		\begin{verbatim}
-			getRoutes(startCoordinates, endCoordinates) List[Route]
-		\end{verbatim}
-	}
-
-	{\large
-		In particolare, Moovit e Waze considerano, nel calcolo delle tratte, anche i dati in tempo reale del traffico, delle deviazioni di percorso e degli incidenti nell'area di Milano. Moovit inoltre ha accesso ai dati di tracking dei vari mezzi pubblici direttamente da ATM, tramite questo infatti garantisce una corrispondenza con la realtà riguardo i tempi di arrivo dei mezzi alle fermate indicate, rendendo il calcolo più preciso. OpenStreetMap invece offre dei dati statici in caso di input uguale, ovvero che non cambiano nel tempo, il che è ragionevole per il percorso a piedi e in bicicletta che tendenzialmente non sono affetti dal traffico.
-	}
-
-	{\large
-		I servizi di Car Sharing invece mettono a disposizione delle API per i dati in tempo reale delle macchine parcheggiate libere che sono nella forma:
-		\begin{verbatim}
-			getCars() List[CarPosition]
-		\end{verbatim}
-	}
-	
-	{\large
-		Nonostante questo, il tempo di percorrenza delle tratte usando il car sharing è comunque calcolabile: tramite le API di OpenStreetMap per raggiungere una macchina a piedi e usando le API di Waze per calcolare il percorso in macchina restante per raggiungere la destinazione. Per rendere effettivo questo calcolo, serve anche calcolare la macchina più vicina dal punto di partenza richiesto.
-		\begin{verbatim}
-			// se voglio andare da A a B
-
-			cars := sharingService.getCars()
-			C := findClosestCar(cars, A)
-			footRoute := openstreetmap.GetRoutes(A, C) // foot
-			carRoute := waze.GetRoutes(C, B)
-			totalRoute := footRoute.Add(carRoute)
-		\end{verbatim}
-	}
-
-	\section{Scelta delle tratte}
-	{\large
-		Per avere un confronto significativo tra i vari mezzi di trasporto ho usato varie risorse per scegliere delle tratte significative:
-		\begin{itemize}
-			\item tratte più percorse dagli utenti del car sharing
-			\item generatore pseudorandom con alcuni vincoli
-			\item strade più e meno trafficate di Milano
-		\end{itemize}
-	}\todo{atrent: citare lavoro di Federico}
-
-	\subsection{Tratte più percorse dagli utenti del car sharing}
-	(studente/collega/qualcuno) colleziona i dati delle macchine parcheggiate libere da più di 5 anni tramite le API dei servizi di car sharing. Da questi dati, campionati a intervalli regolari di circa 1 minuto, è possibile ricavare le tratte percorse dagli utilizzatori. Per farlo, è sufficiente applicare il seguente algoritmo a ogni macchina: (cit)
-	\begin{verbatim}
-		sia R una rilevazione di una macchina contenente data
-		del campionamento e posizione geografica della macchina
+\begin{titlepage}
+	\begin{center}
+		\includegraphics[width=\textwidth]{Logo.jpg}
+		\large{Corso di Laurea Triennale in Informatica}
 		
-		sia L una lista di rilevazioni R ordinate in ordine crescente
-		sulla base dell'attributo della data di campionamento
+		\vspace{1.4cm}
 		
-		salva tutte rilevazioni L[i] ed L[i+1] sotto forma di
-		tupla (R1, R2) se e solo se: L[i].posizione != L[i+1].posizione
-	\end{verbatim}
-	In questo modo ottengo una lista di tratte percorse dagli utenti del car sharing, dove \texttt{T.R1.posizione} è il punto di partenza, \texttt{T.R2.posizione} è il punto di arrivo e \texttt{T.R2.data - T.R1.data} è il tempo impiegato a percorrerla, con uno scarto di massimo 2 minuti (cit).
-	
-	Una volta collezionate tutte le tratte percorse, utilizzerò un algoritmo di clustering per ridurre l'insieme e trovare delle tratte rappresentative che hanno in comune coordinate di partenza e di arrivo molto vicine. Sebbene l'algoritmo di clustering K-means sia tra i migliori algoritmi per dei dati multidimensionali e sia in grado di trovare dei punti significativi detti centroidi, non è il migliore per quanto riguarda i dati geospaziali (cit).\todo{atrent: non solo cit. anche spiegare in breve perché non va bene}
-	
-	L'algoritmo migliore in questo caso è il DBSCAN, algoritmo di clustering basato sulla densità. Questo tipo di clusterizzazione però non trova dei centroidi, ma solamente i cluster. Infatti questo algoritmo è in grado di trovare cluster di qualsiasi forma oltre a quella circolare gaussiana dove il K-means da il meglio. Quando il cluster ha una forma diversa da quella tipica di una distribuzione gaussiana, il concetto di centroide perde di significato. Nonostante questo, come è stato dimostrato da altri lavori (cit/ref), usando i giusti parametri in funzione della grandezza dello spazio dimensionale analizzato, è possibile indurre il DBSCAN a trovare dei cluster di piccola dimensione dove la definizione di un centroide torna ad aver significato. Ad esempio, se trovassi un cluster di macchine parcheggiate di forma allungata, simile a un segmento, che corrisponde geograficamente a una via o vialone, avrebbe senso poter prendere il punto medio di quel cluster e affermare che quella via è una destinazione rappresentativa che accomuna alcuni degli utenti del car sharing. Questa cosa vale anche per le piazze e per le strade a più carreggiate. Al contrario, in un cluster della stessa forma ma che copre una vasta area rapportata alla dimensione dell'area analizzata non avrebbe senso trovare il punto medio. Ad esempio: in un cluster di forma circolare che copre tutta la periferia di Milano, il centroide sarebbe indicato come il centro della città, il Duomo, il che non ha senso.
-	
-	Una volta applicato il DBSCAN e trovato dei punti significativi, mi occuperò di unire questi punti tramite l'uso di un contatore per trovare le tratte più percorse dagli utenti del car sharing.
-	
-	\subsection{Generatore pseudorandom di tratte}
-	Un altro modo di ottenere delle tratte su cui fare i confronti è quello di programmare un generatore di tratte pseudorandom che soddisfino alcuni constraints: 
-	\begin{itemize}
-		\item la tratta generata deve iniziare e finire dentro l'area operativa dei mezzi e servizi messi a confronto, che corrisponde con l'area del Comune di Milano;
-		\item la tratta deve essere lunga più di un tot di kilometri (da definire) in via aerea.
-	\end{itemize}
-	
-	\subsection{Strade più e meno trafficate del Comune di Milano}
-	Come ultimo modo, creerò delle tratte da utilizzare nei confronti ispirandomi dai dati del traffico, cercando le strade più e meno trafficate e creando delle tratte ad hoc che in qualche modo le comprendano.	
+		\Large{\textbf{CONFRONTO TRA MEZZI DI TRASPORTO NEL COMUNE DI MILANO BASATO SU STIME DI TEMPI DI PERCORRENZA}}
+		
+		\vspace{0.8cm}
+		
+		\large{Tesi di Laurea di} \\
+		\large{\textbf{MAURO MASTRAPASQUA}} \\
+		\large{Matricola 892629}
+	\end{center}
 
-	\bibliographystyle{plain}
-	\bibliography{Biblio}
+	\begin{flushleft}
+		\vspace{1.4cm}
+		
+		\normalsize{Relatore} \\
+		\normalsize{\textbf{Andrea Trentini}}
+
+		\vspace{0.4cm}
+
+		\normalsize{Correlatore} \\
+		\normalsize{\textbf{Dario Malchiodi}}
+	\end{flushleft}
+
+	\begin{center}
+		\vspace{0.8cm}
+		
+		\large{Anno Accademico 2020/2021}
+	\end{center}
+\end{titlepage}
+
+\tableofcontents
+\listoftodos
+
+\chapter{Introduzione}
+\input{chapters/Introduzione}
+
+\chapter{Metodi}
+\input{chapters/Metodi}
+
+\bibliographystyle{plain}
+\bibliography{Biblio}
 \end{document}
