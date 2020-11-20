@@ -4,5 +4,6 @@ Metodi
 \_ Scelta tra percorsi random e prefissati
 \_ Generatore random dei percorsi
 \_ Pseudocodice del programma
+
+Risultati
 \_ Raccolta dati
-\_ Analisi

@@ -61,7 +61,7 @@ Un secondo constraint è stato introdotto per avere una maggiore eterogeneità d
 \section{Timing delle richieste}
 
 Le richieste sono state programmate per essere effettuate dalle 7:00 alle 23:59 di ogni giorno. La scelta di tale intervallo è stata vincolata dall'orario di servizio dei mezzi pubblici ATM, difatti in tale orario viene garantito il pieno regime del servizio, mentre vengono offerti collegamenti e passaggi saltuari al di fuori di esso.
-Per rispettare i limiti giornalieri delle varie API si è scelto di effettuare 1 richiesta al minuto, dove ogni richiesta rappresenta un tragitto generato a random mandato simultaneamente a ogni servizio di navigazione per ottenere una stima da ognuno di essi, per un totale di circa 1,000 richieste al giorno.
+Per rispettare i limiti giornalieri delle varie API si è scelto di effettuare 1 richiesta al minuto, dove ogni richiesta rappresenta un tragitto generato a random mandato simultaneamente a ogni servizio di navigazione per ottenere una stima da ognuno di essi, per un totale di circa 1,000 richieste al giorno. Oltre ai valori delle stime di percorrenza per ogni mezzo, insieme alla richiesta sono stati salvati altri dati come il numero di macchine libere enjoy al momento della richiesta, la distanza aerea della tratta e quella calcolata a piedi. 
 
 \section{Pseudocodice del programma}
 
@@ -84,9 +84,3 @@ for {
 	save(risultato)
 }
 \end{lstlisting}
-
-\section{Raccolta dati}
-
-La simulazione è stata programmata per andare in esecuzione dalle ore 7:00 alle ore 23:59 di ogni giorno per avere un confronto più alla pari. Infatti, prima delle ore 7:00 i mezzi pubblici operano con orario ridotto e meno mezzi, vista la bassa richiesta in quella fascia oraria.
-
-I dati riguardanti la simulazione sono stati raccolti a partire dall'1 marzo 2020 per un periodo di circa 4 mesi, fino al 10 luglio 2020. Vista l'emergenza per epidemia da coronavirus (giusto scritto così?), tutta l'Italia è entrata in uno stato di lockdown annunciato per decreto legge dal 12 marzo 2020, allentando gradualmente le restrizioni a partire dal 4 maggio 2020. I dati all'interno di questo intervallo sono quindi da considerarsi poco utili all'analisi.
