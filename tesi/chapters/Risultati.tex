@@ -12,5 +12,64 @@ In partenza e arrivo sono salvate le coordinate espresse in gradi del tragitto g
 
 Oltre ai dati principali sono stati salvati informazioni secondarie come il numero di auto libere Enjoy al momento della richiesta, la lunghezza aerea della tratta e la lunghezza calcolata a piedi della stessa, entrambe espresse in km.
 
-\section{Performance media dei mezzi}
+\section{Analisi dati raccolti}
+
+\subsection{Filtro dati errati}
+
+\begin{table}
+	\centering
+	\begin{tabular}{ | l r r | }
+		\hline
+		& \textbf{n\textdegree tratte} & \textbf{\%} \\ 
+		\textbf{Coerenti} & 49560 & 73 \\  
+		\textbf{Errati} & 18290 & 27 \\
+		\hline
+		\textbf{Totale} & 67850 & 100 \\
+		\hline
+	\end{tabular}
+	\caption{I dati errati contengono uno o più zeri nelle stime}
+	\label{table:1}
+\end{table}
+
+I provider per le stime di percorrenza dei vari mezzi hanno talvolta restituto il valore zero. Questo fenomeno è probabilmente dovuto alla generazione a random delle coordinate di partenza e arrivo, che ha permesso richieste in qualsiasi punto della mappa, compresi punti non situati direttamente sulla strada come in giardini pubblici, condimini e altre zone private, o semplicemente per disservizi. Per un confronto alla pari sono state considerate solo le righe prive di zeri nel file CSV. Ne è risultato che su circa 68000 richieste, circa 50000 sono prive di zeri, circa il 73\% del totale.
+
+\subsection{Distribuzione tratte generate}
+
+\begin{center}
+\includegraphics[scale=0.8]{distribuzione_tratte}
+\end{center}
+
+\begin{table}
+	\centering
+	\begin{tabular}{ | l r | }
+		\hline
+		\textbf{Abs. freq.} & 49560 \\
+		\textbf{media} & 3.80 \\
+		\textbf{mediana} & 3.57 \\
+		\textbf{std} & 1.27 \\
+		\textbf{min} & 2.00 \\
+		\textbf{max} & 9.52 \\
+		\hline
+	\end{tabular}
+	\caption{I dati errati contengono uno o più zeri nelle stime}
+	\label{table:1}
+\end{table}
+
+Le tratte generate a random sono distribuite intorno a una media di 3.8km con una deviazione standard di circa 1.3km.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
