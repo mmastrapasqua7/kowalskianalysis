@@ -1,10 +1,12 @@
 \section{Raccolta dati}
 
-I dati riguardanti la simulazione sono stati raccolti a partire dall'1 marzo 2020 fino al 27 giugno 2020 per un arco di tempo di circa 4 mesi, al ritmo di 1,000 richieste al giorno. L'Italia è entrata in uno stato di lockdown nazionale il 12 marzo e ha allentato le restrizioni a partire dal 4 maggio. I dati raccolti a partire da quest'ultima data sono considerati validi per le analisi. Sono stati salvati in formato .csv, dove ogni riga contiene le seguenti informazioni:
+I dati riguardanti la simulazione sono stati raccolti a partire dall'1 marzo 2020 fino al 27 giugno 2020 per un arco di tempo di circa 4 mesi, al ritmo di 1,200 richieste al giorno. L'Italia è entrata in uno stato di lockdown nazionale per emergenza COVID19 il 12 marzo e ha allentato le restrizioni a partire dal 4 maggio. I dati raccolti a partire da quest'ultima data sono considerati validi per le analisi. Sono stati salvati in formato .csv, dove ogni riga contiene le seguenti informazioni:
 
 \begin{center}
-	\begin{tabular}{ c c c c c c c c c  }
-		Data & Orario & Partenza & Arrivo & Auto & ATM & Enjoy & Bici & Piedi
+	\begin{tabular}{ | c | c | c | c | c | c | c | c | c | }
+		\hline
+		Data & Orario & Partenza & Arrivo & Auto & ATM & Enjoy & Bici & Piedi \\
+		\hline
 	\end{tabular}
 \end{center}
 
@@ -12,9 +14,7 @@ In partenza e arrivo sono salvate le coordinate espresse in gradi del tragitto g
 
 Oltre ai dati principali sono stati salvati informazioni secondarie come il numero di auto libere Enjoy al momento della richiesta, la lunghezza aerea della tratta e la lunghezza calcolata a piedi della stessa, entrambe espresse in km.
 
-\section{Analisi dati raccolti}
-
-\subsection{Filtro dati errati}
+\section{Filtro dati errati}
 
 \begin{table}[H]
 	\centering
@@ -31,9 +31,9 @@ Oltre ai dati principali sono stati salvati informazioni secondarie come il nume
 	\label{table:1}
 \end{table}
 
-I provider per le stime di percorrenza dei vari mezzi hanno talvolta restituto il valore zero. Questo fenomeno è probabilmente dovuto alla generazione a random delle coordinate di partenza e arrivo, che ha permesso richieste in qualsiasi punto della mappa, compresi punti non situati direttamente sulla strada come in giardini pubblici, condimini e altre zone private, o semplicemente per disservizi. Per un confronto alla pari sono state considerate solo le righe prive di zeri nel file CSV. Ne è risultato che su circa 68000 richieste, circa 50000 sono prive di zeri, circa il 73\% del totale.
+I provider per le stime di percorrenza dei vari mezzi hanno talvolta restituto il valore zero. Questo fenomeno è probabilmente dovuto alla generazione a random delle coordinate di partenza e arrivo, che ha permesso richieste in qualsiasi punto della mappa, compresi punti non situati direttamente sulla strada come in giardini pubblici, condimini e altre zone private, o semplicemente per disservizi. Per un confronto alla pari sono state considerate solo le righe prive di zeri nel file CSV. Dalla tabella \ref{table:1}  risulta che su circa 68000 richieste, circa 50000 sono prive di zeri, circa il 73\% del totale.
 
-\subsection{Distribuzione tratte generate}
+\section{Distribuzione tratte generate}
 
 \begin{center}
 \includegraphics[scale=0.8]{distribuzione_tratte}
@@ -51,24 +51,41 @@ I provider per le stime di percorrenza dei vari mezzi hanno talvolta restituto i
 		\textbf{max} & 9.52 \\
 		\hline
 	\end{tabular}
-	\caption{}
+	\caption{Statistiche lunghezza tratta [km]}
 	\label{table:2}
 \end{table}
 
+Nella tabella \ref{table:2} sono riportate le statistiche riguardo la lunghezza in via aerea delle tratte generate. Si può vedere come più della metà sia lunga meno di 5 km in linea aerea, risultato ottenuto in parte dai constraint imposti nella generazione.
 
+\section{Performance medie dei mezzi}
 
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ | l r r r r r | }
+		\hline
+		& \textbf{Auto} & \textbf{Enjoy} & \textbf{ATM} & \textbf{Bici} & \textbf{Piedi} \\
+		\textbf{media}   & 19.6 & 13.5 &  8.3 & 11.9 & 4.5 \\
+		\textbf{mediana} & 19.5 & 13.2 &  7.9 & 12.0 & 4.5 \\
+		\textbf{std}     &  3.9 &  3.8 &  2.3 &  1.3 & 0.0 \\
+		\textbf{min}     &  6.7 &  3.0 &  3.4 &  6.5 & 4.3 \\
+		\textbf{max}     & 48.5 & 36.1 & 27.8 & 16.9 & 4.6 \\
+		\hline
+	\end{tabular}
+	\caption{Statistiche velocità media [km/h]}
+	\label{table:2}
+\end{table}
 
+\section{Variazione velocità media di ora in ora}
 
+\begin{center}
+	\includegraphics[scale=1.0]{vmedia_oraria_all}
+\end{center}
 
+\subsection{Auto}
 
-
-
-
-
-
-
-
-
+\begin{center}
+	\includegraphics[scale=1.0]{vmedia_oraria_car}
+\end{center}
 
 
 
