@@ -57,7 +57,7 @@ I provider per le stime di percorrenza dei vari mezzi hanno talvolta restituto i
 
 Nella tabella \ref{table:2} sono riportate le statistiche riguardo la lunghezza in via aerea delle tratte generate. Si può vedere come più della metà sia lunga meno di 5 km in linea aerea, risultato ottenuto in parte dai constraint imposti nella generazione.
 
-\section{Performance medie dei mezzi}
+\section{Performance medie}
 
 \begin{table}[H]
 	\centering
@@ -72,20 +72,69 @@ Nella tabella \ref{table:2} sono riportate le statistiche riguardo la lunghezza 
 		\hline
 	\end{tabular}
 	\caption{Statistiche velocità media [km/h]}
-	\label{table:2}
+	\label{table:3}
 \end{table}
 
-\section{Variazione velocità media di ora in ora}
+\section{Analisi dei singoli mezzi}
 
-\begin{center}
-	\includegraphics[scale=1.0]{vmedia_oraria_all}
-\end{center}
+
 
 \subsection{Auto}
 
 \begin{center}
-	\includegraphics[scale=1.0]{vmedia_oraria_car}
+	\includegraphics[scale=1.0]{vmedia_oraria_auto}
 \end{center}
 
+\begin{center}
+	\includegraphics[scale=1.0]{vmedia_oraria_auto_weekend}
+\end{center}
+
+\begin{center}
+	\includegraphics[scale=1.0]{vmedia_oraria_auto_weeks}
+\end{center}
+
+
+
+\subsection{Enjoy}
+
+\begin{center}
+	\includegraphics[scale=1.0]{vmedia_oraria_enjoy}
+\end{center}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ | l r | }
+		\hline
+		& \textbf{ragg. auto} \\
+		\textbf{media}   &  6.6 \\
+		\textbf{mediana} &  6.0 \\
+		\textbf{std}     &  4.6 \\
+		\textbf{min}     &  0.0 \\ 
+		\textbf{max}     & 43.0 \\
+		\hline
+	\end{tabular}
+	\caption{Statistiche t.medio per trovare auto [min]}
+	\label{table:4}
+\end{table}
+
+\begin{center}
+	\includegraphics[scale=1.0]{tmedio_raggiungimento_auto_enjoy}
+\end{center}
+
+\begin{center}
+	\includegraphics[scale=1.0]{variazione_auto_libere_enjoy_weekend}
+\end{center}
+
+\begin{center}
+	\includegraphics[scale=1.0]{variazione_auto_libere_enjoy_weeks}
+\end{center}
+
+
+
+\subsection{ATM, Bici e a piedi}
+
+\begin{center}
+	\includegraphics[scale=1.0]{vmedia_oraria_atm_bike_foot}
+\end{center}
 
 
