@@ -31,9 +31,9 @@ Oltre ai dati principali sono stati salvati informazioni secondarie come il nume
 	\label{table:1}
 \end{table}
 
-I provider per le stime di percorrenza dei vari mezzi hanno talvolta restituto il valore zero. Questo fenomeno è probabilmente dovuto alla generazione a random delle coordinate di partenza e arrivo, che ha permesso richieste in qualsiasi punto della mappa, compresi punti non situati direttamente sulla strada come in giardini pubblici, condimini e altre zone private, o semplicemente per disservizi. Per un confronto alla pari sono state considerate solo le righe prive di zeri nel file CSV. Dalla tabella \ref{table:1}  risulta che su circa 68000 richieste, circa 50000 sono prive di zeri, circa il 73\% del totale.
+I provider per le stime di percorrenza dei vari mezzi hanno talvolta restituto il valore zero. Questo fenomeno è probabilmente dovuto alla generazione a random delle coordinate di partenza e arrivo, che ha permesso richieste in qualsiasi punto della mappa, compresi punti non situati direttamente sulla strada come in giardini pubblici, condimini e altre zone private, o semplicemente per disservizi. Per un confronto alla pari sono state considerate solo le righe prive di zeri nel file CSV. Dalla tabella \ref{table:1}  risulta che su circa 68000 richieste, 50000 sono prive di zeri, circa il 73\% del totale.
 
-\section{Distribuzione tratte generate}
+\section{Distribuzione lunghezza tratte generate}
 
 \begin{center}
 \includegraphics[scale=0.8]{distribuzione_tratte}
@@ -79,19 +79,36 @@ Nella tabella \ref{table:2} sono riportate le statistiche riguardo la lunghezza 
 
 
 
+
 \subsection{Auto}
 
-\begin{center}
+\subsubsection{Velocità media di ora in ora}
+
+\begin{figure}[!h]
 	\includegraphics[scale=1.0]{vmedia_oraria_auto}
-\end{center}
+	\caption{Velocità media in auto [km/h] di ora in ora}
+	\label{image:1}
+\end{figure}
 
-\begin{center}
+Una delle prime analisi effettuate per ogni mezzo è stata quella di calcolare la velocità media per ogni tragitto effettuato, con l'obbiettivo di osservare eventuali variazioni di ora in ora. Come riportato visualmente nella figura \ref{image:1}, i tragitti in macchina hanno subito una notevole variazione di velocità media nell'arco 8:00-11:00 e in quello delle 17:00-19:00. Tali risultati sono in linea con quelli dello studio di TomTomIndex\cite{tomtomindexmilan} effettuato sulla città di Milano nel 2019, che evidenzia le ore 9:00 e 18:00, anche dette \textit{rush hours}, come picchi di congestione stradale dal lunedì al venerdì, con un livello di congestione rispettivamente del 70\% e del 60\%. Risultano in linea con lo studio anche le ore precedenti e successive agli orari individuati come picchi.
+
+\subsubsection{Velocità media lunedì-venerdì e sabato-domenica}
+
+\begin{figure}[!h]
 	\includegraphics[scale=1.0]{vmedia_oraria_auto_weekend}
-\end{center}
+	\caption{Velocità media in auto [km/h] di ora in ora}
+	\label{image:2}
+\end{figure}
 
-\begin{center}
+La figura \ref{image:2} mostra il risultato di una ripartizione dei dati effettuata sulla base del giorno della settimana, in particolare sono stati divisi i tragitti effettuati dal lunedì al venerdì di ogni settimana da quelli del sabato e domenica. Si può notare una notevole differenza di velocità media indistintamente dall'orario di circa 2 km/h. La variazione nel sabato-domenica risulta meno evidente di quella del lunedì-venerdì, con le variazioni, ovvero i picchi di rallentamento, che si spostanto nelle fasce orarie 10:00-12:00 e 16:00-19:00. Anche questi dati risultano in linea con quelli dello studio di TomTomIndex\cite{tomtomindexmilan}, che vede un minor livello di congestione nel weekend con dei picchi nelle ore 10:00 e 18:00.
+
+\subsubsection{Velocità media settimana dopo settimana da fine lockdown}
+
+\begin{figure}[!h]
 	\includegraphics[scale=1.0]{vmedia_oraria_auto_weeks}
-\end{center}
+	\caption{Velocità media in auto [km/h] di ora in ora}
+	\label{image:3}
+\end{figure}
 
 
 

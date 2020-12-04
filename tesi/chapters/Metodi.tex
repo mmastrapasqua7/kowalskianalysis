@@ -34,7 +34,7 @@ I servizi di navigazione HERE, Waze e OpenStreetMap offrono delle API per effett
 func stimaTragitto(a, b coordinate) durata
 \end{lstlisting}
 dove richiedono in input le coordinate di partenza e di destinazione e restituiscono in output una stima di percorrenza del tragitto in formato JSON.
-
+\todo{MM: inserire accenno su come ho trovato l'auto più vicina}
 Il servizio di Enjoy offre solamente una lista aggiornata delle auto libere presenti nella città. Le stime di percorrenza basate su tale mezzo sono state calcolate utilizzando il servizio di OpenStreetMap e di Waze. Nello specifico, date le coordinate di partenza del tragitto, viene richiesto a OpenStreetMap di calcolare il tempo di percorrenza a piedi verso la macchina più vicina dal punto di partenza. Una volta trovata l'auto più vicina, viene richiesto a Waze di calcolare il restante tempo di percorrenza a partire dalle coordinate della macchina fino al punto di destinazione. Nei risultati viene salvata la somma dei due tempi di percorrenza.
 
 
