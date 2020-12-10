@@ -77,16 +77,13 @@ Nella tabella \ref{table:2} sono riportate le statistiche riguardo la lunghezza 
 
 \section{Analisi dei singoli mezzi}
 
-
-
-
 \subsection{Auto}
 
 \subsubsection{Velocità media di ora in ora}
 
 \begin{figure}[!h]
 	\includegraphics[scale=1.0]{vmedia_oraria_auto}
-	\caption{Velocità media in auto [km/h] di ora in ora}
+	\caption{Velocità media in auto [km/h], di ora in ora}
 	\label{image:1}
 \end{figure}
 
@@ -96,7 +93,7 @@ Una delle prime analisi effettuate per ogni mezzo è stata quella di calcolare l
 
 \begin{figure}[!h]
 	\includegraphics[scale=1.0]{vmedia_oraria_auto_weekend}
-	\caption{Velocità media in auto [km/h] di ora in ora}
+	\caption{Velocità media in auto [km/h], di ora in ora}
 	\label{image:2}
 \end{figure}
 
@@ -106,7 +103,7 @@ La figura \ref{image:2} mostra il risultato di una ripartizione dei dati effettu
 
 \begin{figure}[!h]
 	\includegraphics[scale=1.0]{vmedia_oraria_auto_weeks}
-	\caption{Velocità media in auto [km/h] di ora in ora}
+	\caption{Velocità media in auto [km/h], di ora in ora}
 	\label{image:3}
 \end{figure}
 
@@ -114,9 +111,23 @@ La figura \ref{image:3} mostra il risultato di una ripartizione dei dati effettu
 
 \subsection{Enjoy}
 
-\begin{center}
+\subsubsection{Velocità media di ora in ora}
+
+\begin{figure}[H]
 	\includegraphics[scale=1.0]{vmedia_oraria_enjoy}
-\end{center}
+	\caption{Velocità media usando Enjoy [km/h], di ora in ora}
+	\label{image:4}
+\end{figure}
+
+Siccome le stime di percorrenza col servizio Enjoy sono basate sul servizio di Waze, in particolare il tragitto dalla posizione dell'auto alla destinazione del tragitto, non si riscontrano particolari differenze riguardo i flessi nell'andamento della velocità media di ora in ora osservati nella figura \ref{image:1} per l'auto. La curva però risulta traslata orizzontalmente verso il basso per via del tragitto a piedi necessario per raggiungere un'auto libera che va a influire nel calcolo. Questa traslazione, secondo la figura \ref{image:4}, risulta di circa 5 km/h indipendentemente dall'ora del giorno. Di conseguenza sono state analizzati i dati riguardanti il tragitto a piedi.
+
+\subsubsection{Tempo medio per raggiungere auto libera}
+
+\begin{figure}[H]
+	\includegraphics[scale=1.0]{tmedio_raggiungimento_auto_enjoy}
+	\caption{Tempo medio per raggiungere auto libera [min], di ora in ora}
+	\label{image:5}
+\end{figure}
 
 \begin{table}[H]
 	\centering
@@ -130,13 +141,11 @@ La figura \ref{image:3} mostra il risultato di una ripartizione dei dati effettu
 		\textbf{max}     & 43.0 \\
 		\hline
 	\end{tabular}
-	\caption{Statistiche t.medio per trovare auto [min]}
+	\caption{Statistiche tempo medio per raggiungere auto libera [min]}
 	\label{table:4}
 \end{table}
 
-\begin{center}
-	\includegraphics[scale=1.0]{tmedio_raggiungimento_auto_enjoy}
-\end{center}
+
 
 \begin{center}
 	\includegraphics[scale=1.0]{variazione_auto_libere_enjoy_weekend}
