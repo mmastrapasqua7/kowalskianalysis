@@ -109,6 +109,18 @@ La figura \ref{image:2} mostra il risultato di una ripartizione dei dati effettu
 
 La figura \ref{image:3} mostra il risultato di una ripartizione dei dati effettuata in base alla settimana, in particolare sono stati partizionati a gruppi di 2 settimane consecutive i tragitti effettuati a partire dal 4 maggio 2020, primo giorno dell'allentamento delle restrizioni imposte dal governo italiano per l'emergenza covid\cite{dpcm26aprile}. Nel grafico risulta evidente una degradazione della velocità media generale e lineare rispetto al passare delle settimane. Si nota inoltre che le curve corrispondenti alle settimane successive al 17 maggio, ovvero dopo le prime 2 settimane, presentino dei flessi sempre più accentuati in prossimità delle \textit{rush hours} evidenziate dal grafico \ref{image:1}.
 
+\subsubsection{Velocità media in base alla lunghezza tratta}
+
+\begin{center}
+\begin{figure}
+	\includegraphics[scale=0.75]{heatmap_auto}
+	\caption{Velocità media in auto [km/h] in base alla lunghezza tratta, di ora in ora}
+	\label{image:12}
+\end{figure}
+\end{center}
+
+\todo{MM: commenti...}
+
 \subsection{Enjoy}
 
 \subsubsection{Velocità media di ora in ora}
@@ -221,14 +233,14 @@ A differenza del confronto con l'auto di proprietà, il confronto col servizio d
 \end{table}
 
 \begin{figure}[H]
-	\includegraphics[scale=0.8]{confronto_enjoy_atm}
+	\includegraphics[scale=0.8]{confronto_atm_enjoy}
 	\caption{Frequenza relativa vittorie ATM su Enjoy di ora in ora}
 	\label{image:10}
 \end{figure}
 
 I risultati del confronto tra i mezzi pubblici ATM e il servizio di car sharing Enjoy illustrati nella tabella \ref{table:5} mostrano una percentuale di vittorie di circa il 9\%, dove per vittoria si intende che il tempo impiegato a percorrere una tratta coi mezzi pubblici è stato minore o uguale al tempo impiegato utilizzando il car sharing. Nel grafico \ref{image:10} viene visualizzata la distribuzione di queste vittorie di ora in ora. Si può notare come vicino alle ore di picco del traffico individuate nell'analisi delle performance dell'auto, ovvero le ore 8:00-10:00 e 17:00-20:00, si concentri la percentuale maggiore delle vittorie.
 
-Per esempio, su tutte le tratte richieste nelle ore 8:00, nell'11\% delle volte i mezzi pubblici hanno pareggiato o superato la performance del car sharing. Al contrario, al di fuori delle \textit{rush hours}, la percentuale di vittorie è vicina allo 0. Dalla tabella \ref{table:5} si evince anche che dell'8.7\% di queste vittorie, circa metà di esse sono tratte brevi lunghe dai 2 ai 5 km.
+Per esempio, su tutte le tratte richieste nelle ore 8:00, nell'11\% delle volte i mezzi pubblici hanno pareggiato o superato la performance del car sharing. Al contrario, al di fuori delle \textit{rush hours}, la percentuale di vittorie è vicina allo 0. Dalla tabella \ref{table:5} si evince anche che dell'8.7\% di queste vittorie, circa metà di esse sono tratte brevi dai 2 ai 5 km.
 
 \subsubsection{Bicicletta vs. Enjoy}
 
@@ -250,8 +262,14 @@ Per esempio, su tutte le tratte richieste nelle ore 8:00, nell'11\% delle volte 
 	\label{table:6}
 \end{table}
 
+\begin{figure}[H]
+	\includegraphics[scale=1.0]{confronto_bike_enjoy}
+	\caption{Frequenza relativa vittorie bicicletta su Enjoy di ora in ora}
+	\label{image:11}
+\end{figure}
 
+Risultato ancora più interessante è quello del confronto tra bicicletta di proprietà e car sharing. La tabella \ref{table:6} mostra una percentuale delle vittorie del 36\% sul totale, poco più di un terzo del totale delle tratte. La maggior parte di queste vittorie è concentrata nelle tratte brevi dai 2 ai 5 km.
 
-
+Anche in questo confronto è emerso che nelle \textit{rush hours} si accentua la percentuale di vittorie che arriva a toccare quasi il 45\% del totale. Al contrario dei mezzi pubblici, questa percentuale resta alta anche al di fuori degli orari di punta, restando sempre intorno al 30\%.
 
 
