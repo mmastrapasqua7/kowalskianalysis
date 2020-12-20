@@ -53,7 +53,7 @@ I provider per le stime di percorrenza dei vari mezzi hanno talvolta restituto i
 	\end{tabular}
 	\caption{Statistiche lunghezza tratta [km]}
 	\label{table:2}
-\end{table}
+\end{table}\todo{atrent: le H mettile solo a posteriori, in prima battuta lascia che sia latex a posizionare le figure/tabelle}
 
 Nella tabella \ref{table:2} sono riportate le statistiche riguardo la lunghezza in via aerea delle tratte generate. Si può vedere come più della metà sia lunga meno di 5 km in linea aerea, risultato ottenuto in parte dai constraint imposti nella generazione.
 
@@ -80,14 +80,14 @@ Nella tabella \ref{table:2} sono riportate le statistiche riguardo la lunghezza 
 \subsection{Auto}
 
 \subsubsection{Velocità media di ora in ora}
-
+\todo{atrent: ci starebbe anche uno split  per classi di lunghezza-tratta, magari c'è dopo}
 \begin{figure}[!h]
 	\includegraphics[scale=1.0]{vmedia_oraria_auto}
 	\caption{Velocità media in auto [km/h], di ora in ora}
 	\label{image:1}
 \end{figure}
 
-Una delle prime analisi effettuate per ogni mezzo è stata quella di calcolare la velocità media per ogni tragitto effettuato, con l'obbiettivo di osservare eventuali variazioni di ora in ora. Come riportato visualmente nella figura \ref{image:1}, i tragitti in macchina hanno subito una notevole variazione di velocità media nell'arco 8:00-11:00 e in quello delle 17:00-19:00. Tali risultati sono in linea con quelli dello studio di TomTomIndex\cite{tomtomindexmilan} effettuato sulla città di Milano nel 2019, che evidenzia le ore 9:00 e 18:00, anche dette \textit{rush hours}, come picchi di congestione stradale dal lunedì al venerdì, con un livello di congestione rispettivamente del 70\% e del 60\%. Risultano in linea con lo studio anche le ore precedenti e successive agli orari individuati come picchi.
+Una delle prime analisi effettuate per ogni mezzo è stata quella di calcolare la velocità media per ogni tragitto effettuato, con l'obbiettivo di osservare eventuali variazioni di ora in ora. Come riportato visualmente nella figura \ref{image:1}, i tragitti in macchina hanno subito una notevole variazione di velocità media nell'arco 8:00-11:00 e in quello delle 17:00-19:00. Tali risultati sono in linea con quelli dello studio di TomTomIndex\cite{tomtomindexmilan} effettuato sulla città di Milano nel 2019, che evidenzia le ore 9:00 e 18:00, anche dette \textit{rush hours}, come picchi di congestione stradale dal lunedì al venerdì, con un livello di congestione rispettivamente del 70\% e del 60\%. Risultano in linea con lo studio anche le ore precedenti e successive agli orari individuati come picchi.\todo{atrent: non è che TomTom usa gli stessi dati per fare il suo indice?}
 
 \subsubsection{Velocità media lunedì-venerdì e sabato-domenica}
 

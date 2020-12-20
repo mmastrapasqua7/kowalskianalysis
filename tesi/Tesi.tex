@@ -1,13 +1,17 @@
-\documentclass[12pt]{report}
+\documentclass[a4paper,12pt]{report}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{todonotes}
 \usepackage{xcolor}
-\usepackage{url}
+\usepackage{hyperref}
 \usepackage{textcomp}
 \usepackage{float}
 \graphicspath{{img/}}
+
+% draft più leggibile
+\usepackage[a4paper,top=2cm,bottom=2cm,outer=5cm,verbose,headheight=1cm,heightrounded]{geometry}
+\setlength{\marginparwidth}{4.5cm} %per farci stare todonotes
 
 % copia e incolla da overleaf
 \definecolor{codegreen}{rgb}{0,0.6,0}
