@@ -36,3 +36,16 @@ FATTO: vedi verifica grafico in biciletta
 
 (trentini & malchiodi) qualche statistica descrittiva in piu' sui dati (varianza, media, distribuzione ecc...)
 FATTO
+
+##### NEW ###### (Trentini)
+
+note:
+- aggiungere tra quadre di fianco al titolo lo stato del capitolo
+- appendice parti interessanti di codice tipo jupyter e codice scraper
+- capitoli riguardo i dati dei servizi di navigazione: dove li prendono? su cosa si basano?
+- inclusione dei dati mezzi pubblici durante il lockdown, differenze?
+- opendata e scraping, aspetto legale e tecnico
+	- perche' ho ricorso allo scraping, il mondo dell'open data
+	- licenza dei siti
+- analisi dei mezzi di trasporto pubblico e privato attraverso tragitti simulati
+
