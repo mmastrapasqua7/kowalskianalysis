@@ -72,6 +72,18 @@ ovvero chiedono in input le coordinate di partenza e di destinazione e restituis
 
 \subsubsection{Lo scraping di Waze}
 
+Dato che i servizi per sviluppatori offerti da Waze sono gratuiti, si è scelto di sfruttare tali dati ma prendendoli per vie laterali, direttamente dalla pagina web \url{https://www.waze.com/live-map}. La maggior parte dei browser in circolazione, come Mozilla Firefox, offrono oltre al browser in sè tutti gli strumenti da sviluppatore di siti web usati a scopo di debugging. Tra questi vi è la console da sviluppatore, apribile tramite una scorciatoia da tastiera \texttt{Ctrl+Shift+K}. Con questa console è possibile vedere le richieste di rete che il sito effettua in background per il suo funzionamento. Dato che si tratta di un'applicazione a singola pagina, è chiaro che per il suo funzionamento vengano effettuate delle richieste tramite JavaScript in modo asincrono direttamente ai loro server. Questa pratica prende il nome di Asynchronous JavaScript and XML (AJAX)\cite{ajaxwiki}. Guardando i comportamenti a livello di rete del sito web, mentre si svolge una richiesta per un viaggio a Waze, si presenta subito un URL che fa da endpoint per le richieste di routing:
+
+\begin{center}
+	\includegraphics[scale=0.45]{waze_scraping}
+\end{center}
+
+in particolare, la richiesta verso l'url \url{https://www.waze.com/live-map/routing/?} contiene esattamente il punto di partenza e di arrivo richiesti parametrizzati nell'url della richiesta, e il risultato è restituito è in formato JSON. Per proteggere i loro server da sovraccarichi, Waze risponde a questo URL solamente se si possiede il permesso ricevuto preventivamente tramite un token, ovvero una stringa di caratteri che funge da chiave segreta. Per ottenere questa chiave e raggiungere l'obbiettivo finale di avere delle API per interrogare il servizio, è stato scritto un programma in Golang per emulare l'interazione col sito web e ricevere il token necessario per effettuare le richieste successive. Questo processo ha richiesto tempo sia per la codifica dei parametri e che per la decodifica del risultato stesso e dei risultati intermedi per la richiesta del token. In altre parole, è stato fatto il reverse engineering della web app.
+
+\subsubsection{Stima del percorso per il car sharing}
+
+Avendo trovato un modo per risolvere i tempi di percorrenza in auto, per il servizio di car sharing Enjoy è stato scritto un programma 
+
 \section{Scelta tra percorsi random e prefissati}
 
 Si è scelto di usare diverse tratte su cui basare il confronto allo scopo di ricoprire a livello topografico una buona parte del Comune di Milano e di diversificare i confronti in base alle caratteristiche delle tratte, quali lunghezza, coordinate geografiche di partenza e destinazione, per simulare al meglio la posizione di un possibile utente nella mappa.
