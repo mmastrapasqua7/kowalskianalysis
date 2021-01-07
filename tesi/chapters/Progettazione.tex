@@ -30,40 +30,47 @@ Il servizio Here offre una REST API per le informazioni riguardo il routing e la
 
 Non sono stati trovati servizi relativi a stime di tempi di percorrenza utilizzando un mezzo dei servizi car sharing. I servizi di car sharing Car2Go ed Enjoy non offrono API per tale calcolo ma dispongono di una mappa costantemente aggiornata sul loro sito web con l'elenco delle auto libere, ognuna con allegato dati riguardo il tipo di veicolo (tra auto e moto) e il carburante rimasto. Un programma in grado di acquisire le informazioni delle auto libere è stato gentilmente offerto da Federico Losacco, che lo ha scritto e utilizzato per uno studio sul comportamento del traffico basato sui viaggi compiuti dagli utenti del servizio\cite{losaccofederico}.
 
-\subsubsection{title}
+\subsubsection{OpenStreetMap e dintorni (auto, bici e a piedi)}
 
+Il progetto collaborativo di OpenStreetMap offre, tra le altre cose, il calcolo di un tragitto usando come backend servizi offerti da terze parti, tra cui Open Source Routing Machine (OSRM). Purtroppo però, tali servizi non usano dati in tempo reale per la stima del tempo di percorrenza\cite{osm}.
+
+\subsection{Scelta delle API}
+
+Di seguito sono elencate le scelte fatte per i servizi e i loro rispettivi ruoli di copertura dei mezzi di trasporto:
 
 \begin{itemize}
-	\item mezzi pubblici ATM e passanti ferroviari;
+	\item HERE REST API\cite{herewegoapi}
 	\begin{itemize}
-		\item HERE WeGo REST API\cite{herewegoapi}
+		\item mezzi pubblici ATM e passanti ferroviari;
 	\end{itemize}
-	\item automobile di proprietà;
+
+	\item OpenStreetMap con OSRM\cite{openstreetmap}
 	\begin{itemize}
-		\item Waze API\cite{wazeapi}
+		\item bicicletta di proprietà e a piedi;
 	\end{itemize}
-	\item bicicletta di proprietà;
+
+	\item Enjoy Map scraper di Federico Losacco\cite{enjoycarsharing}\cite{losaccofederico}
 	\begin{itemize}
-		\item OpenStreetMap\cite{openstreetmap}
-	\end{itemize}
-	\item a piedi;
-	\begin{itemize}
-		\item OpenStreetMap\cite{openstreetmap}
-	\end{itemize}
-	\item car sharing Enjoy.
-	\begin{itemize}
-		\item Enjoy Map\cite{enjoycarsharing}
+		\item posizioni delle auto libere Enjoy (car sharing);
 	\end{itemize}
 \end{itemize}
 
-I servizi di navigazione HERE, Waze e OpenStreetMap offrono delle API per effettuare delle richieste nella seguente forma:
+Nonostante OSRM non offra soluzioni in tempo reale ma statiche, è stato scelto ugualmente per via della scarsa influenza del traffico sui tempi di pecorrenza in bicicletta e a piedi, che dipendono per la maggior parte dall'itinerario calcolato e da caratteristiche statiche del territorio come i segnali stradali (divieti, contromano, aree pedonali etc...).
+
+Le API REST di Here sono state utilizzate per mancanza di valide alternative. In un primo momento si è tentato lo scraping del sito web di Moovit per interagire col sito e comunicare le richieste senza intervento umano, ma la difficoltà nel codificare i parametri delle richieste e a decodificarne le poche risposte immerse in svariati messaggi di errore ne hanno scoraggiato l'utilizzo.
+
+Per il servizio di car sharing, si è scelto di usare la lista delle macchine libere come base, ottenuta tramite scraping, per ottenere una stima del tempo di percorrenza basata su due percorsi, per primo il tragitto a piedi per raggiungere l'auto libera più vicina al punto di partenza richiesto e come secondo il tragitto in auto per completare il percorso dal punto in cui si trova l'auto alla destinazione richiesta.
+
+Non sono state trovate valide alternative per il servizio di routing in auto. Google risulta essere eccessivamente costosa se si considera un minimo di 10 richieste all'ora per avere un campione rappresentativo di quel giorno di diversi punti della città. Il prezzo per una prestazione del genere è di circa 72\$ al mese. Waze invece non offre nessuna API per essere interrogata direttamente. Per ovviare a questo problema, si è scelto di programmare un browser headless in grado di interagire direttamente col sito web di Waze per interrogare il servizio e prelevare i dati della stima di percorrenza, simulando per intero l'interazione umana con la pagina.
+
+Le API REST di HERE e quelle di OpenStreetMap sono nella seguente forma:
 \begin{lstlisting}[language=Go]
 func stimaTragitto(a, b coordinate) durata
 \end{lstlisting}
-dove richiedono in input le coordinate di partenza e di destinazione e restituiscono in output una stima di percorrenza del tragitto in formato JSON.
+ovvero chiedono in input le coordinate di partenza e di destinazione e restituiscono in output una stima di percorrenza del tragitto in formato JSON di quel determinato momento.
 \todo{MM: inserire accenno su come ho trovato l'auto più vicina}
-Il servizio di Enjoy offre solamente una lista aggiornata delle auto libere presenti nella città. Le stime di percorrenza basate su tale mezzo sono state calcolate utilizzando il servizio di OpenStreetMap e di Waze. Nello specifico, date le coordinate di partenza del tragitto, viene richiesto a OpenStreetMap di calcolare il tempo di percorrenza a piedi verso la macchina più vicina dal punto di partenza. Una volta trovata l'auto più vicina, viene richiesto a Waze di calcolare il restante tempo di percorrenza a partire dalle coordinate della macchina fino al punto di destinazione. Nei risultati viene salvata la somma dei due tempi di percorrenza.
 
+\subsubsection{Lo scraping di Waze}
 
 \section{Scelta tra percorsi random e prefissati}
 
