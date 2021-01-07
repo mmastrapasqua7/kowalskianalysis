@@ -1,10 +1,30 @@
 \section{Progettazione dello studio}
 
-Per poter confrontare ...
+Per attuare questo confronto tra mezzi di trasporto si è scelto di appoggiarsi a servizi di navigazione in grado di fornire stime di percorrenza (ETA) in tempo reale e usarle come valori effettivi. Le gare per confrontare tali mezzi sono state tradotte in richieste di stime di percorrenza per un tragitto comune a tutti, effettuate più volte al giorno e per diversi percorsi. In questo modo si è riusciti nell'intento iniziale di effettuare uno studio su degli stessi percorsi iniziati nello stesso momento ma con mezzi di trasporto diversi.
 
 \section{Mezzi di trasporto e relativi servizi}
 
-Sono stati presi in considerazione i principali mezzi di trasporto con cui è possibile spostarsi all'interno del Comune di Milano, e per ognuno di essi è stato selezionato un servizio di navigazione in grado di offrire stime del tempo di percorrenza in tempo reale per tale mezzo. Nello specifico:
+Sono stati presi in considerazione i principali mezzi di trasporto alternativi all'automobile di proprietà con cui è possibile spostarsi all'interno del Comune di Milano: servizio di car sharing, mezzi pubblici e passanti ferroviari, bicicletta di proprietà e infine il percorso a piedi. Quest'ultimo, anche se non diretto competitor, è stato scelto per essere usato come riferimento.
+
+\subsection{Ricerca delle A.P.I}
+
+Il primo passo verso la scrittura di un software per effettuare le varie richieste di percorso è stata quella di cercare delle API disponibili per ogni mezzo di trasporto in grado di fornire stime dinamiche sui tempi di percorrenza basate su dati in tempo reale.
+
+\subsubsection{Google}
+
+Inevitabilmente Google è stata la prima opzione che si è cercata. Google infatti, grazie a Maps e grazie all'acquisizione di Waze\cite{googleblog}, è una dei leader nel settore delle informazioni di navigazione e che vende la loro conoscenza tramite API. Tra le varie API offerte è presente quella che fa il caso di questo studio, la Directions API, che è in grado di fornire stime di percorrenza molto precise per l'auto, per il percorso a piedi e per la bicicletta (quando disponibile)\cite{googleapi}. Purtroppo però, il costo per l'utilizzo di queste API è di 10\$ per 1000 richieste al mese, l'equivalente di circa 1 richiesta all'ora, che risulta troppo poco per l'obbiettivo dello studio di catturare la variazione delle performance dei mezzi di ora in ora\cite{googleapiprice}.
+
+\subsubsection{Waze}
+
+Nonostante sia stata acquisita da Google, Waze è rimasta indipendente a livello di API. Quello che offre Waze però non è esattamente un endpoint a cui fare richiesta per un determinato viaggio, ma semplicemente degli URL da inserire nel proprio sito web o nella propria app Android/iOs per aprire il client Waze da browser/app coi dati della richiesta parametrizzati nell'URL.
+
+\subsubsection{Moovit}
+
+
+
+
+
+
 
 \begin{itemize}
 	\item mezzi pubblici ATM e passanti ferroviari;
