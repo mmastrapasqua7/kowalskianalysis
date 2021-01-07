@@ -10,20 +10,27 @@ Sono stati presi in considerazione i principali mezzi di trasporto alternativi a
 
 Il primo passo verso la scrittura di un software per effettuare le varie richieste di percorso è stata quella di cercare delle API disponibili per ogni mezzo di trasporto in grado di fornire stime dinamiche sui tempi di percorrenza basate su dati in tempo reale.
 
-\subsubsection{Google}
+\subsubsection{Google (auto, bici e a piedi)}
 
 Inevitabilmente Google è stata la prima opzione che si è cercata. Google infatti, grazie a Maps e grazie all'acquisizione di Waze\cite{googleblog}, è una dei leader nel settore delle informazioni di navigazione e che vende la loro conoscenza tramite API. Tra le varie API offerte è presente quella che fa il caso di questo studio, la Directions API, che è in grado di fornire stime di percorrenza molto precise per l'auto, per il percorso a piedi e per la bicicletta (quando disponibile)\cite{googleapi}. Purtroppo però, il costo per l'utilizzo di queste API è di 10\$ per 1000 richieste al mese, l'equivalente di circa 1 richiesta all'ora, che risulta troppo poco per l'obbiettivo dello studio di catturare la variazione delle performance dei mezzi di ora in ora\cite{googleapiprice}.
 
-\subsubsection{Waze}
+\subsubsection{Waze (auto)}
 
-Nonostante sia stata acquisita da Google, Waze è rimasta indipendente a livello di API. Quello che offre Waze però non è esattamente un endpoint a cui fare richiesta per un determinato viaggio, ma semplicemente degli URL da inserire nel proprio sito web o nella propria app Android/iOs per aprire il client Waze da browser/app coi dati della richiesta parametrizzati nell'URL.
+Nonostante sia stata acquisita da Google, Waze è rimasta indipendente a livello di API. Quello che offre Waze però non è esattamente un endpoint a cui fare richiesta per un determinato viaggio, ma semplicemente degli URL da inserire nel proprio sito web o nella propria app Android/iOs per aprire il client Waze da browser/app coi dati della richiesta parametrizzati nell'URL\cite{wazeapi}.
 
-\subsubsection{Moovit}
+\subsubsection{Moovit (mezzi pubblici)}
 
+Anche Moovit non offre API per interrogare direttamente i loro servizi e ricevere delle stime, ma solamente l'opzione di incorporare un widget all'iterno della propria pagina web o applicazione che rimanda direttamente ai loro servizi\cite{moovitapi}.
 
+\subsubsection{Here (auto, scooter e mezzi pubblici)}
 
+Il servizio Here offre una REST API per le informazioni riguardo il routing e la stima del tempo di percorrenza. Queste stime però risultano accurate (basate su dati in tempo reale) solo per determinate città, comunicate sul loro sito, e tra queste non è inclusa Milano. Per le città non in lista, la stima è fatta sulla base dei dati tabellari degli orari dei passaggi dei mezzi\cite{hereapi}.
 
+\subsubsection{Car2Go, Enjoy (car sharing)}
 
+Non sono stati trovati servizi relativi a stime di tempi di percorrenza utilizzando un mezzo dei servizi car sharing. I servizi di car sharing Car2Go ed Enjoy non offrono API per tale calcolo ma dispongono di una mappa costantemente aggiornata sul loro sito web con l'elenco delle auto libere, ognuna con allegato dati riguardo il tipo di veicolo (tra auto e moto) e il carburante rimasto. Un programma in grado di acquisire le informazioni delle auto libere è stato gentilmente offerto da Federico Losacco, che lo ha scritto e utilizzato per uno studio sul comportamento del traffico basato sui viaggi compiuti dagli utenti del servizio\cite{losaccofederico}.
+
+\subsubsection{title}
 
 
 \begin{itemize}
