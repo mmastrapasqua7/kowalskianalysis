@@ -14,9 +14,9 @@ In partenza e arrivo sono salvate le coordinate espresse in gradi del tragitto g
 
 Oltre ai dati principali sono stati salvati informazioni secondarie come il numero di auto libere Enjoy al momento della richiesta, la lunghezza aerea della tratta e la lunghezza calcolata a piedi della stessa, entrambe espresse in km.
 
-\section{Filtro dati errati}
+\subsection{Filtro dati errati}
 
-\begin{table}[H]
+\begin{table}
 	\centering
 	\begin{tabular}{ | l r r | }
 		\hline
@@ -33,13 +33,13 @@ Oltre ai dati principali sono stati salvati informazioni secondarie come il nume
 
 I provider per le stime di percorrenza dei vari mezzi hanno talvolta restituto il valore zero. Questo fenomeno è probabilmente dovuto alla generazione a random delle coordinate di partenza e arrivo, che ha permesso richieste in qualsiasi punto della mappa, compresi punti non situati direttamente sulla strada come in giardini pubblici, condimini e altre zone private, o semplicemente per disservizi. Per un confronto alla pari sono state considerate solo le righe prive di zeri nel file CSV. Dalla tabella \ref{table:1}  risulta che su circa 68000 richieste, 50000 sono prive di zeri, circa il 73\% del totale.
 
-\section{Distribuzione lunghezza tratte generate}
+\subsection{Distribuzione lunghezza tratte generate}
 
 \begin{center}
 \includegraphics[scale=0.8]{distribuzione_tratte}
 \end{center}
 
-\begin{table}[H]
+\begin{table}
 	\centering
 	\begin{tabular}{ | l r | }
 		\hline
@@ -53,13 +53,13 @@ I provider per le stime di percorrenza dei vari mezzi hanno talvolta restituto i
 	\end{tabular}
 	\caption{Statistiche lunghezza tratta [km]}
 	\label{table:2}
-\end{table}\todo{atrent: le H mettile solo a posteriori, in prima battuta lascia che sia latex a posizionare le figure/tabelle}
+\end{table}
 
 Nella tabella \ref{table:2} sono riportate le statistiche riguardo la lunghezza in via aerea delle tratte generate. Si può vedere come più della metà sia lunga meno di 5 km in linea aerea, risultato ottenuto in parte dai constraint imposti nella generazione.
 
-\section{Performance medie}
+\section{Performance dei singoli mezzi}
 
-\begin{table}[H]
+\begin{table}
 	\centering
 	\begin{tabular}{ | l r r r r r | }
 		\hline
@@ -75,8 +75,6 @@ Nella tabella \ref{table:2} sono riportate le statistiche riguardo la lunghezza 
 	\label{table:3}
 \end{table}
 
-\section{Analisi dei singoli mezzi}
-
 \subsection{Auto}
 
 \subsubsection{Velocità media di ora in ora}
@@ -91,7 +89,7 @@ Una delle prime analisi effettuate per ogni mezzo è stata quella di calcolare l
 
 \subsubsection{Velocità media lunedì-venerdì e sabato-domenica}
 
-\begin{figure}[!h]
+\begin{figure}
 	\includegraphics[scale=1.0]{vmedia_oraria_auto_weekend}
 	\caption{Velocità media in auto [km/h], di ora in ora}
 	\label{image:2}
@@ -101,7 +99,7 @@ La figura \ref{image:2} mostra il risultato di una ripartizione dei dati effettu
 
 \subsubsection{Velocità media settimana dopo settimana da fine lockdown}
 
-\begin{figure}[!h]
+\begin{figure}
 	\includegraphics[scale=1.0]{vmedia_oraria_auto_weeks}
 	\caption{Velocità media in auto [km/h], di ora in ora}
 	\label{image:3}
@@ -125,7 +123,7 @@ La figura \ref{image:3} mostra il risultato di una ripartizione dei dati effettu
 
 \subsubsection{Velocità media di ora in ora}
 
-\begin{figure}[H]
+\begin{figure}
 	\includegraphics[scale=1.0]{vmedia_oraria_enjoy}
 	\caption{Velocità media usando Enjoy [km/h], di ora in ora}
 	\label{image:4}
@@ -135,13 +133,13 @@ Siccome le stime di percorrenza col servizio Enjoy sono basate sul servizio di W
 
 \subsubsection{Auto libere e tempo medio per raggiungerle}
 
-\begin{figure}[H]
+\begin{figure}
 	\includegraphics[scale=1.0]{tmedio_raggiungimento_auto_enjoy}
 	\caption{Tempo medio per raggiungere auto libera [min], di ora in ora}
 	\label{image:5}
 \end{figure}
 
-\begin{table}[H]
+\begin{table}
 	\centering
 	\begin{tabular}{ | l r | }
 		\hline
@@ -159,7 +157,7 @@ Siccome le stime di percorrenza col servizio Enjoy sono basate sul servizio di W
 
 Dai calcoli è risultato che il tempo medio impiegato a raggiungere a piedi un'auto del servizio di car sharing Enjoy oscilla intorno ai 6 minuti e mezzo. Anche per questa analisi i dati sono stati partizionati per i giorni da lunedì a venerdì e per sabato e domenica. Il grafico \ref{image:5} mostra una lieve differenza nel tempo medio di circa 1 minuto a favore del primo gruppo, comunemente associato ai giorni lavorativi. A differenza della curva del fine settimana che risulta mediamente stabile, la curva dei giorni lavorativi subisce un calo nel tempo medio nelle ore del primo pomeriggio.
 
-\begin{figure}[H]
+\begin{figure}
 	\includegraphics[scale=1.0]{variazione_auto_libere_enjoy_weekend}
 	\caption{Numero di auto libere Enjoy lungo l'arco della giornata}
 	\label{image:6}
@@ -171,7 +169,7 @@ Per contestualizzare il tempo medio per raggiungere un'auto Enjoy è stato usato
 
 Come è stato fatto con la velocità media per l'auto di proprietà, è stato calcolato il tempo medio per raggiungere un'auto libera Enjoy di settimana in settimana dalla fine del lockdown. Il risultato ottenuto è stato controintuitivo, mostrando come, col passare del tempo, il tempo medio per raggiungere un'auto libera diminuiva. Risulta controintuitivo infatti se si pensa al risultato ottenuto con la velocità media in auto, che ha visto una degradazione delle performance col ritorno alla normalità per quanto riguarda la mobilità. Analogamente si è pensato che il numero di utenti del servizio car sharing sarebbe aumentato col ritorno alla normalità e che quindi il tempo medio per raggiungere un auto sarebbe aumentato col diminuire delle auto libere in circolazione. Per investigare a fondo questo risultato è stato calcolato il numero di auto libere di settimana in settimana.
 
-\begin{figure}[H]
+\begin{figure}
 	\includegraphics[scale=1.0]{variazione_auto_libere_enjoy_weeks}
 	\caption{Numero di auto libere Enjoy lungo settimana dopo settimana}
 	\label{image:7}
@@ -184,7 +182,7 @@ Il grafico \ref{image:7} mostra chiaramente come il numero delle auto libere a d
 
 \subsubsection{Velocità media di ora in ora}
 
-\begin{figure}[H]
+\begin{figure}
 	\includegraphics[scale=1.0]{vmedia_oraria_atm_bike_foot}
 	\caption{Variazione velocità media di ora in ora}
 	\label{image:8}
@@ -192,7 +190,7 @@ Il grafico \ref{image:7} mostra chiaramente come il numero delle auto libere a d
 
 Analizzando le stime di percorrenza riguardo i mezzi pubblici, la bicicletta e i percorsi a piedi, non si è verificata alcuna variazione significativa lungo l'arco della giornata, tradotto graficamente come nella figura \ref{image:8} in una retta parallela all'asse x per ognuno dei mezzi considerati. Il risultato ottenuto per la bicicletta e il percorso a piedi è stato ipotizzato, visto che tali mezzi non subiscono gli effetti del traffico nella stessa misura in cui li subiscono le auto e le moto. E' stata analizzata ulteriormente la performance dei mezzi pubblici, che vede una deviazione standard alta ma una performance pressochè costante a qualsiasi ora.
 
-\begin{figure}[H]
+\begin{figure}
 	\includegraphics[scale=1.0]{vmedia_oraria_atm_distance}
 	\caption{Variazione velocità media con ATM di ora in ora sulla distanza}
 	\label{image:9}
@@ -204,17 +202,17 @@ Il grafico \ref{image:9} mostra lo stesso risultato a livello di variazione per 
 
 In questo paragrafo sono stati raccolti i risultati più interessanti emersi dal confronto tra tutti i mezzi di trasporto a disposizione per spostarsi nel Comune di Milano. Il confronto più atteso che ha fatto da guida verso questo studio è stato quello di verificare se un mezzo altamente costoso e inquinante come le auto a gasolio e benzina potessero essere surclassate da un mezzo più economico e pulito come i mezzi pubblici in una città dove il traffico influisce pesantemente sui tempi di percorrenza, come mostrato nel grafico \ref{image:1}.
 
-\subsection{Confronto con l'auto di proprietà}
+\subsection{Auto di proprietà}
 
 Contro ogni aspettativa, nonostante la grande influenza del traffico sui tempi di percorrenza, i tragitti in auto sono risultati sempre i più veloci di ogni sua controparte, a qualsiasi ora del giorno e su ogni distanza, con una vittoria sopra il 99\% delle volte.
 
-\subsection{Confronto col servizio di car sharing Enjoy}
+\subsection{Servizio di car sharing Enjoy}
 
 A differenza del confronto con l'auto di proprietà, il confronto col servizio di car sharing si fa più interessante.
 
 \subsubsection{ATM vs. Enjoy}
 
-\begin{table}[H]
+\begin{table}
 	\centering
 
 	\begin{tabular}{ | r r r | }
@@ -232,7 +230,7 @@ A differenza del confronto con l'auto di proprietà, il confronto col servizio d
 	\label{table:5}
 \end{table}
 
-\begin{figure}[H]
+\begin{figure}
 	\includegraphics[scale=0.8]{confronto_atm_enjoy}
 	\caption{Frequenza relativa vittorie ATM su Enjoy di ora in ora}
 	\label{image:10}
@@ -244,7 +242,7 @@ Per esempio, su tutte le tratte richieste nelle ore 8:00, nell'11\% delle volte 
 
 \subsubsection{Bicicletta vs. Enjoy}
 
-\begin{table}[H]
+\begin{table}
 	\centering
 	
 	\begin{tabular}{ | r r r | }
@@ -262,7 +260,7 @@ Per esempio, su tutte le tratte richieste nelle ore 8:00, nell'11\% delle volte 
 	\label{table:6}
 \end{table}
 
-\begin{figure}[H]
+\begin{figure}
 	\includegraphics[scale=1.0]{confronto_bike_enjoy}
 	\caption{Frequenza relativa vittorie bicicletta su Enjoy di ora in ora}
 	\label{image:11}

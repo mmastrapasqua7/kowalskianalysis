@@ -68,7 +68,6 @@ Le API REST di HERE e quelle di OpenStreetMap sono nella seguente forma:
 func stimaTragitto(a, b coordinate) durata
 \end{lstlisting}
 ovvero chiedono in input le coordinate di partenza e di destinazione e restituiscono in output una stima di percorrenza del tragitto in formato JSON di quel determinato momento.
-\todo{MM: inserire accenno su come ho trovato l'auto più vicina}
 
 \subsubsection{Lo scraping di Waze}
 
@@ -82,7 +81,7 @@ in particolare, la richiesta verso l'url \url{https://www.waze.com/live-map/rout
 
 \subsubsection{Stima del percorso per il car sharing}
 
-Avendo trovato un modo per risolvere i tempi di percorrenza in auto, per il servizio di car sharing Enjoy è stato scritto un programma 
+Avendo trovato un modo per risolvere i tempi di percorrenza in auto, per il servizio di car sharing Enjoy si è scelto di calcolare una stima che tiene conto del raggiungimento a piedi dell'auto libera più vicino al luogo di partenza del viaggio e del tragitto in auto tra la posizione di quest'ultima e il luogo di destinazione. Nello specifico, ogni volta che viene richiesto un percorso, viene scaricata la lista aggiornata delle auto libere presenti sul territorio e viene scelta l'auto più vicina calcolando la distanza dal punto di partenza richiesto a ogni auto presente nella lista. Una voltra trovata la posizone dell'auto libera, vengono sommate la stima di percorrenza del raggiungimento di tale auto a piedi e la stima di percorrenza in auto dal luogo in cui si trova l'auto fino alla destinazione. Sebbene non sia l'approccio migliore, dato che non tiene conto della direzione e del verso di marcia per compiere il viaggio, e quindi rendendo possibile la scelta di auto più vicina al punto di partenza ma che si allontana dal luogo di destinazione, è risultato il più semplice da programmare e successivamente da testare.
 
 \section{Scelta tra percorsi random e prefissati}
 
