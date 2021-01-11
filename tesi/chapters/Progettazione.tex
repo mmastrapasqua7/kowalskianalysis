@@ -1,59 +1,62 @@
-Per attuare questo confronto tra mezzi di trasporto si è scelto di appoggiarsi a servizi di navigazione in grado di fornire stime di percorrenza (Estimated time of arrival, ETA) in tempo reale e usarle come valori effettivi. Le gare per confrontare tali mezzi sono state tradotte in richieste di stime di percorrenza per un tragitto comune a tutti, effettuate più volte al giorno e per diversi percorsi. In questo modo si è riusciti nell'intento iniziale di effettuare uno studio su degli stessi percorsi iniziati nello stesso momento ma con mezzi di trasporto diversi.
+Per attuare questo confronto tra mezzi di trasporto si è scelto di appoggiarsi a servizi di navigazione in grado di fornire stime di percorrenza (Estimated time of arrival, ETA) in tempo reale e usarle come valori effettivi. Le gare per confrontare tali mezzi sono state tradotte in richieste di stime di percorrenza per un tragitto comune a tutti, effettuate più volte al giorno e per diversi percorsi. In questo modo si riuscirebbe nell'intento iniziale di effettuare uno studio su degli stessi percorsi iniziati nello stesso momento ma con mezzi di trasporto diversi. Sono stati presi in considerazione i principali mezzi di trasporto alternativi all'automobile di proprietà con cui è possibile spostarsi all'interno del Comune di Milano:
+\begin{itemize}
+	\item automobile;
+	\item servizio di car sharing Enjoy;
+	\item mezzi pubblici ATM e passanti ferroviari Trenord;
+	\item bicicletta;
+	\item a piedi.
+\end{itemize}
+Quest'ultimo, anche se non diretto competitor, è stato scelto per essere usato come riferimento.
 
-\section{Mezzi di trasporto e relativi servizi}
-
-Sono stati presi in considerazione i principali mezzi di trasporto alternativi all'automobile di proprietà con cui è possibile spostarsi all'interno del Comune di Milano: servizio di car sharing, mezzi pubblici e passanti ferroviari, bicicletta di proprietà e infine il percorso a piedi. Quest'ultimo, anche se non diretto competitor, è stato scelto per essere usato come riferimento.
-
-\subsection{Ricerca delle A.P.I}
+\section{Ricerca delle API}
 
 Il primo passo verso la scrittura di un software per effettuare le varie richieste di percorso è stata quella di cercare delle API disponibili per ogni mezzo di trasporto in grado di fornire stime dinamiche sui tempi di percorrenza basate su dati in tempo reale.
 
-\subsubsection{Google (auto, bici e a piedi)}
+\subsection{Google (auto, bici e a piedi)}
 
 Inevitabilmente Google è stata la prima opzione che si è cercata. Google infatti, grazie a Maps e grazie all'acquisizione di Waze\cite{googleblog}, è una dei leader nel settore delle informazioni di navigazione e che vende la loro conoscenza tramite API. Tra le varie API offerte è presente quella che fa il caso di questo studio, la Directions API, che è in grado di fornire stime di percorrenza molto precise per l'auto, per il percorso a piedi e per la bicicletta (quando disponibile)\cite{googleapi}. Purtroppo però, il costo per l'utilizzo di queste API è di 10\$ per 1000 richieste al mese, l'equivalente di circa 1 richiesta all'ora, che risulta troppo poco per l'obbiettivo dello studio di catturare la variazione delle performance dei mezzi di ora in ora\cite{googleapiprice}.
 
-\subsubsection{Waze (auto)}
+\subsection{Waze (auto)}
 
 Nonostante sia stata acquisita da Google, Waze è rimasta indipendente a livello di API. Quello che offre Waze però non è esattamente un endpoint a cui fare richiesta per un determinato viaggio, ma semplicemente degli URL da inserire nel proprio sito web o nella propria app Android/iOs per aprire il client Waze da browser/app coi dati della richiesta parametrizzati nell'URL\cite{wazeapi}.
 
-\subsubsection{Moovit (mezzi pubblici)}
+\subsection{Moovit (mezzi pubblici)}
 
 Anche Moovit non offre API per interrogare direttamente i loro servizi e ricevere delle stime, ma solamente l'opzione di incorporare un widget all'iterno della propria pagina web o applicazione che rimanda direttamente ai loro servizi\cite{moovitapi}.
 
-\subsubsection{Here (auto, scooter e mezzi pubblici)}
+\subsection{Here (auto, scooter e mezzi pubblici)}
 
 Il servizio Here offre una REST API per le informazioni riguardo il routing e la stima del tempo di percorrenza. Queste stime però risultano accurate (basate su dati in tempo reale) solo per determinate città, comunicate sul loro sito, e tra queste non è inclusa Milano. Per le città non in lista, la stima è fatta sulla base dei dati tabellari degli orari dei passaggi dei mezzi\cite{hereapi}.
 
-\subsubsection{Car2Go, Enjoy (car sharing)}
+\subsection{Car2Go, Enjoy (car sharing)}
 
 Non sono stati trovati servizi relativi a stime di tempi di percorrenza utilizzando un mezzo dei servizi car sharing. I servizi di car sharing Car2Go ed Enjoy non offrono API per tale calcolo ma dispongono di una mappa costantemente aggiornata sul loro sito web con l'elenco delle auto libere, ognuna con allegato dati riguardo il tipo di veicolo (tra auto e moto) e il carburante rimasto. Un programma in grado di acquisire le informazioni delle auto libere è stato gentilmente offerto da Federico Losacco, che lo ha scritto e utilizzato per uno studio sul comportamento del traffico basato sui viaggi compiuti dagli utenti del servizio\cite{losaccofederico}.
 
-\subsubsection{OpenStreetMap e dintorni (auto, bici e a piedi)}
+\subsection{OpenStreetMap e dintorni (auto, bici e a piedi)}
 
 Il progetto collaborativo di OpenStreetMap offre, tra le altre cose, il calcolo di un tragitto usando come backend servizi offerti da terze parti, tra cui Open Source Routing Machine (OSRM). Purtroppo però, tali servizi non usano dati in tempo reale per la stima del tempo di percorrenza\cite{osm}.
 
-\subsection{Scelta delle API}
+\section{Scelta delle API}
 
 Di seguito sono elencate le scelte fatte per i servizi e i loro rispettivi ruoli di copertura dei mezzi di trasporto:
 
 \begin{itemize}
 	\item HERE REST API\cite{herewegoapi}
 	\begin{itemize}
-		\item mezzi pubblici ATM e passanti ferroviari;
+		\item mezzi pubblici ATM e passanti ferroviari Trenord;
 	\end{itemize}
 
 	\item OpenStreetMap con OSRM\cite{openstreetmap}
 	\begin{itemize}
-		\item bicicletta di proprietà e a piedi;
+		\item bicicletta e a piedi;
 	\end{itemize}
 
 	\item Enjoy Map scraper di Federico Losacco\cite{enjoycarsharing}\cite{losaccofederico}
 	\begin{itemize}
-		\item posizioni delle auto libere Enjoy (car sharing);
+		\item servizio di car sharing Enjoy;
 	\end{itemize}
 \end{itemize}
-
-Nonostante OSRM non offra soluzioni in tempo reale ma statiche, è stato scelto ugualmente per via della scarsa influenza del traffico sui tempi di pecorrenza in bicicletta e a piedi, che dipendono per la maggior parte dall'itinerario calcolato e da caratteristiche statiche del territorio come i segnali stradali (divieti, contromano, aree pedonali etc...).
+Nonostante OSRM non offra soluzioni in tempo reale ma statiche, è stato scelto ugualmente per via della scarsa influenza del traffico sui tempi di pecorrenza in bicicletta e a piedi, che dipendono per la maggior parte dall'itinerario calcolato e dalle caratteristiche delle strade come i segnali stradali (divieti, contromano, aree pedonali etc...).
 
 Le API REST di Here sono state utilizzate per mancanza di valide alternative. In un primo momento si è tentato lo scraping del sito web di Moovit per interagire col sito e comunicare le richieste senza intervento umano, ma la difficoltà nel codificare i parametri delle richieste e a decodificarne le poche risposte immerse in svariati messaggi di errore ne hanno scoraggiato l'utilizzo.
 
@@ -67,17 +70,17 @@ func stimaTragitto(a, b coordinate) durata
 \end{lstlisting}
 ovvero chiedono in input le coordinate di partenza e di destinazione e restituiscono in output una stima di percorrenza del tragitto in formato JSON di quel determinato momento.
 
-\subsubsection{Lo scraping di Waze}
+\subsection{Lo scraping di Waze}
 
-Dato che i servizi per sviluppatori offerti da Waze sono gratuiti, si è scelto di sfruttare tali dati ma prendendoli per vie laterali, direttamente dalla pagina web \url{https://www.waze.com/live-map}. La maggior parte dei browser in circolazione, come Mozilla Firefox, offrono oltre al browser in sè tutti gli strumenti da sviluppatore di siti web usati a scopo di debugging. Tra questi vi è la console da sviluppatore, apribile tramite una scorciatoia da tastiera \texttt{Ctrl+Shift+K}. Con questa console è possibile vedere le richieste di rete che il sito effettua in background per il suo funzionamento. Dato che si tratta di un'applicazione a singola pagina, è chiaro che per il suo funzionamento vengano effettuate delle richieste tramite JavaScript in modo asincrono direttamente ai loro server. Questa pratica prende il nome di Asynchronous JavaScript and XML (AJAX)\cite{ajaxwiki}. Guardando i comportamenti a livello di rete del sito web, mentre si svolge una richiesta per un viaggio a Waze, si presenta subito un URL che fa da endpoint per le richieste di routing:
-
-\begin{center}
+Dato che i servizi per sviluppatori offerti da Waze sono gratuiti, si è scelto di sfruttare tali dati ma prendendoli per vie laterali, direttamente dalla pagina web \url{https://www.waze.com/live-map}. La maggior parte dei browser in circolazione, come Mozilla Firefox, offrono oltre al browser in sè tutti gli strumenti da sviluppatore di siti web usati a scopo di debugging. Tra questi vi è la console da sviluppatore, apribile tramite una scorciatoia da tastiera \texttt{Ctrl+Shift+K}. Con questa console è possibile vedere le richieste di rete che il sito effettua in background per il suo funzionamento. Dato che si tratta di un'applicazione a singola pagina, è chiaro che per il suo funzionamento vengano effettuate delle richieste tramite JavaScript in modo asincrono direttamente ai loro server. Questa pratica prende il nome di Asynchronous JavaScript and XML (AJAX)\cite{ajaxwiki}. Guardando i comportamenti a livello di rete del sito web, mentre si svolge una richiesta per un viaggio a Waze, si presenta subito un URL che fa da endpoint per le richieste di routing, come mostrato nella figura \ref{image:1}.
+\begin{figure}
 	\includegraphics[scale=0.45]{waze_scraping}
-\end{center}
+	\caption{Console da sviluppatore su Firefox}
+	\label{image:1}
+\end{figure}
+In particolare, la richiesta verso l'url \url{https://www.waze.com/live-map/routing/?} contiene esattamente il punto di partenza e di arrivo richiesti parametrizzati nell'url della richiesta, e il risultato è restituito è in formato JSON. Per proteggere i loro server da sovraccarichi, Waze risponde a questo URL solamente se si possiede il permesso ricevuto preventivamente tramite un token, ovvero una stringa di caratteri che funge da chiave segreta. Per ottenere questa chiave e raggiungere l'obbiettivo finale di avere delle API per interrogare il servizio, è stato scritto un programma in Golang per emulare l'interazione col sito web e ricevere il token necessario per effettuare le richieste successive. Questo processo ha richiesto tempo sia per la codifica dei parametri e che per la decodifica del risultato stesso e dei risultati intermedi per la richiesta del token. In altre parole, è stato fatto il reverse engineering della web app.
 
-in particolare, la richiesta verso l'url \url{https://www.waze.com/live-map/routing/?} contiene esattamente il punto di partenza e di arrivo richiesti parametrizzati nell'url della richiesta, e il risultato è restituito è in formato JSON. Per proteggere i loro server da sovraccarichi, Waze risponde a questo URL solamente se si possiede il permesso ricevuto preventivamente tramite un token, ovvero una stringa di caratteri che funge da chiave segreta. Per ottenere questa chiave e raggiungere l'obbiettivo finale di avere delle API per interrogare il servizio, è stato scritto un programma in Golang per emulare l'interazione col sito web e ricevere il token necessario per effettuare le richieste successive. Questo processo ha richiesto tempo sia per la codifica dei parametri e che per la decodifica del risultato stesso e dei risultati intermedi per la richiesta del token. In altre parole, è stato fatto il reverse engineering della web app.
-
-\subsubsection{Stima del percorso per il car sharing}
+\subsection{Stima del percorso per il car sharing}
 
 Avendo trovato un modo per risolvere i tempi di percorrenza in auto, per il servizio di car sharing Enjoy si è scelto di calcolare una stima che tiene conto del raggiungimento a piedi dell'auto libera più vicino al luogo di partenza del viaggio e del tragitto in auto tra la posizione di quest'ultima e il luogo di destinazione. Nello specifico, ogni volta che viene richiesto un percorso, viene scaricata la lista aggiornata delle auto libere presenti sul territorio e viene scelta l'auto più vicina calcolando la distanza dal punto di partenza richiesto a ogni auto presente nella lista. Una voltra trovata la posizone dell'auto libera, vengono sommate la stima di percorrenza del raggiungimento di tale auto a piedi e la stima di percorrenza in auto dal luogo in cui si trova l'auto fino alla destinazione. Sebbene non sia l'approccio migliore, dato che non tiene conto della direzione e del verso di marcia per compiere il viaggio, e quindi rendendo possibile la scelta di auto più vicina al punto di partenza ma che si allontana dal luogo di destinazione, è risultato il più semplice da programmare e successivamente da testare.
 
@@ -113,7 +116,7 @@ var a, b, c coordinate
 
 for {
 	a, b = creaTragittoRandom()
-	c = enjoy.trovaAutoPiuVicina(a)
+	c = enjoy.trovaAutoPiuVicinaOra(a)
 	
 	risultato := []stime{
 		here.stimaTragitto(a, b),
