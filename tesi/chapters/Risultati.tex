@@ -2,48 +2,51 @@
 
 \subsection{Le problematiche}
 
-I dati riguardanti la simulazione sono stati raccolti a partire dall'1 marzo 2020 fino al 27 giugno 2020 per un arco di tempo di circa 4 mesi, al ritmo di 1200 richieste al giorno.
+I dati riguardanti la simulazione sono stati raccolti a partire dall'1 marzo 2020 fino al 27 giugno 2020 per un arco di tempo di circa 4 mesi, al ritmo di 1200 richieste al giorno, che altro non sono che finte gare di percorrenza con stime dei tempi richieste ai provider.
 
 Sebbene questo studio fosse stato pensato per un confronto in situazioni abituali di traffico e congestione caratteristiche di Milano, a influenzare questo studio è stato da subito l'emergenza epidemiologica da COVID-19. Il 22 gennaio 2020 il governo italiano ha dichiarato lo stato di emergenza, mettendo in atto le prime misure di contenimento in alcuni Comuni dove si sono verificati i primi casi del contagio. A partire dal 23 febbraio infatti il governo italiano ha emanato DPCM sempre più stringenti riguardo la circolazione e lo svolgimento delle attività commerciali, fino alla dicisione di imporre un lockdown nazionale avvenuta l'11 marzo 2020\cite{misuredelgovernopercovid}. Inoltre, nei primi giorni di utilizzo del programma scritto per eseguire le richieste tramite API, il servizio precedentemente utilizzato di Moovit ha risposto alle richieste con valori nulli o totalmente fuori scala. Per questo motivo è stato sostituito il servizio con quello offerto da Here e sono stati scartati i risultati precedentemente raccolti.
 
 Nonostante lo studio sia stato fortemente influenzato da questo fattore, per via della circolazione più scorrevole dati i ridotti spostamenti e per la riduzione di numero di mezzi e di orario di servizio dei mezzi pubblici ATM, si è deciso comunque di procedere, tenendo conto dell'avvenuto sul giudizio finale dei risultati.
 
-
-
-
-
+\subsection{Filtro dati errati}
 
 \begin{table}[H]
 \centering
-\begin{tabular}{ | c | c | c | c | c | c | c | c | c | }
+\begin{tabular}{ | l | r | r | }
 \hline
-Data & Orario & Partenza & Arrivo & Auto & ATM & Enjoy & Bici & Piedi \\
+
+& \textbf{1 Marzo - 12 Marzo} & \textbf{4 Maggio - 27 Giugno} \\
+\hline
+
+\textbf{Coerenti}& 1988 & 49560 \\  
+\textbf{Errati} & 7962 & 18290 \\
+\hline
+\textbf{Totale} & 9680 & 67850 \\
+\textbf{\% Errati} & 79.5 & 27.0 \\
 \hline
 \end{tabular}
+\caption{Dati errati che contengono uno o più valori nulli nelle stime}
+\label{table:1}
+\end{table}
+
+I dati raccolti dalla prima esecuzione del programma, l'1 marzo 2020, fino all'entrata in vigore dello stato di lockdown nazionale, il 12 marzo 2020, sono risultati pieni di errori, ovvero stime di percorrenza nulle. La principale causa è da attribuire al servizio di Moovit, che ha subìto un aggiornamento dell'applicazione web da cui lo scraper era stato programmato per fare richieste. Successivamente a questo evento si è cercato e trovato un servizio alternativo che sostituisse la stima del percorso coi mezzi pubblici, ovvero Here, che sfortunatamente non offre stime in tempo reale ma solo statiche. I dati raccolti nel periodo di lockdown dal 13 marzo 2020 al 3 maggio 2020 compresi sono stati scartati per via della circolazione dei mezzi pubblici e privati quasi totalmente assente, e quindi poco utile nell'obbiettivo finale dello studio di confrontare i mezzi di trasporto in situazioni di traffico caratteristico da città. Per questo motivo si è scelto di usare solamente i dati a partire dall'allentamento delle misure di restrizioni da emergenza sanitaria, ovvero quelli a partire dal 4 maggio 2020 compreso.
+
+Anche 
+
+I provider per le stime di percorrenza dei vari mezzi hanno talvolta restituto il valore zero. Questo fenomeno è probabilmente dovuto alla generazione a random delle coordinate di partenza e arrivo, che ha permesso richieste in qualsiasi punto della mappa, compresi punti non situati direttamente sulla strada come in giardini pubblici, condimini e altre zone private, o semplicemente per disservizi. Per un confronto alla pari sono state considerate solo le righe prive di zeri nel file CSV. Come indicato dalla tabella \ref{table:1} su circa 68000 richieste, 50000 sono prive di zeri, circa il 73\% del totale, e quindi adatte per un confronto 1 a 1 tra mezzi di trasporto. 
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ | c | c | c | c | c | c | c | c | c | }
+		\hline
+		Data & Orario & Partenza & Arrivo & Auto & ATM & Enjoy & Bici & Piedi \\
+		\hline
+	\end{tabular}
 \end{table}
 
 In partenza e arrivo sono salvate le coordinate espresse in gradi del tragitto generato, nei restanti campi le stime di percorrenza di tale tragitto espresse in minuti, insieme alla data e all'orario in cui è stata effettuata la richiesta di tale tratta.
 
 Oltre ai dati principali sono stati salvati informazioni secondarie come il numero di auto libere Enjoy al momento della richiesta, la lunghezza aerea della tratta e la lunghezza calcolata a piedi della stessa, entrambe espresse in km.
-
-\subsection{Filtro dati errati}
-
-\begin{table}[H]
-\centering
-\begin{tabular}{ | l r r | }
-\hline
-& \textbf{n\textdegree tratte} & \textbf{\%} \\ 
-\textbf{Coerenti} & 49560 & 73 \\  
-\textbf{Errati} & 18290 & 27 \\
-\hline
-\textbf{Totale} & 67850 & 100 \\
-\hline
-\end{tabular}
-\caption{I dati errati contengono uno o più zeri nelle stime}
-\label{table:1}
-\end{table}
-
-I provider per le stime di percorrenza dei vari mezzi hanno talvolta restituto il valore zero. Questo fenomeno è probabilmente dovuto alla generazione a random delle coordinate di partenza e arrivo, che ha permesso richieste in qualsiasi punto della mappa, compresi punti non situati direttamente sulla strada come in giardini pubblici, condimini e altre zone private, o semplicemente per disservizi. Per un confronto alla pari sono state considerate solo le righe prive di zeri nel file CSV. Dalla tabella \ref{table:1}  risulta che su circa 68000 richieste, 50000 sono prive di zeri, circa il 73\% del totale.
 
 \subsection{Distribuzione lunghezza tratte generate}
 
