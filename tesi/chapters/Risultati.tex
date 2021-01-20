@@ -87,11 +87,11 @@ Nella  figura \ref{image:2} e tabella \ref{table:2} sono riportate le statistich
 \begin{tabular}{ | l r r r r r | }
 \hline
 & \textbf{Auto} & \textbf{Enjoy} & \textbf{Bici} & \textbf{ATM} & \textbf{Piedi} \\
-\textbf{media}   & 19.6 & 13.5 & 11.9 &  8.3 & 4.5 \\
-\textbf{mediana} & 19.5 & 13.2 & 12.0 &  7.9 & 4.5 \\
-\textbf{std}     &  3.9 &  3.8 &  1.3 &  2.3 & 0.0 \\
-\textbf{min}     &  6.7 &  3.0 &  6.5 &  3.4  & 4.3 \\
-\textbf{max}     & 48.5 & 36.1 & 16.9 & 27.8 & 4.6 \\
+\textbf{media}   & 23.8 & 16.4 & 11.9 & 10.2 & 4.5 \\
+\textbf{mediana} & 23.7 & 16.2 & 11.9 &  9.7 & 4.5 \\
+\textbf{std}     &  3.9 &  4.2 &  1.3 &  2.9 & 0.0 \\
+\textbf{min}     &  8.9 &  3.5 &  6.5 &  3.7  & 4.3 \\
+\textbf{max}     & 59.0 & 46.4 & 16.9 & 41.0 & 4.6 \\
 \hline
 \end{tabular}
 \caption{Statistiche velocità media [km/h]}
@@ -125,12 +125,10 @@ Una delle prime analisi effettuate per ogni mezzo è stata quella di calcolare l
 \begin{tabular}{ | l r r r r r r r r r | }
 \hline
 \textbf{orario} & \textbf{7:00} & \textbf{8:00} & \textbf{9:00} & \textbf{10:00} & \textbf{11:00} & \textbf{12:00} & \textbf{13:00} & \textbf{14:00} & \textbf{15:00} \\
-
 \textbf{km/h}& 2.6 & 3.8 & 3.4 & 2.7 & 1.9 & 1.4 & 1.8 & 2.1 & 1.9 \\
 \textbf{\%}    & 9.9 & 14.6  & 13.5 & 10.8 & 7.8 & 5.8 & 7.2 & 8.4 & 7.6 \\
 \hline
 \textbf{orario} & \textbf{16:00} & \textbf{17:00} & \textbf{18:00} & \textbf{19:00} & \textbf{20:00} & \textbf{21:00} & \textbf{22:00} & \textbf{23:00} & \quad \\
-
 \textbf{km/h}&  1.8 & 1.9 & 1.8 & 1.0 & 0.4 & 0.1 & 0.2 & 0.0 & \quad \\
 \textbf{\%}    & 7.4 & 7.9 & 7.6 & 4.2 & 1.8 & 0.6 & 0.9 & 0.2 & \quad \\
 \hline
@@ -139,7 +137,7 @@ Una delle prime analisi effettuate per ogni mezzo è stata quella di calcolare l
 \label{table:8}
 \end{table}
 
-La figura \ref{image:4} mostra il risultato di una ripartizione dei dati effettuata sulla base del giorno della settimana, in particolare sono stati divisi i tragitti effettuati dal lunedì al venerdì da quelli del sabato e domenica di ogni settimana. La differenza è nel complesso bassa, di circa 2 km/h di media, che tende a diminuire negli orari notturni. La massima differenza di velocità media si ottiene nei tragitti nella fascia oraria delle ore 8, con una differenza di quasi 4 km/h che corrisponde a un incremento della velocità media del 14.6\% in più rispetto al lunedì-venerdì. La variazione nel sabato-domenica risulta meno evidente di quella del lunedì-venerdì, con le variazioni, ovvero i picchi di rallentamento, che si spostanto nelle fasce orarie 10:00-12:00 e 16:00-19:00. Anche questi dati risultano in linea con quelli dello studio di TomTomIndex\cite{tomtomindexmilan}, che vede un minor livello di congestione nel weekend con dei picchi nelle ore 10:00 e 18:00. La deviazione standard delle fasce di orario del lunedì-venerdì rimangono invariate anche nel sabato-domenica.
+La figura \ref{image:4} mostra il risultato di una ripartizione dei dati effettuata sulla base del giorno della settimana, in particolare sono stati divisi i tragitti effettuati dal lunedì al venerdì da quelli del sabato e domenica di ogni settimana. La differenza è nel complesso bassa, di circa 2 km/h di media, che tende a diminuire negli orari notturni. La massima differenza di velocità media si ottiene nei tragitti nella fascia oraria delle ore 8, con una differenza di quasi 4 km/h che corrisponde a un incremento della velocità media del 14.6\% in più rispetto al lunedì-venerdì, come riportato dalla tabella \ref{table:8}. La variazione nel sabato-domenica risulta meno evidente di quella del lunedì-venerdì, con le variazioni, ovvero i picchi di rallentamento, che si spostanto nelle fasce orarie 10:00-12:00 e 16:00-19:00. Anche questi dati risultano in linea con quelli dello studio di TomTomIndex\cite{tomtomindexmilan}, che vede un minor livello di congestione nel weekend con dei picchi nelle ore 10:00 e 18:00. La deviazione standard delle fasce di orario del lunedì-venerdì rimangono invariate anche nel sabato-domenica.
 
 \subsubsection{Velocità media settimana dopo settimana da fine lockdown}
 
@@ -149,7 +147,7 @@ La figura \ref{image:4} mostra il risultato di una ripartizione dei dati effettu
 \label{image:5}
 \end{figure}
 
-La figura \ref{image:5} mostra il risultato di una ripartizione dei dati effettuata in base alla settimana, in particolare sono stati partizionati a gruppi di 2 settimane consecutive i tragitti effettuati a partire dal 4 maggio 2020, primo giorno dell'allentamento delle restrizioni imposte dal governo italiano per l'emergenza covid\cite{dpcm26aprile}. Nel grafico risulta evidente una degradazione della velocità media generale e lineare rispetto al passare delle settimane. Si nota inoltre che le curve corrispondenti alle settimane successive al 17 maggio, ovvero dopo le prime 2 settimane, presentino dei flessi sempre più accentuati in prossimità delle rush hours evidenziate dal grafico \ref{image:3}.
+La figura \ref{image:5} mostra il risultato di una ripartizione dei dati effettuata in base alla settimana, in particolare sono stati partizionati a gruppi di 2 settimane consecutive i tragitti effettuati a partire dal 4 maggio 2020, primo giorno dell'allentamento delle restrizioni imposte dal governo italiano per l'emergenza covid\cite{dpcm26aprile}. Nel grafico risulta evidente una degradazione della velocità media generale e lineare rispetto al passare delle settimane. Si nota inoltre che le curve corrispondenti alle settimane successive al 17 maggio, ovvero dopo le prime 2 settimane, presentino dei flessi sempre più accentuati in prossimità delle rush hours evidenziate dal grafico \ref{image:3}. Anche in questo caso, non sono state riportate differenze nella deviazione standard.
 
 \subsubsection{Velocità media in base alla lunghezza tratta}
 
@@ -159,19 +157,29 @@ La figura \ref{image:5} mostra il risultato di una ripartizione dei dati effettu
 \label{image:6}
 \end{figure}
 
-\todo{MM: commenti...}
+Nella figura \ref{image:6} sono riportati i dati della velocità media divisi per fasce d'orario e lunghezza in chilometri della tratta. Si evidenziano due gobbe in corrispondenza degli orari di picco del traffico intorno alle ore 9:00 e 18:00, e le tratte brevi lunghe dai 2 ai 3 chilometri risultano le più colpite. Si evidenzia inoltre un'altra area di forma rettangolare di colori chiari a partire dalle ore 20:00, dove la velocità media si stabilizza per tutte le fasce di orario intorno ai 27 km/h.
 
 \subsection{Enjoy}
 
 \subsubsection{Velocità media di ora in ora}
 
 \begin{figure}[H]
-\includegraphics[scale=1.0]{vmedia_oraria_enjoy}
+\includegraphics[scale=0.9]{vmedia_oraria_enjoy}
 \caption{Velocità media usando Enjoy [km/h], di ora in ora}
 \label{image:7}
 \end{figure}
 
-Siccome le stime di percorrenza col servizio Enjoy sono basate sul servizio di Waze, in particolare il tragitto dalla posizione dell'auto alla destinazione del tragitto, non si riscontrano particolari differenze riguardo i flessi nell'andamento della velocità media di ora in ora osservati nella figura \ref{image:3} per l'auto. La curva però risulta traslata verticalmente verso il basso per via del tragitto a piedi necessario per raggiungere un'auto libera che va a influire nel calcolo. Questa traslazione, secondo la figura \ref{image:7}, risulta di circa 5 km/h indipendentemente dall'ora del giorno. Di conseguenza sono state analizzati i dati riguardanti il tragitto a piedi.
+Siccome le stime di percorrenza col servizio Enjoy sono basate sul servizio di Waze, in particolare il tragitto dalla posizione dell'auto alla destinazione del tragitto, non si riscontrano particolari differenze riguardo i flessi nell'andamento della velocità media di ora in ora osservati nella figura \ref{image:3} per l'auto. La curva però risulta traslata verticalmente verso il basso per via del tragitto a piedi necessario per raggiungere un'auto libera che va a influire nel calcolo. Questa traslazione, secondo la figura \ref{image:7}, risulta di circa 6 km/h indipendentemente dall'ora del giorno. Quello che si nota subito dal grafico è la grande varianza presente in ogni fascia d'orario, dovuta, oltre al viaggio in auto in se, sempre dalla presenza del tratto di strada a piedi. Non si notano, al contrario del tragitto in automobile, grandi variazioni di velocità di ora in ora.
+
+\subsubsection{Velocità media lunedì-venerdì e sabato-domenica}
+
+\begin{figure}[H]
+	\includegraphics[scale=0.9]{vmedia_oraria_enjoy_weeks}
+	\caption{Frequenza relativa vittorie bicicletta su Enjoy di ora in ora}
+	\label{image:16}
+\end{figure}
+
+\todo{MM: commenti}
 
 \subsubsection{Auto libere e tempo medio per raggiungerle}
 
@@ -207,12 +215,10 @@ Dai calcoli è risultato che il tempo medio impiegato a raggiungere a piedi un'a
 
 Per contestualizzare il tempo medio per raggiungere un'auto Enjoy è stato usato il dato sul numero delle macchine libere salvato per ogni query ai servizi. Il massimo numero di auto libere in circolazione è stato di 870. Nel grafico \ref{image:9} viene mostrata in media la variazione di questo conteggio lungo l'arco della giornata, ripartito per lunedì-venerdì e sabato-domenica. Si può notare come il picco di utilizzo del servizio, denotato da un calo delle auto libere a disposizione, inizia verso le 15:00 e finisce verso le 21:00 indipendentemente dal giorno. L'unica differenza tra i due gruppi si può notare nelle ore del mattino, che vede meno auto libere durante la settimana.
 
-\todo{MM: devo inserire il grafico bruttino da vedere?}
-
 Come è stato fatto con la velocità media per l'auto di proprietà, è stato calcolato il tempo medio per raggiungere un'auto libera Enjoy di settimana in settimana dalla fine del lockdown. Il risultato ottenuto è stato controintuitivo, mostrando come, col passare del tempo, il tempo medio per raggiungere un'auto libera diminuiva. Risulta controintuitivo infatti se si pensa al risultato ottenuto con la velocità media in auto, che ha visto una degradazione delle performance col ritorno alla normalità per quanto riguarda la mobilità. Analogamente si è pensato che il numero di utenti del servizio car sharing sarebbe aumentato col ritorno alla normalità e che quindi il tempo medio per raggiungere un auto sarebbe aumentato col diminuire delle auto libere in circolazione. Per investigare a fondo questo risultato è stato calcolato il numero di auto libere di settimana in settimana.
 
 \begin{figure}[H]
-\includegraphics[scale=1.0]{variazione_auto_libere_enjoy_weeks}
+\includegraphics[scale=0.9]{variazione_auto_libere_enjoy_weeks}
 \caption{Numero di auto libere Enjoy lungo settimana dopo settimana}
 \label{image:10}
 \end{figure}
@@ -224,10 +230,25 @@ Il grafico \ref{image:10} mostra chiaramente come il numero delle auto libere a 
 
 \subsubsection{Velocità media di ora in ora}
 
+
 \begin{figure}[H]
-\includegraphics[scale=1.0]{vmedia_oraria_atm_bike_foot}
-\caption{Variazione velocità media di ora in ora}
-\label{image:11}
+	\includegraphics[scale=0.9]{vmedia_oraria_bici}
+	\caption{Frequenza relativa vittorie bicicletta su Enjoy di ora in ora}
+	\label{image:11}
+\end{figure}
+
+
+
+\begin{figure}[H]
+	\includegraphics[scale=0.9]{vmedia_oraria_atm}
+	\caption{Frequenza relativa vittorie bicicletta su Enjoy di ora in ora}
+	\label{image:17}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[scale=0.9]{vmedia_oraria_piedi}
+	\caption{Frequenza relativa vittorie bicicletta su Enjoy di ora in ora}
+	\label{image:18}
 \end{figure}
 
 Analizzando le stime di percorrenza riguardo i mezzi pubblici, la bicicletta e i percorsi a piedi, non si è verificata alcuna variazione significativa lungo l'arco della giornata, tradotto graficamente come nella figura \ref{image:11} in una retta parallela all'asse x per ognuno dei mezzi considerati. Il risultato ottenuto per la bicicletta e il percorso a piedi è stato ipotizzato, visto che tali mezzi non subiscono gli effetti del traffico nella stessa misura in cui li subiscono le auto e le moto. E' stata analizzata ulteriormente la performance dei mezzi pubblici, che vede una deviazione standard alta ma una performance pressochè costante a qualsiasi ora.
@@ -309,30 +330,6 @@ Risultato ancora più interessante è quello del confronto tra bicicletta di pro
 Anche in questo confronto è emerso che nelle rush hours si accentua la percentuale di vittorie che arriva a toccare quasi il 45\% del totale nelle ore 8:00 e 18:00 come riportato dalla figura \ref{image:14}. Al contrario dei mezzi pubblici, questa percentuale resta alta anche al di fuori degli orari di punta, restando sempre intorno al 30\%.
 
 
-
-\begin{figure}[H]
-	\includegraphics[scale=1.0]{vmedia_oraria_enjoy_weeks}
-	\caption{Frequenza relativa vittorie bicicletta su Enjoy di ora in ora}
-	\label{image:16}
-\end{figure}
-
-\begin{figure}[H]
-	\includegraphics[scale=1.0]{vmedia_oraria_bici}
-	\caption{Frequenza relativa vittorie bicicletta su Enjoy di ora in ora}
-	\label{image:17}
-\end{figure}
-
-\begin{figure}[H]
-	\includegraphics[scale=1.0]{vmedia_oraria_piedi}
-	\caption{Frequenza relativa vittorie bicicletta su Enjoy di ora in ora}
-	\label{image:17}
-\end{figure}
-
-\begin{figure}[H]
-	\includegraphics[scale=1.0]{vmedia_oraria_atm}
-	\caption{Frequenza relativa vittorie bicicletta su Enjoy di ora in ora}
-	\label{image:17}
-\end{figure}
 
 
 
