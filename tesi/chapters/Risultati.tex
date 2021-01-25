@@ -52,8 +52,14 @@ Nella tabella \ref{table:7} è riportato l'header del file CSV in cui sono stati
 
 \begin{figure}[H]
 \includegraphics[scale=0.8]{distribuzione_tratte}
-\caption{Statistiche lunghezza tratta [km]}
+\caption{Frequenza assoluta lunghezza tratte [km]}
 \label{image:2}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[scale=0.8]{distribuzione_tratte_oraria}
+	\caption{Frequenza assoluta lunghezza tratte in base all'orario [km]}
+	\label{image:19}
 \end{figure}
 
 \begin{table}[H]
@@ -61,11 +67,11 @@ Nella tabella \ref{table:7} è riportato l'header del file CSV in cui sono stati
 \begin{tabular}{ | l r | }
 \hline
 \textbf{Abs. freq.} & 49560 \\
-\textbf{media} & 3.80 \\
-\textbf{mediana} & 3.57 \\
-\textbf{std} & 1.27 \\
-\textbf{min} & 2.00 \\
-\textbf{max} & 9.52 \\
+\textbf{Media} & 3.80 \\
+\textbf{Mediana} & 3.57 \\
+\textbf{Std} & 1.27 \\
+\textbf{Min} & 2.00 \\
+\textbf{Max} & 9.52 \\
 \hline
 \end{tabular}
 \caption{Statistiche lunghezza tratta [km]}
@@ -87,11 +93,11 @@ Nella  figura \ref{image:2} e tabella \ref{table:2} sono riportate le statistich
 \begin{tabular}{ | l r r r r r | }
 \hline
 & \textbf{Auto} & \textbf{Enjoy} & \textbf{Bici} & \textbf{ATM} & \textbf{Piedi} \\
-\textbf{media}   & 23.8 & 16.4 & 11.9 & 10.2 & 4.5 \\
-\textbf{mediana} & 23.7 & 16.2 & 11.9 &  9.7 & 4.5 \\
-\textbf{std}     &  3.9 &  4.2 &  1.3 &  2.9 & 0.0 \\
-\textbf{min}     &  8.9 &  3.5 &  6.5 &  3.7  & 4.3 \\
-\textbf{max}     & 59.0 & 46.4 & 16.9 & 41.0 & 4.6 \\
+\textbf{Media}   & 23.8 & 16.4 & 11.9 & 10.2 & 4.5 \\
+\textbf{Mediana} & 23.7 & 16.2 & 11.9 &  9.7 & 4.5 \\
+\textbf{Std}     &  3.9 &  4.2 &  1.3 &  2.9 & 0.0 \\
+\textbf{Min}     &  8.9 &  3.5 &  6.5 &  3.7  & 4.3 \\
+\textbf{Max}     & 59.0 & 46.4 & 16.9 & 41.0 & 4.6 \\
 \hline
 \end{tabular}
 \caption{Statistiche velocità media [km/h]}
@@ -169,6 +175,12 @@ Nella figura \ref{image:6} sono riportati i dati della velocità media divisi pe
 \label{image:7}
 \end{figure}
 
+\begin{figure}[H]
+	\includegraphics[scale=0.9]{vmedia_oraria_enjoy_weekend}
+	\caption{Velocità media usando Enjoy [km/h], di ora in ora}
+	\label{image:20}
+\end{figure}
+
 Siccome le stime di percorrenza col servizio Enjoy sono basate sul servizio di Waze, in particolare il tragitto dalla posizione dell'auto alla destinazione del tragitto, non si riscontrano particolari differenze riguardo i flessi nell'andamento della velocità media di ora in ora osservati nella figura \ref{image:3} per l'auto. La curva però risulta traslata verticalmente verso il basso per via del tragitto a piedi necessario per raggiungere un'auto libera che va a influire nel calcolo. Questa traslazione, secondo la figura \ref{image:7}, risulta di circa 6 km/h indipendentemente dall'ora del giorno. Quello che si nota subito dal grafico è la grande varianza presente in ogni fascia d'orario, dovuta, oltre al viaggio in auto in se, sempre dalla presenza del tratto di strada a piedi. Non si notano, al contrario del tragitto in automobile, grandi variazioni di velocità di ora in ora.
 
 \subsubsection{Velocità media lunedì-venerdì e sabato-domenica}
@@ -187,12 +199,12 @@ Siccome le stime di percorrenza col servizio Enjoy sono basate sul servizio di W
 \centering
 \begin{tabular}{ | l r | }
 \hline
-& \textbf{ragg. auto} \\
-\textbf{media}   &  6.6 \\
-\textbf{mediana} &  6.0 \\
-\textbf{std}     &  4.6 \\
-\textbf{min}     &  0.0 \\ 
-\textbf{max}     & 43.0 \\
+& \textbf{T.medio ragg.auto} \\
+\textbf{Media}   &  6.6 \\
+\textbf{Mediana} &  6.0 \\
+\textbf{Std}     &  4.6 \\
+\textbf{Min}     &  0.0 \\ 
+\textbf{Max}     & 43.0 \\
 \hline
 \end{tabular}
 \caption{Statistiche tempo medio per raggiungere auto libera [min]}
