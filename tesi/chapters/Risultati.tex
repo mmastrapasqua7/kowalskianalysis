@@ -221,7 +221,15 @@ Anche per il car sharing Enjoy, nel grafico risulta evidente una degradazione de
 	\label{image:8}
 \end{figure}
 
-Dai calcoli è risultato che il tempo medio impiegato a raggiungere a piedi un'auto del servizio di car sharing Enjoy oscilla intorno ai 6 minuti e mezzo, come riportato dalla tabella \ref{table:4}. Anche per questa analisi i dati sono stati partizionati per i giorni da lunedì a venerdì e per sabato e domenica. Il grafico \ref{image:8} mostra una lieve differenza nel tempo medio di circa 1 minuto a favore del primo gruppo, comunemente associato ai giorni lavorativi. A differenza della curva del fine settimana che risulta mediamente stabile, la curva dei giorni lavorativi subisce un calo nel tempo medio nelle ore del primo pomeriggio.
+Sottraendo il tempo impiegato in auto da quello impiegato col car sharing Enjoy è stata ottenuta una stima indicativa del tempo medio per raggiungere un'auto libera a piedi. Dai calcoli è risultato che il tempo medio oscilla intorno ai 6 minuti e mezzo, come riportato dalla tabella \ref{table:4}. Anche per questa analisi i dati sono stati partizionati per i giorni da lunedì a venerdì e per sabato e domenica. Il box plot della figura \ref{image:8} evidenzia il range interquantile nell'intervallo dai 3 ai 9 minuti, con una mediana di 6. Il tempo medio per raggiungere un'auto Enjoy, di 6.6 minuti, sembra coincidere con la differenza di velocità media rispetto ai dati dell'auto privata, citata sotto il grafico \ref{image:7}.
+
+\begin{figure}[H]
+	\includegraphics[scale=0.8]{tmedio_raggiungimento_auto_enjoy_weekend}
+	\caption{Tempo medio per raggiungere auto libera [min]}
+	\label{image:21}
+\end{figure}
+
+Il grafico \ref{image:8} mostra una lieve differenza nel tempo medio per raggiungere un'auto libera Enjoy di circa 1 minuto a sfavore dei giorni del fine settimana. Dunque, in settimana le auto risultano più vicine o più facilmente raggiungibili.
 
 \begin{figure}[H]
 \includegraphics[scale=1.0]{variazione_auto_libere_enjoy_weekend}
@@ -253,8 +261,6 @@ Il grafico \ref{image:10} mostra chiaramente come il numero delle auto libere a 
 	\label{image:11}
 \end{figure}
 
-
-
 \begin{figure}[H]
 	\includegraphics[scale=0.9]{vmedia_oraria_atm}
 	\caption{Frequenza relativa vittorie bicicletta su Enjoy di ora in ora}
@@ -267,7 +273,7 @@ Il grafico \ref{image:10} mostra chiaramente come il numero delle auto libere a 
 	\label{image:18}
 \end{figure}
 
-Analizzando le stime di percorrenza riguardo i mezzi pubblici, la bicicletta e i percorsi a piedi, non si è verificata alcuna variazione significativa lungo l'arco della giornata, tradotto graficamente come nella figura \ref{image:11} in una retta parallela all'asse x per ognuno dei mezzi considerati. Il risultato ottenuto per la bicicletta e il percorso a piedi è stato ipotizzato, visto che tali mezzi non subiscono gli effetti del traffico nella stessa misura in cui li subiscono le auto e le moto. E' stata analizzata ulteriormente la performance dei mezzi pubblici, che vede una deviazione standard alta ma una performance pressochè costante a qualsiasi ora.
+Analizzando le stime di percorrenza riguardo i mezzi pubblici, la bicicletta e i percorsi a piedi, non si è verificata alcuna variazione significativa lungo l'arco della giornata, tradotto graficamente come nelle figure \ref{image:11}, \ref{image:17} e \ref{image:18} in una retta parallela all'asse x per ognuno dei mezzi considerati. Il risultato è aspettato, dato che tali servizi non hann fornito risposte dinamiche in base alle condizioni attuali del traffico e dei dati storici, e, nel caso della bicicletta e a piedi, perchè l'influenza è praticamente nulla per questi mezzi di trasporto.
 
 \begin{figure}[H]
 \includegraphics[scale=1.0]{vmedia_oraria_atm_distance}
