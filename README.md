@@ -1,4 +1,4 @@
-# Analisi della mobilità nel Comune di Milano su dati di servizi di navigazione
+# Confronto tra automobile e mezzi di trasporto alternativi nel Comune di Milano basato su stime di tempi di percorrenza
 
 ## Università degli Studi di Milano. Tesi di Mauro Mastrapasqua
 
