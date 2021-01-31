@@ -74,7 +74,7 @@ ovvero chiedono in input le coordinate di partenza e di destinazione e restituis
 
 Dato che i servizi per sviluppatori offerti da Waze sono gratuiti, si è scelto di sfruttare tali dati ma prendendoli per vie laterali, direttamente dalla pagina web \url{https://www.waze.com/live-map}. La maggior parte dei browser in circolazione, come Mozilla Firefox, offrono oltre al browser in sè tutti gli strumenti da sviluppatore di siti web usati a scopo di debugging. Tra questi vi è la console da sviluppatore, apribile tramite una scorciatoia da tastiera \texttt{Ctrl+Shift+K}. Con questa console è possibile vedere le richieste di rete che il sito effettua in background per il suo funzionamento. L'applicazione web di Waze è un'applicazione a singola pagina e per il suo funzionamento effettua delle richieste tramite JavaScript in modo asincrono direttamente ai loro server. Questa pratica prende il nome di Asynchronous JavaScript and XML (AJAX)\cite{ajaxwiki}. Guardando i comportamenti a livello di rete del sito web, mentre si svolge una richiesta per un viaggio a Waze, si presenta subito un URL che fa da endpoint per le richieste di routing, come mostrato nella figura \ref{image:1}.
 \begin{figure}
-	\includegraphics[scale=0.45]{waze_scraping}
+	\includegraphics[scale=0.6]{waze_scraping}
 	\caption{Console da sviluppatore su Firefox}
 	\label{image:1}
 \end{figure}

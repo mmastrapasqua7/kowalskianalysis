@@ -114,7 +114,7 @@ Dal grafico \ref{image:15} si può subito notare come i risultati dei tragitti a
 \label{image:3}
 \end{figure}
 
-Una delle prime analisi effettuate per ogni mezzo è stata quella di calcolare la velocità media per ogni tragitto effettuato riguardante l'intero periodo di raccolta dati, con l'obbiettivo di osservare eventuali variazioni di ora in ora. Come riportato nel grafico \ref{image:3}, i tragitti in auto hanno subito una variazione di velocità media nell'arco 8:00-11:00 e in quello delle 17:00-19:00, in cui si registra la velocità media minima di 23 km/h. Tali risultati sono in linea, tra i tanti studi a riguardo del traffico in auto a Milano, con quelli dello studio di TomTom\cite{tomtomindexmilan} effettuato sulla città di Milano nel 2019, che evidenzia le ore 9:00 e 18:00, anche dette rush hours, come picchi di congestione stradale dal lunedì al venerdì, con un livello di congestione rispettivamente del 70\% e del 60\%. Risultano in linea con lo studio anche le ore precedenti e successive agli orari individuati come picchi. Si possono notale inoltre gli scarti quadratici medi evidenziati con i segmenti neri incastonati nelle barre, che risultano costanti a ogni orario. La massima velocità media si rileva nei tragitti dopo le 22:00, di circa 26 km/h.
+Una delle prime analisi effettuate per ogni mezzo è stata quella di calcolare la velocità media per ogni tragitto effettuato riguardante l'intero periodo di raccolta dati, con l'obbiettivo di osservare eventuali variazioni di ora in ora. Come riportato nel grafico \ref{image:3}, i tragitti in auto hanno subito una variazione di velocità media nell'arco 8:00-11:00 e in quello delle 17:00-19:00, in cui si registra la velocità media minima di 23 km/h. Tali risultati sono in linea, tra i tanti studi a riguardo del traffico in auto a Milano, con quelli dello studio di TomTom\cite{tomtomindexmilan} effettuato sulla città di Milano nel 2019, che evidenzia le ore 9:00 e 18:00, orari di picco del traffico stradale dal lunedì al venerdì, con un livello di congestione rispettivamente del 70\% e del 60\%. Risultano in linea con lo studio anche le ore precedenti e successive agli orari individuati come picchi. Si possono notale inoltre gli scarti quadratici medi evidenziati con i segmenti neri incastonati nelle barre, che risultano costanti a ogni orario. La massima velocità media si rileva nei tragitti dopo le 22:00, di circa 26 km/h.
 
 \subsubsection{Velocità media lunedì-venerdì e sabato-domenica}
 
@@ -151,7 +151,7 @@ Il grafico \ref{image:4} mostra il risultato di una ripartizione dei dati effett
 \label{image:5}
 \end{figure}
 
-Il grafico \ref{image:5} mostra il risultato di una ripartizione dei dati effettuata in base alla settimana, in particolare sono stati partizionati a gruppi di 2 settimane consecutive i tragitti effettuati a partire dal 4 maggio 2020, primo giorno dell'allentamento delle restrizioni imposte dal governo italiano per l'emergenza COVID-19\cite{dpcm26aprile}. Nel grafico risulta evidente una degradazione della velocità media generale e lineare rispetto al passare delle settimane. Si nota inoltre che le curve corrispondenti alle settimane successive al 17 maggio, ovvero dopo le prime 2 settimane, presentino dei flessi sempre più accentuati in prossimità delle rush hours evidenziate dal grafico \ref{image:3}. Anche in questo caso, non sono state riportate differenze nella deviazione standard.
+Il grafico \ref{image:5} mostra il risultato di una ripartizione dei dati effettuata in base alla settimana, in particolare sono stati partizionati a gruppi di 2 settimane consecutive i tragitti effettuati a partire dal 4 maggio 2020, primo giorno dell'allentamento delle restrizioni imposte dal governo italiano per l'emergenza COVID-19\cite{dpcm26aprile}. Nel grafico risulta evidente una degradazione della velocità media generale e lineare rispetto al passare delle settimane. Si nota inoltre che le curve corrispondenti alle settimane successive al 17 maggio, ovvero dopo le prime 2 settimane, presentino dei flessi sempre più accentuati in prossimità degli orari di picco del traffico evidenziati dal grafico \ref{image:3}. Anche in questo caso, non sono state riportate differenze nella deviazione standard.
 
 \subsubsection{Velocità media in base alla lunghezza tratta}
 
@@ -308,7 +308,7 @@ Contro ogni aspettativa, nonostante la grande influenza del traffico sui tempi d
 
 I risultati del confronto tra i mezzi pubblici ATM e il servizio di car sharing Enjoy illustrati nella tabella \ref{table:5} mostrano una percentuale di vittorie di circa il 9\%, dove per vittoria si intende che il tempo impiegato a percorrere una tratta coi mezzi pubblici è stato minore o uguale al tempo impiegato utilizzando il car sharing. Nel grafico \ref{image:13} viene visualizzata la distribuzione di queste vittorie di ora in ora. Si può notare come vicino alle ore di picco del traffico individuate nell'analisi delle performance dell'auto, ovvero le ore 8:00-10:00 e 17:00-20:00, si concentri la percentuale maggiore di sconfitte da parte del car sharing.
 
-Per esempio, su tutte le tratte richieste nelle ore 8:00, nell'11\% delle volte i mezzi pubblici hanno pareggiato o superato la performance del car sharing. Al contrario, al di fuori delle rush hours, la percentuale di vittorie è vicina allo 0. Dalla tabella \ref{table:5} si evince anche che dell'8.7\% di queste vittorie, circa metà di esse sono tratte brevi dai 2 ai 5 km.
+Per esempio, su tutte le tratte richieste nelle ore 8:00, nell'11\% delle volte i mezzi pubblici hanno pareggiato o superato la performance del car sharing. Al contrario, al di fuori degli orari di picco del traffico, la percentuale di vittorie è vicina allo 0. Dalla tabella \ref{table:5} si evince anche che dell'8.7\% di queste vittorie, circa metà di esse sono tratte brevi dai 2 ai 5 km.
 
 \subsubsection{Bicicletta vs. Enjoy}
 
@@ -336,13 +336,43 @@ Per esempio, su tutte le tratte richieste nelle ore 8:00, nell'11\% delle volte 
 
 Risultato ancora più interessante è quello del confronto tra bicicletta di proprietà e car sharing. La tabella \ref{table:6} mostra una percentuale delle vittorie del 36\% sul totale, poco più di un terzo del totale delle tratte. La maggior parte di queste vittorie è concentrata nelle tratte brevi dai 2 ai 5 km.
 
-Anche in questo confronto è emerso che nelle rush hours si accentua la percentuale di vittorie che arriva a toccare quasi il 45\% del totale nelle ore 8:00 e 18:00 come riportato dal grafico \ref{image:14}. Al contrario dei mezzi pubblici, questa percentuale resta alta anche al di fuori degli orari di punta, restando sempre intorno al 30\%.
+Anche in questo confronto è emerso che negli orari di picco si accentua la percentuale di vittorie che arriva a toccare quasi il 45\% del totale nelle ore 8:00 e 18:00 come riportato dal grafico \ref{image:14}. Al contrario dei mezzi pubblici, questa percentuale resta alta anche al di fuori degli orari di punta, restando sempre intorno al 30\%.
 
+\section{Confronto pre e post lockdown}
 
+Nonostante le prime versioni del programma di raccolta dati abbiano portati a diversi dati nulli, le stime relative al percorso in automobile e in car sharing sono sempre state corrette. Si è deciso quindi di analizzare l'unica settimana a disposizione prima del lockdown, dal lunedì 2 marzo a domenica 8 marzo 2020, rappresentativa di una giornata tipo a livello di traffico stradale, con una delle settimane più trafficate dopo il lockdown, che dalle analisi riportate dalla figura \ref{image:5} e \ref{image:16} sono risultate corrispondenti al periodo dal 15 giugno al 27 giugno 2020.
 
+\subsection{Automobile}
 
+\begin{figure}[H]
+	\includegraphics[scale=0.8]{vmedia_oraria_auto_prepostlock_week}
+	\caption{V.media [km/h] auto di ora in ora pre e post lockdown}
+	\label{image:22}
+\end{figure}
 
+\begin{figure}[H]
+	\includegraphics[scale=0.8]{vmedia_oraria_auto_prepostlock_weekend}
+	\caption{V.media [km/h] auto di ora in ora pre e post lockdown}
+	\label{image:23}
+\end{figure}
 
+Nel grafico \ref{image:22} si può notare una lieve differenza di km/h di media tra una settimana pre e post lockdown intrasettimanale. Questa differenza risulta più evidente negli orari di picco del traffico vicino alle 8:00 e alle 18:00, con una differenza di 2 km/h di media. Risulta evidente inoltre la differenza di velocità media nel pre lockdown tra le 8:00, dove si tocca il minimo di 17.5 km/h, alle 23:00, dove si trova il massimo di 24.5 km/h, una differenza di velocità del 28\%. Risulta meno evidente ma pur sempre presente la differenza nel weekend come mostrato dal grafico \ref{image:23}, che vede la più grande differenza nel pomeriggio intorno alle 16:00, di circa 2 km/h.
+
+\subsection{Enjoy}
+
+\begin{figure}[H]
+	\includegraphics[scale=0.8]{vmedia_oraria_enjoy_prepostlock_week}
+	\caption{V.media [km/h] Enjoy di ora in ora pre e post lockdown}
+	\label{image:24}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[scale=0.8]{vmedia_oraria_enjoy_prepostlock_weekend}
+	\caption{V.media [km/h] Enjoy di ora in ora pre e post lockdown}
+	\label{image:25}
+\end{figure}
+
+I tempi di percorrenza in car sharing Enjoy sono risultati molto simili, come mostrato dal grafico \ref{image:24}. La maggior differenza è presente anche questa volta vicino le ore di picco delle 8:00 e delle 18:00, sebbene la differenza sia minima, di media 1 km/h. Lo stesso discorso si può fare anche nel weekend, come mostrato nel grafico \ref{image:25}. Una sostanziale differenza si può notare inoltre nell'orario notturno delle 22:00 e delle 23:00, che vede nel periodo post lockdown una minore velocità media di circa 2 km/h.
 
 
 
