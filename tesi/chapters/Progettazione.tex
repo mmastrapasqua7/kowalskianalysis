@@ -1,4 +1,4 @@
-Per attuare questo confronto tra mezzi di trasporto si è scelto di appoggiarsi a servizi di navigazione in grado di fornire stime di percorrenza (Estimated time of arrival, ETA) in tempo reale e usarle come valori effettivi. Le gare per confrontare tali mezzi sono state tradotte in richieste di stime di percorrenza per un tragitto comune a tutti, effettuate più volte al giorno e per diversi percorsi. In questo modo è stato possibile effettuare uno studio su degli stessi percorsi iniziati nello stesso momento ma con mezzi di trasporto diversi. Sono stati presi in considerazione i principali mezzi di trasporto alternativi all'automobile di proprietà con cui è possibile spostarsi all'interno del Comune di Milano:
+Per attuare questo confronto tra mezzi di trasporto si è scelto di appoggiarsi a servizi di navigazione in grado di fornire stime di percorrenza (ETA) in tempo reale per usarle come valori effettivi su cui basare le analisi. Le gare sono state tradotte in richieste per un tragitto comune, effettuate più volte al giorno e per diversi percorsi. In questo modo è stato possibile effettuare uno studio su degli stessi percorsi iniziati nello stesso istante. Sono stati presi in considerazione l'automobile e i principali mezzi di trasporto alternativi con cui è possibile spostarsi all'interno del Comune di Milano:
 \begin{itemize}
 	\item automobile;
 	\item servizio di car sharing Enjoy;
@@ -6,42 +6,42 @@ Per attuare questo confronto tra mezzi di trasporto si è scelto di appoggiarsi 
 	\item bicicletta;
 	\item a piedi.
 \end{itemize}
-Sebbene il servizio di car sharing riguardi comunque l'utilizzo di un'automobile, l'uso di tale servizio è in grado di abbattere due dei problemi principali dell'auto: il primo è il costo, che viene ridotto al solo utilizzo e a una quota di iscrizione, e in secondo luogo sarebbe in grado di diminuire l'inquinamento, dal momento che il parco auto offerto è di ultima generazione, quindi conforme agli ultimi standard sulle emissioni. In alcuni casi, come per Sharengo, il parco auto offerto è completamente elettrico. Il percorso a piedi, seppur non diretto competitor, è stato scelto per essere usato come riferimento.
+Sebbene il servizio di car sharing riguardi comunque l'utilizzo di un'automobile, l'uso di tale servizio è in grado di abbattere due dei problemi principali dell'auto: il primo è il costo, che viene ridotto al solo utilizzo e a una quota di iscrizione; il secondo è l'inquinamento, dal momento che il parco auto offerto è di ultima generazione, quindi conforme agli ultimi standard sulle emissioni. In alcuni casi, come per Sharengo, il parco auto offerto è completamente elettrico. Il percorso a piedi, seppur non diretto competitore, è stato scelto per essere usato come riferimento.
 
 \section{Ricerca delle API}
 
-Il primo passo per la realizzazione di questo studio è stato quello di cercare delle API disponibili per ogni mezzo di trasporto in grado di fornire stime dinamiche sui tempi di percorrenza basate su dati in tempo reale.
+Il primo passo per la realizzazione di questo studio è stato quello di cercare delle API (Application Programming Interface) disponibili per ogni mezzo di trasporto in grado di fornire stime dinamiche sui tempi di percorrenza basate su dati in tempo reale.
 
-\subsection{Google (auto, bici e a piedi)}
+\subsection{Google}
 
-Inevitabilmente Google è stata la prima opzione che si è cercata. Google infatti, grazie a Maps e grazie all'acquisizione di Waze\cite{googleblog}, è una dei leader nel settore delle informazioni di navigazione e che vende la loro conoscenza tramite API. Tra le varie opzioni è presente quella che fa il caso di questo studio, la Directions API, che è in grado di fornire stime di percorrenza molto precise per l'auto, per il percorso a piedi e per la bicicletta (quando disponibile)\cite{googleapi}. Purtroppo però, il costo per l'utilizzo di queste API è di 10\$ per 1000 richieste al mese, l'equivalente di circa 1 richiesta all'ora, che risulta troppo poco per l'obbiettivo dello studio di catturare la variazione delle performance dei mezzi di ora in ora\cite{googleapiprice}, e troppo costosa per essere portata sulla scala voluta di almeno 6 richieste l'ora, una ogni 10 minuti.
+Inevitabilmente Google è stata la prima opzione che si è cercata, in grado di offrire stime di percorrenza per auto, bici, mezzi pubblici e percorsi a piedi, tutto quello che serviva. Google infatti, grazie a Maps e grazie all'acquisizione di Waze, è una dei leader nel settore delle informazioni di navigazione e che vende la loro conoscenza tramite API\cite{googleblog}. Tra le varie opzioni è presente quella che fa il caso di questo studio, la Directions API, che è in grado di fornire stime di percorrenza molto precise per l'auto, per il percorso a piedi e per la bicicletta, quando disponibile\cite{googleapi}. Purtroppo però, il costo per l'utilizzo di queste API è di 10\$ per 1000 richieste al mese, l'equivalente di circa 1 richiesta all'ora, che risulta troppo poco per l'obbiettivo dello studio di catturare la variazione delle performance dei mezzi di ora in ora e troppo costosa per essere portata sulla scala voluta di almeno 10 richieste l'ora, una ogni 10 minuti\cite{googleapiprice}.
 
-\subsection{Waze (auto)}
+\subsection{Waze}
 
-Nonostante sia stata acquisita da Google, Waze è rimasta indipendente a livello di API. Quello che offre Waze però non è esattamente un endpoint a cui fare richiesta per un determinato viaggio, ma semplicemente degli URL da inserire nel proprio sito web o nella propria app Android/iOS per aprire il client Waze da browser/app coi dati della richiesta parametrizzati nell'URL\cite{wazeapi}.
+Nonostante sia stata acquisita da Google, Waze è rimasta indipendente. È specializzata nelle stime di percorrenza in automobile e in moto. Quello che offre Waze però non sono esattamente delle API a cui fare richiesta per un determinato viaggio, ma semplicemente degli URL da inserire nel proprio sito web o nella propria applicazione Android/iOS per aprire il client Waze coi dati della richiesta parametrizzati nell'URL\cite{wazeapi}.
 
-\subsection{Moovit (mezzi pubblici)}
+\subsection{Moovit}
 
-Anche Moovit non offre API per interrogare direttamente i loro servizi e ricevere delle stime, ma solamente l'opzione di incorporare un widget all'iterno della propria pagina web o applicazione che rimanda direttamente ai loro servizi\cite{moovitapi}.
+Anche Moovit, specializzata nei mezzi pubblici e nei treni, non offre API per interrogare direttamente i loro servizi e ricevere delle stime, ma solamente l'opzione di incorporare un widget all'iterno della propria pagina web o applicazione che rimanda direttamente ai loro servizi\cite{moovitapi}. Al momento della ricerca, Moovit offriva un servizio gratuito di API chiamato "DeepLink", di cui la pagina risultava inaccessibile.
 
-\subsection{Here (auto, scooter e mezzi pubblici)}
+\subsection{Here}
 
-Il servizio Here offre una REST API per le informazioni riguardo il routing e la stima del tempo di percorrenza. Queste stime però risultano accurate (basate su dati in tempo reale) solo per determinate città, comunicate sul loro sito, e tra queste non è inclusa Milano. Per le città non in lista, la stima è fatta sulla base dei dati tabellari degli orari dei passaggi dei mezzi\cite{hereapi}.
+Il servizio Here, specializzato nei percorsi in auto, scooter e mezzi pubblici, offre una REST API per le informazioni riguardo il routing e la stima del tempo di percorrenza. Queste stime però risultano accurate (basate su dati in tempo reale) solo per determinate città, comunicate sul loro sito, e tra queste non è inclusa Milano. Per le città non in lista, la stima è fatta sulla base di dati statici o dei dati tabellari degli orari dei passaggi nel caso dei mezzi pubblici\cite{hereapi}.
 
-\subsection{Car2Go, Enjoy (car sharing)}
+\subsection{Car2Go, Enjoy}
 
 Non sono stati trovati servizi relativi a stime di tempi di percorrenza utilizzando un mezzo dei servizi car sharing. I servizi di car sharing Car2Go ed Enjoy non offrono API per tale calcolo ma dispongono di una mappa costantemente aggiornata sul loro sito web con l'elenco delle auto libere, ognuna con allegato dati riguardo il tipo di veicolo (tra auto e moto) e il carburante rimasto. Un software in grado di acquisire le informazioni delle auto libere è stato gentilmente offerto da Federico Losacco, che lo ha scritto e utilizzato per uno studio sul comportamento del traffico basato sui viaggi compiuti dagli utenti del servizio\cite{losaccofederico}.
 
-\subsection{OpenStreetMap e dintorni (auto, bici e a piedi)}
+\subsection{OpenStreetMap}
 
-Il progetto collaborativo di OpenStreetMap offre, tra le altre cose, il calcolo di un tragitto usando come backend servizi offerti da terze parti, tra cui Open Source Routing Machine (OSRM). Purtroppo però, tali servizi non usano dati in tempo reale per la stima del tempo di percorrenza\cite{osm}.
+Il progetto collaborativo di OpenStreetMap offre, tra le altre cose, il calcolo di un tragitto usando come backend servizi offerti da terze parti, tra cui Open Source Routing Machine (OSRM), per stimare percorsi in auto, in bici e a piedi. Purtroppo però, tali servizi non usano dati in tempo reale per la stima del tempo di percorrenza\cite{osm}.
 
 \section{Scelta delle API}
 
 Di seguito sono elencate le scelte fatte per i servizi e i loro rispettivi ruoli di copertura dei mezzi di trasporto:
 
 \begin{itemize}
-	\item HERE REST API\cite{hereapi}
+	\item Here REST API\cite{hereapi}
 	\begin{itemize}
 		\item mezzi pubblici ATM e passanti ferroviari Trenord;
 	\end{itemize}
@@ -51,18 +51,18 @@ Di seguito sono elencate le scelte fatte per i servizi e i loro rispettivi ruoli
 		\item bicicletta e a piedi;
 	\end{itemize}
 
-	\item Enjoy Map scraper di Federico Losacco\cite{enjoycarsharing}\cite{losaccofederico}
+	\item scraping di Enjoy Map di Federico Losacco\cite{enjoycarsharing}\cite{losaccofederico}
 	\begin{itemize}
 		\item servizio di car sharing Enjoy;
 	\end{itemize}
+
+	\item scraping di Waze personalmente programmato\cite{hereapi}
+	\begin{itemize}
+		\item mezzi pubblici ATM e passanti ferroviari Trenord;
+	\end{itemize}
 \end{itemize}
-Nonostante OSRM non offra soluzioni in tempo reale ma statiche, è stato scelto ugualmente per via della scarsa influenza del traffico sui tempi di pecorrenza in bicicletta e a piedi, che dipendono per la maggior parte dall'itinerario calcolato e dalle caratteristiche delle strade come i segnali stradali (divieti, contromano, aree pedonali etc...).
 
-Le API REST di Here sono state utilizzate per mancanza di valide alternative. In un primo momento si è tentato lo scraping del sito web di Moovit per interagire col sito e comunicare le richieste senza intervento umano, ma la difficoltà nel codificare i parametri delle richieste e a decodificarne le poche risposte immerse in svariati messaggi di errore ne hanno scoraggiato l'utilizzo. Nella tabella \ref{table:1} sono stati riportati in percentuale gli errori dovuti all'impiego di Moovit.
-
-Per il servizio di car sharing, si è scelto di usare la lista delle macchine libere come base, ottenuta tramite scraping, per ottenere una stima del tempo di percorrenza basata su due percorsi, per primo il tragitto a piedi per raggiungere l'auto libera più vicina al punto di partenza richiesto e come secondo il tragitto in auto per completare il percorso dal punto in cui si trova l'auto alla destinazione richiesta.
-
-Non sono state trovate valide alternative per il servizio di routing in auto. Google risulta essere eccessivamente costosa se si considera un minimo di 10 richieste all'ora per avere un campione rappresentativo di quel giorno di diversi punti della città. Il prezzo per una prestazione del genere è di circa 72\$ al mese. Waze invece non offre nessuna API per essere interrogata direttamente. Per ovviare a questo problema, si è scelto di programmare un browser headless in grado di interagire direttamente col sito web di Waze per interrogare il servizio e prelevare i dati della stima di percorrenza, simulando per intero l'interazione umana con la pagina.
+Nonostante OSRM non offra soluzioni in tempo reale è stato scelto ugualmente per via della scarsa influenza del traffico sui tempi di pecorrenza in bicicletta e a piedi, che dipendono per la maggior parte dall'itinerario calcolato e dalle caratteristiche delle strade, come segnali stradali di divieti, contromano, aree pedonali. Le API Rest di Here sono state utilizzate per mancanza di valide alternative. In un primo momento si è tentato lo scraping del sito web di Moovit per interagire col sito e comunicare le richieste senza intervento umano, ma la difficoltà nel codificare i parametri delle richieste e a decodificarne le poche risposte immerse in svariati messaggi di errore ne hanno scoraggiato l'utilizzo. Nella tabella \ref{table:1} sono stati riportati in percentuale gli errori dovuti all'impiego di Moovit. Per il servizio di car sharing, si è scelto di usare la lista delle macchine libere come base, ottenuta tramite scraping, per ottenere una stima del tempo di percorrenza basata su due percorsi, per primo il tragitto a piedi per raggiungere l'auto libera più vicina al punto di partenza richiesto e come secondo il tragitto in auto per completare il percorso dal punto in cui si trova l'auto alla destinazione richiesta. Non sono state trovate valide alternative per il servizio di routing in automobile. Google risulta essere eccessivamente costosa se si considera un minimo di 10 richieste all'ora per avere un campione rappresentativo di quel giorno di diversi punti della città. Il prezzo per una prestazione del genere è di circa 72\$ al mese. Waze invece non offre nessuna API per essere interrogata direttamente. Per ovviare a questo problema, si è scelto di programmare un browser headless in grado di interagire direttamente col sito web di Waze per interrogare il servizio e prelevare i dati della stima di percorrenza, simulando per intero l'interazione umana con la pagina.
 
 Le API REST di Here e quelle di OpenStreetMap sono nella seguente forma:
 \begin{lstlisting}[language=Go]
