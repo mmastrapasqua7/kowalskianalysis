@@ -14,49 +14,49 @@ Il primo passo per la realizzazione di questo studio è stato quello di cercare 
 
 \subsection{Google}
 
-Inevitabilmente Google è stata la prima opzione che si è cercata, in grado di offrire stime di percorrenza per auto, bici, mezzi pubblici e percorsi a piedi, tutto quello che serviva. Google infatti, grazie a Maps e grazie all'acquisizione di Waze, è una dei leader nel settore delle informazioni di navigazione e che vende la loro conoscenza tramite API\cite{googleblog}. Tra le varie opzioni è presente quella che fa il caso di questo studio, la Directions API, che è in grado di fornire stime di percorrenza molto precise per l'auto, per il percorso a piedi e per la bicicletta, quando disponibile\cite{googleapi}. Purtroppo però, il costo per l'utilizzo di queste API è di 10\$ per 1000 richieste al mese, l'equivalente di circa 1 richiesta all'ora, che risulta troppo poco per l'obbiettivo dello studio di catturare la variazione delle performance dei mezzi di ora in ora e troppo costosa per essere portata sulla scala voluta di almeno 10 richieste l'ora, una ogni 10 minuti\cite{googleapiprice}.
+Inevitabilmente Google è stata la prima opzione che si è cercata, in grado di offrire stime di percorrenza per auto, bici, mezzi pubblici e percorsi a piedi, tutto quello che serviva. Google infatti, grazie a Maps e grazie all'acquisizione di Waze, è una dei leader nel settore delle informazioni di navigazione e che vende la loro conoscenza tramite API. Tra le varie opzioni è presente quella che fa il caso di questo studio, la Directions API\footnote{\url{https://developers.google.com/maps/documentation/directions/overview}. Accessed: 20/01/2021}, che è in grado di fornire stime di percorrenza molto precise per l'auto, per il percorso a piedi e per la bicicletta, quando disponibile. Purtroppo però, il costo per l'utilizzo di queste API è di 10\$ per 1000 richieste al mese\footnote{\url{https://cloud.google.com/maps-platform/pricing/sheet}. Accessed: 20/01/2021}, l'equivalente di circa 1 richiesta all'ora, che risulta troppo poco per l'obbiettivo dello studio di catturare la variazione delle performance dei mezzi di ora in ora e troppo costosa per essere portata sulla scala voluta di almeno 10 richieste l'ora, una ogni 10 minuti.
 
 \subsection{Waze}
 
-Nonostante sia stata acquisita da Google, Waze è rimasta indipendente. È specializzata nelle stime di percorrenza in automobile e in moto. Quello che offre Waze però non sono esattamente delle API a cui fare richiesta per un determinato viaggio, ma semplicemente degli URL da inserire nel proprio sito web o nella propria applicazione Android/iOS per aprire il client Waze coi dati della richiesta parametrizzati nell'URL\cite{wazeapi}.
+Nonostante sia stata acquisita da Google, Waze è rimasta indipendente. È specializzata nelle stime di percorrenza in automobile e in moto. Quello che offre Waze però non sono esattamente delle API a cui fare richiesta per un determinato viaggio, ma semplicemente degli URL da inserire nel proprio sito web o nella propria applicazione Android/iOS per aprire il client Waze coi dati della richiesta parametrizzati nell'URL\footnote{\url{https://www.waze.com/sdk}. Accessed: 20/01/2021}.
 
 \subsection{Moovit}
 
-Anche Moovit, specializzata nei mezzi pubblici e nei treni, non offre API per interrogare direttamente i loro servizi e ricevere delle stime, ma solamente l'opzione di incorporare un widget all'iterno della propria pagina web o applicazione che rimanda direttamente ai loro servizi\cite{moovitapi}. Al momento della ricerca, Moovit offriva un servizio gratuito di API chiamato "DeepLink", di cui la pagina risultava inaccessibile.
+Anche Moovit, specializzata nei mezzi pubblici e nei treni, non offre API per interrogare direttamente i loro servizi e ricevere delle stime, ma solamente l'opzione di incorporare un widget all'iterno della propria pagina web o applicazione che rimanda direttamente ai loro servizi\footnote{\url{https://moovit.com/developers/}. Accessed: 20/01/2021}. Al momento della ricerca, Moovit offriva un servizio gratuito di API chiamato "DeepLink", di cui la pagina risultava inaccessibile, restituendo il codice di stato HTTP 500, "Internal Server Error".
 
 \subsection{Here}
 
-Il servizio Here, specializzato nei percorsi in auto, scooter e mezzi pubblici, offre una REST API per le informazioni riguardo il routing e la stima del tempo di percorrenza. Queste stime però risultano accurate (basate su dati in tempo reale) solo per determinate città, comunicate sul loro sito, e tra queste non è inclusa Milano. Per le città non in lista, la stima è fatta sulla base di dati statici o dei dati tabellari degli orari dei passaggi nel caso dei mezzi pubblici\cite{hereapi}.
+Il servizio Here, specializzato nei percorsi in auto, scooter e mezzi pubblici, offre una REST API per le informazioni riguardo il routing e la stima del tempo di percorrenza\footnote{\url{https://developer.here.com/documentation}. Accessed: 20/01/2021}. Queste stime però risultano accurate (basate su dati in tempo reale) solo per determinate città, comunicate sul loro sito, e tra queste non è inclusa Milano. Per le città non in lista, la stima è fatta sulla base di dati statici o dei dati tabellari degli orari dei passaggi nel caso dei mezzi pubblici.
 
 \subsection{Car2Go, Enjoy}
 
-Non sono stati trovati servizi relativi a stime di tempi di percorrenza utilizzando un mezzo dei servizi car sharing. I servizi di car sharing Car2Go ed Enjoy non offrono API per tale calcolo ma dispongono di una mappa costantemente aggiornata sul loro sito web con l'elenco delle auto libere, ognuna con allegato dati riguardo il tipo di veicolo (tra auto e moto) e il carburante rimasto. Un software in grado di acquisire le informazioni delle auto libere è stato gentilmente offerto da Federico Losacco, che lo ha scritto e utilizzato per uno studio sul comportamento del traffico basato sui viaggi compiuti dagli utenti del servizio\cite{losaccofederico}.
+Non sono stati trovati servizi relativi a stime di tempi di percorrenza utilizzando un mezzo dei servizi car sharing. I servizi di car sharing Car2Go ed Enjoy non offrono API per tale calcolo ma dispongono di una mappa costantemente aggiornata sul loro sito web con l'elenco delle auto libere, ognuna con allegato dati riguardo il tipo di veicolo (tra auto e moto) e il carburante rimasto. Un software in grado di acquisire le informazioni delle auto libere è stato gentilmente offerto da Federico Losacco, che lo ha scritto e utilizzato per uno studio sul comportamento del traffico basato sui viaggi compiuti dagli utenti del servizio \cite{trentini2017sampling}.
 
 \subsection{OpenStreetMap}
 
-Il progetto collaborativo di OpenStreetMap offre, tra le altre cose, il calcolo di un tragitto usando come backend servizi offerti da terze parti, tra cui Open Source Routing Machine (OSRM), per stimare percorsi in auto, in bici e a piedi. Purtroppo però, tali servizi non usano dati in tempo reale per la stima del tempo di percorrenza\cite{osm}.
+Il progetto collaborativo di OpenStreetMap offre, tra le altre cose, il calcolo di un tragitto usando come backend servizi offerti da terze parti, tra cui Open Source Routing Machine (OSRM), per stimare percorsi in auto, in bici e a piedi. Purtroppo però, tali servizi non usano dati in tempo reale per la stima del tempo di percorrenza\footnote{\url{https://wiki.openstreetmap.org/wiki/Routing}. Accessed: 20/01/2021}.
 
 \section{Scelta delle API}
 
 Di seguito sono elencate le scelte fatte per i servizi e i loro rispettivi ruoli di copertura dei mezzi di trasporto:
 
 \begin{itemize}
-	\item Here REST API\cite{hereapi}
+	\item Here REST API
 	\begin{itemize}
 		\item mezzi pubblici ATM e passanti ferroviari Trenord;
 	\end{itemize}
 
-	\item OpenStreetMap con OSRM\cite{osm}
+	\item OpenStreetMap con OSRM
 	\begin{itemize}
 		\item bicicletta e a piedi;
 	\end{itemize}
 
-	\item scraping di Enjoy Map di Federico Losacco\cite{enjoycarsharing}\cite{losaccofederico}
+	\item scraping di Enjoy Map usando il software di Losacco Federico \cite{trentini2017sampling}
 	\begin{itemize}
 		\item servizio di car sharing Enjoy;
 	\end{itemize}
 
-	\item scraping di Waze personalmente programmato\cite{hereapi}
+	\item scraping di Waze personalmente programmato
 	\begin{itemize}
 		\item mezzi pubblici ATM e passanti ferroviari Trenord;
 	\end{itemize}
@@ -74,7 +74,7 @@ Chiedono in input le coordinate di partenza e di destinazione e restituiscono in
 
 \subsection{Lo scraping di Waze}
 
-Dato che i servizi per sviluppatori offerti da Waze sono gratuiti, si è scelto di sfruttare tali dati ma prendendoli per vie laterali, direttamente dalla pagina web \url{https://www.waze.com/live-map}. La maggior parte dei browser disponibili sul web come Mozilla Firefox offrono, oltre al browser in sè, gli strumenti di debugging usati principalmente dagli sviluppatori di siti web. Tra questi vi è la console da sviluppatore, apribile tramite una scorciatoia da tastiera Ctrl+Shift+K. Con questa console è possibile vedere le richieste di rete che il sito effettua in background per il suo funzionamento. L'applicazione web di Waze è un'applicazione a singola pagina e per il suo funzionamento effettua delle richieste tramite il linguaggio di programmazione JavaScript in modo asincrono direttamente ai loro server. Questa pratica prende il nome di AJAX (Asynchronous JavaScript and XML)\cite{ajaxwiki}. Guardando i comportamenti a livello di rete del sito web, mentre si svolge una richiesta per un viaggio a Waze, si presenta subito un URL di riferimento usato come punto di ricevimento delle richieste di routing, come mostrato nella figura \ref{image:1}.
+Dato che i servizi per sviluppatori offerti da Waze sono gratuiti, si è scelto di sfruttare tali dati ma prendendoli per vie laterali, direttamente dalla pagina web \url{https://www.waze.com/live-map}. La maggior parte dei browser disponibili sul web come Mozilla Firefox offrono, oltre al browser in sè, gli strumenti di debugging usati principalmente dagli sviluppatori di siti web. Tra questi vi è la console da sviluppatore, apribile tramite una scorciatoia da tastiera Ctrl+Shift+K. Con questa console è possibile vedere le richieste di rete che il sito effettua in background per il suo funzionamento. L'applicazione web di Waze è un'applicazione a singola pagina e per il suo funzionamento effettua delle richieste tramite il linguaggio di programmazione JavaScript in modo asincrono direttamente ai loro server. Questa pratica prende il nome di AJAX (Asynchronous JavaScript and XML)\footnote{\url{https://en.wikipedia.org/wiki/Ajax_(programming)}. Accessed: 20/01/2021}. Guardando i comportamenti a livello di rete del sito web, mentre si svolge una richiesta per un viaggio a Waze, si presenta subito un URL di riferimento usato come punto di ricevimento delle richieste di routing, come mostrato nella figura \ref{image:1}.
 
 \begin{figure}[H]
 	\includegraphics[scale=0.6]{waze_scraping}
@@ -82,7 +82,7 @@ Dato che i servizi per sviluppatori offerti da Waze sono gratuiti, si è scelto 
 	\label{image:1}
 \end{figure}
 
-In particolare, la richiesta verso \url{https://www.waze.com/live-map/routing/?} contiene esattamente il punto di partenza e di arrivo richiesti parametrizzati nell'URL e il risultato restituito è in formato JSON (JavaScript Object Notation)\cite{wikijson}. Per proteggere i loro server da sovraccarichi, Waze risponde a questo URL solamente se si possiede il permesso ricevuto preventivamente tramite un token, ovvero una stringa di caratteri che funge da chiave segreta. Per ottenere questa chiave e raggiungere l'obbiettivo finale di avere delle API per interrogare il servizio, è stato scritto un programma in Golang per emulare l'interazione col sito web e ricevere il token necessario per effettuare le richieste successive. Questo processo ha richiesto tempo sia per la codifica dei parametri e che per la decodifica del risultato stesso e dei risultati intermedi per la richiesta del token. In altre parole, è stato fatto il reverse engineering della web app.
+In particolare, la richiesta \url{https://www.waze.com/live-map/routing/?} contiene esattamente il punto di partenza e di arrivo richiesti parametrizzati nell'URL e il risultato restituito è in formato JSON (JavaScript Object Notation)\footnote{\url{https://en.wikipedia.org/wiki/JSON}. Accessed: 20/01/2021}. Per proteggere i loro server da sovraccarichi, Waze risponde a questo URL solamente se si possiede il permesso ricevuto preventivamente tramite un token, ovvero una stringa di caratteri che funge da chiave segreta. Per ottenere questa chiave e raggiungere l'obbiettivo finale di avere delle API per interrogare il servizio, è stato scritto un programma in Golang per emulare l'interazione col sito web e ricevere il token necessario per effettuare le richieste successive. Questo processo ha richiesto tempo sia per la codifica dei parametri e che per la decodifica del risultato stesso e dei risultati intermedi per la richiesta del token. In altre parole, è stato fatto il reverse engineering della web app.
 
 \subsection{Stima del percorso per il car sharing}
 
