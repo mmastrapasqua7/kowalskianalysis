@@ -80,14 +80,14 @@ Nel grafico \ref{image:2} e nella tabella \ref{table:2} sono riportate le statis
 
 \section{Performance dei singoli mezzi}
 
-\begin{figure}[H]
-\includegraphics[scale=0.8]{vmedia_oraria_all}
-\caption{Performance medie dei singoli mezzi per fascia oraria}
-\label{image:15}
-\end{figure}
+%\begin{figure}[H]
+%\includegraphics[scale=0.8]{vmedia_oraria_all}
+%\caption{Performance medie dei singoli mezzi per fascia oraria}
+%\label{image:15}
+%\end{figure}
 
 \begin{figure}[H]
-	\includegraphics[scale=0.8]{vmedia_all}
+	\includegraphics[scale=0.90]{vmedia_all}
 	\caption{Performance medie dei singoli mezzi}
 	\label{image:26}
 \end{figure}
@@ -108,7 +108,7 @@ Nel grafico \ref{image:2} e nella tabella \ref{table:2} sono riportate le statis
 \label{table:3}
 \end{table}
 
-Dal grafico \ref{image:15} si può subito notare come i tragitti a piedi, coi mezzi pubblici e in bicicletta non subiscano una variazione di velocità media in relazione all'orario, il che è un risultato aspettato visto che i servizi di navigazione associati usati per risolvere le richieste di viaggio non sono basati su dati in tempo reale ma statici, a differenza dei tragitti in auto e in Enjoy. Nella tabella \ref{table:3} emerge inoltre che la deviazione standard, indicata con Std, dei tragitti a piedi e in bicicletta è molto bassa, risultato sempre dovuto alla staticità del calcolo del tragitto. Nonostante il servizio associato ai mezzi pubblici ATM sia anch'esso basato su dati statici, la presenza di una tabella degli orari di passaggio e la distanza della fermata del mezzo dal punto di partenza hanno influito sulla velocità media del tragitto che, dunque, non è mai risultata costante, riportando un valore più alto per la deviazione standard. Si può notare inoltre come le velocità medie di percorrenza di mezzi pubblici e bicicletta siano molto vicine. Questi primi risultati sono in linea con quelli dell'ISFORT riportati nella tabella \ref{table:9}, che vede l'automobile in testa alla classifica intorno a 22 km/h di media, con la bici al secondo posto ma con 15 km/h e i mezzi pubblici al terzo con 14 km/h, stime poco più alte di quelle sopra riportate.
+Dal grafico \ref{image:26} si può subito notare come i tragitti a piedi e in bicicletta abbiano dei baffi molto corti se non totalmente assenti rispetto agli altri mezzi, con conseguente varianza molto bassa, il che è un risultato aspettato dato che non c'è nessun fattore oltre la distanza a influenzare drasticamente il tempo di percorrenza per questo metodo di spostamento, motivo per cui i provider si limitano a calcolarne una stima statica. Risultato opposto invece è stato ottenuto per i tragitti in auto, car sharing e mezzi pubblici, che mostrano una varianza molto più alta, come riportato nella tabella \ref{table:3}, dovuta alla presenza di diverse variabili nel calcolo del tragitto. Nonostante le stime di percorrenza dei mezzi pubblici siano state calcolate dal provider usando solamente le tabelle degli orari dei mezzi, la varianza è risultata comunque alta per via delle numerosi variabili che influiscono sul tempo di percorrenza, come la distanza tra il punto di partenza e la fermata del mezzo, la scelta stessa del tipo di mezzo, come bus, tram o metro, e la corrispettiva velocità nominale. Questi primi risultati sono in linea con quelli dell'ISFORT riportati nella tabella \ref{table:9}, che vede l'automobile in testa alla classifica intorno a 22 km/h di media, con la bici al secondo posto ma con 15 km/h e i mezzi pubblici al terzo con 14 km/h, stime poco più alte di quelle sopra riportate.
 
 \subsection{Auto}
 
@@ -116,11 +116,11 @@ Dal grafico \ref{image:15} si può subito notare come i tragitti a piedi, coi me
 
 \begin{figure}[H]
 \includegraphics[scale=0.8]{vmedia_oraria_auto}
-\caption{Velocità media in auto [km/h], di ora in ora}
+\caption{Velocità media in auto [km/h], di ora in ora. I baffi neri rappresentano la deviazione standard campionaria $\sigma$ rispettiva di ogni barra.}
 \label{image:3}
 \end{figure}
 
-Una delle prime analisi effettuate per ogni mezzo è stata quella di calcolare la velocità media per ogni tragitto effettuato riguardante l'intero periodo di raccolta dati, con l'obbiettivo di osservare eventuali variazioni di ora in ora. Come riportato nel grafico \ref{image:3}, i tragitti in auto hanno subito una variazione di velocità media nell'arco 8:00-11:00 e in quello delle 17:00-19:00, in cui si registra la velocità media minima di 23 km/h. Tali risultati sono in linea, tra i tanti studi a riguardo del traffico in auto a Milano, con quelli dello studio di TomTom\footnote{\url{https://www.tomtom.com/en_gb/traffic-index/ranking/}. Accessed: 20/01/2021} effettuato sulla città di Milano nel 2019, che evidenzia le ore 9:00 e 18:00, orari di picco del traffico stradale dal lunedì al venerdì, con un livello di congestione rispettivamente del 70\% e del 60\%. Risultano in linea con lo studio anche le ore precedenti e successive agli orari individuati come picchi. Si possono notare inoltre gli scarti quadratici medi evidenziati con i segmenti neri incastonati nelle barre, che risultano costanti a ogni orario. La massima velocità media si rileva nei tragitti dopo le 22:00, di circa 26 km/h.
+Una delle prime analisi effettuate per ogni mezzo è stata quella di calcolare la velocità media per ogni tragitto effettuato riguardante l'intero periodo di raccolta dati, con l'obbiettivo di osservare eventuali variazioni di ora in ora. Come riportato nel grafico \ref{image:3}, i tragitti in auto hanno subito una variazione di velocità media nell'arco 8:00-11:00 e in quello delle 17:00-19:00, in cui si registra la velocità media minima di 23 km/h. La massima velocità media invece si rileva nei tragitti dopo le 22:00, di circa 26 km/h. Tali risultati sono in linea, tra i tanti studi a riguardo del traffico in auto a Milano, con quelli dello studio di TomTom\footnote{\url{https://www.tomtom.com/en_gb/traffic-index/ranking/}. Accessed: 20/01/2021} effettuato sulla città di Milano nel 2019, che evidenzia le ore 9:00 e 18:00, orari di picco del traffico stradale dal lunedì al venerdì, con un livello di congestione rispettivamente del 70\% e del 60\%. Risultano in linea con lo studio anche le ore precedenti e successive agli orari individuati come picchi. Si nota inoltre come le deviazioni standard campionarie, rappresentate da baffi neri incastonati nelle barre, relative alle diverse fasce orarie, rimangano invariate di ora in ora. Si è scelto di rappresentare la deviazione standard invece che l'errore standard per via dell'elevata numerosità del campione che renderebbero i baffi non visibili e quindi non distinguibili. Difatti, basandosi sui dati della tabella \ref{table:3} e sul grafico \ref{image:19} che mostra una media di circa 2600 tratte per ogni fascia di orario, l'errore standard per ogni barra risulterebbe di: $\frac{\sigma_x}{\sqrt{n}} = \frac{3.9}{\sqrt{2600}} = 7 \times 10^{-2}$.
 
 \subsubsection{Velocità media lunedì-venerdì e sabato-domenica}
 
@@ -361,7 +361,7 @@ Anche in questo confronto è emerso che negli orari di picco si accentua la perc
 
 \section{Confronto pre e post lockdown}
 
-Nonostante le prime versioni del programma di raccolta dati abbiano portati a diversi dati nulli, le stime relative al percorso in automobile e in car sharing sono sempre state corrette. Si è deciso quindi di analizzare l'unica settimana a disposizione prima del lockdown, dal lunedì 2 a domenica 8 marzo 2020, rappresentativa di una giornata tipo a livello di traffico stradale, con una delle settimane più trafficate dopo il lockdown, che dalle analisi riportate dalla figura \ref{image:5} e \ref{image:16} sono risultate corrispondenti al periodo dal 15 al 27 giugno 2020.
+Nonostante le prime versioni del programma di raccolta dati abbiano portati a diversi dati nulli, le stime relative al percorso in automobile e car sharing sono sempre state corrette. Si è deciso quindi di analizzare l'unica settimana a disposizione prima del lockdown, dal lunedì 2 a domenica 8 marzo 2020, rappresentativa di una giornata tipo a livello di traffico stradale, con una delle settimane più trafficate dopo il lockdown, che dalle analisi riportate dalla figura \ref{image:5} e \ref{image:16} sono risultate corrispondenti al periodo dal 15 al 27 giugno 2020.
 
 \subsection{Automobile}
 
