@@ -116,17 +116,17 @@ Dal grafico \ref{image:26} si può subito notare come i tragitti a piedi e in bi
 
 \begin{figure}[H]
 \includegraphics[scale=0.8]{vmedia_oraria_auto}
-\caption{Velocità media in auto [km/h], di ora in ora. I baffi neri rappresentano la deviazione standard campionaria $\sigma$ rispettiva di ogni barra.}
+\caption{Velocità media in auto [km/h], di ora in ora. I baffi neri rappresentano la deviazione standard campionaria $\sigma$ rispettiva di ogni barra}
 \label{image:3}
 \end{figure}
 
-Una delle prime analisi effettuate per ogni mezzo è stata quella di calcolare la velocità media per ogni tragitto effettuato riguardante l'intero periodo di raccolta dati, con l'obbiettivo di osservare eventuali variazioni di ora in ora. Come riportato nel grafico \ref{image:3}, i tragitti in auto hanno subito una variazione di velocità media nell'arco 8:00-11:00 e in quello delle 17:00-19:00, in cui si registra la velocità media minima di 23 km/h. La massima velocità media invece si rileva nei tragitti dopo le 22:00, di circa 26 km/h. Tali risultati sono in linea, tra i tanti studi a riguardo del traffico in auto a Milano, con quelli dello studio di TomTom\footnote{\url{https://www.tomtom.com/en_gb/traffic-index/ranking/}. Accessed: 20/01/2021} effettuato sulla città di Milano nel 2019, che evidenzia le ore 9:00 e 18:00, orari di picco del traffico stradale dal lunedì al venerdì, con un livello di congestione rispettivamente del 70\% e del 60\%. Risultano in linea con lo studio anche le ore precedenti e successive agli orari individuati come picchi. Si nota inoltre come le deviazioni standard campionarie, rappresentate da baffi neri incastonati nelle barre, relative alle diverse fasce orarie, rimangano invariate di ora in ora. Si è scelto di rappresentare la deviazione standard invece che l'errore standard per via dell'elevata numerosità del campione che renderebbero i baffi non visibili e quindi non distinguibili. Difatti, basandosi sui dati della tabella \ref{table:3} e sul grafico \ref{image:19} che mostra una media di circa 2600 tratte per ogni fascia di orario, l'errore standard per ogni barra risulterebbe di: $\frac{\sigma_x}{\sqrt{n}} = \frac{3.9}{\sqrt{2600}} = 7 \times 10^{-2}$.
+Una delle prime analisi effettuate per ogni mezzo è stata quella di calcolare la velocità media per ogni tragitto effettuato riguardante l'intero periodo di raccolta dati, con l'obbiettivo di osservare eventuali variazioni di ora in ora. Come riportato nel grafico \ref{image:3}, i tragitti in auto hanno subito una variazione di velocità media nell'arco 8:00-11:00 e in quello delle 17:00-19:00, in cui si registra la velocità media minima di 23 km/h. La massima velocità media invece si rileva nei tragitti dopo le 22:00, di circa 26 km/h. Tali risultati sono in linea, tra i tanti studi a riguardo del traffico in auto a Milano, con quelli dello studio di TomTom\footnote{\url{https://www.tomtom.com/en_gb/traffic-index/ranking/}. Accessed: 20/01/2021} effettuato sulla città di Milano nel 2019, che evidenzia le ore 9:00 e 18:00, orari di picco del traffico stradale dal lunedì al venerdì, con un livello di congestione rispettivamente del 70\% e del 60\%. Risultano in linea con lo studio anche le ore precedenti e successive agli orari individuati come picchi. Si nota inoltre come le deviazioni standard campionarie, rappresentate da baffi neri incastonati nelle barre, relative alle diverse fasce orarie, rimangano invariate di ora in ora. Si è scelto di rappresentare la deviazione standard invece che l'errore standard per via dell'elevata numerosità del campione che renderebbero i baffi non visibili e quindi non distinguibili. Difatti, basandosi sui dati della tabella \ref{table:3} e sul grafico \ref{image:19} che mostra una media di circa 2600 tratte per ogni fascia di orario, l'errore standard per ogni barra risulterebbe di: $\frac{\sigma_x}{\sqrt{n}} = \frac{3.9}{\sqrt{2600}} = 0.07$.
 
 \subsubsection{Velocità media lunedì-venerdì e sabato-domenica}
 
 \begin{figure}[H]
 \includegraphics[scale=0.8]{vmedia_oraria_auto_weekend}
-\caption{Velocità media in auto [km/h], di ora in ora. Ingrandimento sull'asse delle ordinate ai valori 16 di minimo e 28 di massimo.}
+\caption{Velocità media in auto [km/h], di ora in ora. Ingrandimento sull'asse delle ordinate ai valori 16 di minimo e 28 di massimo}
 \label{image:4}
 \end{figure}
 
@@ -147,13 +147,13 @@ Una delle prime analisi effettuate per ogni mezzo è stata quella di calcolare l
 %\label{table:8}
 %\end{table}
 
-Il grafico \ref{image:4} mostra il risultato di una ripartizione dei dati effettuata sulla base del giorno della settimana, in particolare sono stati divisi i tragitti effettuati dal lunedì al venerdì da quelli del sabato e domenica di ogni settimana. Per rendere leggibile la differenza è stata spostata l'origine del grafico al valore 16 sull'asse delle ordinate. La differenza è nel complesso bassa, di circa 2 km/h di media, che tende a diminuire nel primo pomeriggio e negli orari notturni e ad aumentare nella fascia oraria delle ore 8;00 e delle 16:00, con una differenza di quasi 4 km/h, equivalente a un incremento della velocità media nel fine settimana del 14.6\% in più rispetto al lunedì-venerdì. La variazione oraria nel sabato-domenica risulta meno evidente di quella del lunedì-venerdì, con i picchi di rallentamento che si spostato nelle fasce orarie 10:00-12:00 e 16:00-19:00. Anche questi dati risultano in linea con quelli dello studio di TomTom, che vede un minor livello di congestione nel weekend con dei picchi nelle ore 10:00 e 18:00. La deviazione standard delle fasce di orario del lunedì-venerdì e sabato-domenica, che sono state omesse per motivi di leggibilità del grafico, rimangono sempre costanti intorno al valore 3.7 km/h, con un errore standard di $\frac{3.7}{\sqrt{1622}} = 9 \times 10^{-2}$ per i giorni intrasettimanali e $\frac{3.7}{\sqrt{622}} = 14 \times 10^{-2}$ per i fine settimana, dove 1622 e 622 rappresentano rispettivamente la numerosità del campione di una sola fascia di orario lunedì-venerdì e quella del sabato-domenica.
+Il grafico \ref{image:4} mostra il risultato di una ripartizione dei dati effettuata sulla base del giorno della settimana, in particolare sono stati divisi i tragitti effettuati dal lunedì al venerdì da quelli del sabato e domenica di ogni settimana. Per rendere leggibile la differenza è stata spostata l'origine del grafico al valore 16 sull'asse delle ordinate. La differenza è nel complesso bassa, di circa 2 km/h di media, che tende a diminuire nel primo pomeriggio e negli orari notturni e ad aumentare nella fascia oraria delle ore 8;00 e delle 16:00, con una differenza di quasi 4 km/h, equivalente a un incremento della velocità media nel fine settimana del 14.6\% in più rispetto al lunedì-venerdì. La variazione oraria nel sabato-domenica risulta meno evidente di quella del lunedì-venerdì, con i picchi di rallentamento che si spostato nelle fasce orarie 10:00-12:00 e 16:00-19:00. Anche questi dati risultano in linea con quelli dello studio di TomTom, che vede un minor livello di congestione nel weekend con dei picchi nelle ore 10:00 e 18:00. La deviazione standard delle fasce di orario del lunedì-venerdì e sabato-domenica, che sono state omesse per motivi di leggibilità del grafico, rimangono sempre costanti intorno al valore 3.7 km/h, con un errore standard di $\frac{3.7}{\sqrt{1622}} = 0.09$ per i giorni intrasettimanali e $\frac{3.7}{\sqrt{622}} = 0.14$ per i fine settimana, dove 1622 e 622 rappresentano rispettivamente la numerosità del campione di una sola fascia di orario lunedì-venerdì e di sabato-domenica.
 
 \subsubsection{Velocità media settimana dopo settimana da fine lockdown}
 
 \begin{figure}[H]
 \includegraphics[scale=0.8]{vmedia_oraria_auto_weeks}
-\caption{Velocità media in auto [km/h], di ora in ora}
+\caption{Velocità media in auto [km/h], di ora in ora. Ingrandimento sull'asse delle ordinate ai valori 16 di minimo e 28 di massimo}
 \label{image:5}
 \end{figure}
 
@@ -164,8 +164,9 @@ Il grafico \ref{image:4} mostra il risultato di una ripartizione dei dati effett
 \end{figure}
 
 Il grafico \ref{image:5} mostra il risultato di una ripartizione dei dati effettuata in base alla settimana, in particolare sono stati partizionati a gruppi di 2 settimane consecutive i tragitti effettuati a partire dal 4 maggio 2020, primo giorno dell'allentamento delle restrizioni imposte dal governo italiano per l'emergenza COVID-19 \cite{misuredelgovernopercovid}. Nel grafico risulta evidente una degradazione della velocità media generale e lineare rispetto al passare delle settimane. Si nota inoltre che le curve corrispondenti alle settimane successive al 17 maggio, ovvero dopo le prime 2, presentino dei flessi sempre più accentuati in prossimità degli orari di picco del traffico evidenziati dal grafico \ref{image:3}. Anche in questo caso, non sono state riportate differenze nella deviazione standard.
+Nel grafico \ref{image:27} sono stati usati i box plot per descrivere la distribuzione delle velocità medie a gruppi di 2 settimane dalla fine del lockdown. Si può notare come il quartile zero, primo, secondo e terzo siano rimasti uguali, con un lieve andamento a ribasso col passare delle settimane. La differenza risulta più accentuata nel quarto quartile, che vede la diminuzione dei valori di massima velocità media per tragitto, probabilmente dovuta a un aumento del traffico, come emerso dal grafico \ref{image:5} con valori decrescenti della velocità media per ogni fascia di orario al passare delle settimane dalla fine del lockdown, un sintomo di ritorno a livelli abituali di congestione stradale.
 
-\subsubsection{Velocità media in base alla lunghezza tratta}
+\subsubsection{Velocità media in base alla lunghezza del tragitto}
 
 \begin{figure}[H]
 \includegraphics[scale=0.75]{heatmap_auto}
@@ -181,17 +182,17 @@ Nel grafico \ref{image:6} sono riportati i dati della velocità media divisi per
 
 \begin{figure}[H]
 \includegraphics[scale=0.8]{vmedia_oraria_enjoy}
-\caption{Velocità media usando Enjoy [km/h], di ora in ora}
+\caption{Velocità media usando Enjoy [km/h], di ora in ora.  I baffi neri rappresentano la deviazione standard campionaria $\sigma$ rispettiva di ogni barra}
 \label{image:7}
 \end{figure}
 
-I tragitti col servizio di car sharing Enjoy hanno subito una lieve variazione di velocità media nell'arco 8:00-11:00 e in quello delle 17:00-19:00 come per l'auto di proprietà, in cui si registra la velocità media minima di 16 km/h, seppur la massima registrata sia stata di 17 km/h. La variazione è all'atto pratico poco significativa. La deviazione standard rimane costante per tutte le fasce di orario. Rispetto al grafico \ref{image:3} della velocità media in auto, la curva risulta molto simile, traslata verticalmente di 6 km/h.
+I tragitti col servizio di car sharing Enjoy hanno subito una lieve variazione di velocità media nell'arco 8:00-11:00 e in quello delle 17:00-19:00 come per l'auto di proprietà, in cui si registra la velocità media minima di 16 km/h, seppur la massima registrata sia stata di 17 km/h. La variazione è all'atto pratico poco significativa. La deviazione standard rimane costante per tutte le fasce di orario. Rispetto al grafico \ref{image:3} della velocità media in auto, la curva risulta molto simile, traslata verticalmente di 6 km/h. Anche in questo caso è stata usata la deviazione standard invece dell'errore standard per motivi di leggibilità, data l'elevata numerosità del campione. Tutti i grafici che seguiranno riporteranno la deviazione standard per lo stesso motivo.
 
 \subsubsection{Velocità media lunedì-venerdì e sabato-domenica}
 
 \begin{figure}[H]
 	\includegraphics[scale=0.8]{vmedia_oraria_enjoy_weekend}
-	\caption{Velocità media usando Enjoy [km/h], di ora in ora}
+	\caption{Velocità media usando Enjoy [km/h], di ora in ora. Ingrandimento sull'asse delle ordinate ai valori 12 di minimo e 19 di massimo}
 	\label{image:20}
 \end{figure}
 
@@ -201,7 +202,7 @@ Non sono state registrate particolari differenze effettuando la ripartizione dei
 
 \begin{figure}[H]
 	\includegraphics[scale=0.8]{vmedia_oraria_enjoy_weeks}
-	\caption{Frequenza relativa vittorie bicicletta su Enjoy di ora in ora}
+	\caption{Frequenza relativa vittorie bicicletta su Enjoy di ora in ora. Ingrandimento sull'asse delle ordinate ai valori 12 di minimo e 19 di massimo}
 	\label{image:16}
 \end{figure}
 
@@ -211,7 +212,17 @@ Non sono state registrate particolari differenze effettuando la ripartizione dei
 	\label{image:28}
 \end{figure}
 
-Anche per il car sharing Enjoy, nel grafico \ref{image:16} risulta evidente una degradazione della velocità media generale e lineare rispetto al passare delle settimane. Non risultano differenze nelle fasce orarie meno trafficate dalle 12:00 alle 15:00 e dalle 21:00 alle 23:00. Le prime due settimane dall'allentamento delle restrizioni risultano più veloci di circa 1 km/h di media dalle altre settimane.
+Anche per il car sharing risulta evidente una degradazione della velocità media generale e lineare rispetto al passare delle settimane, come riportato nel grafico \ref{image:16}. Non risultano differenze nelle fasce orarie meno trafficate dalle 12:00 alle 15:00 e dalle 21:00 alle 23:00. Le prime due settimane dall'allentamento delle restrizioni risultano più veloci di circa 1 km/h di media dalle altre settimane. Nel grafico \ref{image:28}, come per l'automobile di proprietà, il quartile zero, primo, secondo e terzo risultano uguali, con un andamento decrescente del baffo del quarto quartile dentro cui ricadono i valori massimi di velocità media per tragitto, sempre dovuto con molta probabilità al traffico.
+
+\subsubsection{Velocità media in base alla lunghezza del tragitto}
+
+\begin{figure}[H]
+	\includegraphics[scale=0.75]{heatmap_enjoy}
+	\caption{Velocità media in auto [km/h] in base alla lunghezza tratta, di ora in ora}
+	\label{image:30}
+\end{figure}
+
+Nel grafico \ref{image:30} sono riportati i dati della velocità media divisi per fasce d'orario e lunghezza in chilometri della tratta tramite una heatmap. In questo caso, a differenza della heatmap dell'auto di proprietà, corrispondente alla figura \ref{image:6}, non risultano evidenziate delle forme a gobba molto evidenti negli orari di picco del traffico, ma le velocità medie risultano mediamente costanti in base alla lunghezza della tratta, indipendentemente dall'orario, con lievi diminuzioni nelle ore intorno alle 9:00 e 18:00. A differenza dell'auto, la velocità media sembra non aumentare in corrispondenza degli orari notturni, questo probabilmente è dovuto al grande impatto che ha il tratto a piedi per raggiungere un mezzo libero della flotta.
 
 \subsubsection{Auto libere e tempo medio per raggiungerle}
 
@@ -269,19 +280,19 @@ Il grafico \ref{image:10} mostra chiaramente come il numero delle auto libere a 
 
 \begin{figure}[H]
 	\includegraphics[scale=0.8]{vmedia_oraria_bici}
-	\caption{Frequenza relativa vittorie bicicletta su Enjoy di ora in ora}
+	\caption{Velocità media in bici [km/h], di ora in ora. I baffi neri rappresentano la deviazione standard campionaria $\sigma$ rispettiva di ogni barra}
 	\label{image:11}
 \end{figure}
 
 \begin{figure}[H]
 	\includegraphics[scale=0.8]{vmedia_oraria_atm}
-	\caption{Frequenza relativa vittorie bicicletta su Enjoy di ora in ora}
+	\caption{Velocità media coi mezzi pubblici [km/h], di ora in ora. I baffi neri rappresentano la deviazione standard campionaria $\sigma$ rispettiva di ogni barra}
 	\label{image:17}
 \end{figure}
 
 \begin{figure}[H]
 	\includegraphics[scale=0.8]{vmedia_oraria_piedi}
-	\caption{Frequenza relativa vittorie bicicletta su Enjoy di ora in ora}
+	\caption{Velocità media a piedi [km/h], di ora in ora. I baffi neri rappresentano la deviazione standard campionaria $\sigma$ rispettiva di ogni barra}
 	\label{image:18}
 \end{figure}
 
@@ -291,7 +302,7 @@ Il grafico \ref{image:10} mostra chiaramente come il numero delle auto libere a 
 	\label{image:29}
 \end{figure}
 
-Analizzando le stime di percorrenza riguardo i mezzi pubblici, la bicicletta e i percorsi a piedi, non si è verificata alcuna variazione significativa lungo l'arco della giornata, tradotto graficamente come nei grafici \ref{image:11}, \ref{image:17} e \ref{image:18} in una retta parallela all'asse x per ognuno dei mezzi considerati. Il risultato è aspettato, dato che tali servizi non hanno fornito risposte dinamiche in base alle condizioni attuali del traffico e dei dati storici, e, nel caso della bicicletta e a piedi, perché l'influenza è praticamente nulla per questi mezzi di trasporto.
+Analizzando le stime di percorrenza riguardo i mezzi pubblici, la bicicletta e i percorsi a piedi, non si è verificata alcuna variazione significativa lungo l'arco della giornata, tradotto graficamente come nei grafici \ref{image:11}, \ref{image:17} e \ref{image:18} in una retta parallela all'asse x per ognuno dei mezzi considerati. Il risultato è aspettato, dato che tali servizi non hanno fornito risposte dinamiche in base alle condizioni attuali del traffico e dei dati storici, e, nel caso della bicicletta e a piedi, perché l'influenza è praticamente nulla per questi mezzi di trasporto. Si è deciso di analizzare ulteriormente le performance dei mezzi pubblici per via della loro grande varianza, al pari di quella dell'auto e del car sharing. Nel grafico \ref{image:29} è riportata un'analisi tramite box plot per visualizzare la distribuzione dei valori di velocità media di settimana in settimana dalla fine del lockdown. Dal risultato emerge un netto cambiamento del quarto quartile a partire dal 1 giugno 2020, che vede un accorciamento del baffo corrispondente ai valori massimi di velocità media registrati. Nel tentativo di trovare una risposta a questo cambiamento, dato che può dipendere solamente dal cambio delle tabelle degli orari dei mezzi, visto che le API Here usate per questo mezzo si basano solo su di esse, si è tentato di accedere agli archivi pubblici delle notizie riguardanti cambiamenti di servizio dal sito dell'azienda fornitrice ATM, ma al momento della scrittura questa pagina risulta inaccessibile per via di un errore interno del server\footnote{\url{https://atm.it/it/AtmNews/AtmInforma/}. Accessed: 20/01/2021}.
 
 \section{Confronto tra mezzi}
 
@@ -367,7 +378,7 @@ Nonostante le prime versioni del programma di raccolta dati abbiano portati a di
 
 \begin{figure}[H]
 	\includegraphics[scale=0.7]{vmedia_oraria_auto_prepostlock_week}
-	\caption{V.media [km/h] auto di ora in ora pre e post lockdown}
+	\caption{Velocità media in auto [km/h] di ora in ora pre e post lockdown. Ingrandimento sull'asse delle ordinate ai valori 12 di minimo e 27 di massimo}
 	\label{image:22}
 \end{figure}
 
@@ -377,7 +388,7 @@ Nel grafico \ref{image:22} si può notare una lieve differenza di km/h di media 
 
 \begin{figure}[H]
 	\includegraphics[scale=0.7]{vmedia_oraria_enjoy_prepostlock_week}
-	\caption{V.media [km/h] Enjoy di ora in ora pre e post lockdown}
+	\caption{Velocità media in Enjoy [km/h] di ora in ora pre e post lockdown. Ingrandimento sull'asse delle ordinate ai valori 10 di minimo e 20 di massimo}
 	\label{image:24}
 \end{figure}
 
