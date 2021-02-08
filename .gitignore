@@ -7,6 +7,6 @@
 *.toc
 *.tdo
 
-*Tesi.pdf
+*.pdf
 
 *-checkpoint.ipynb
