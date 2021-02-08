@@ -74,7 +74,7 @@ Chiedono in input le coordinate di partenza e di destinazione e restituiscono in
 
 \subsection{Lo scraping di Waze}
 
-Dato che i servizi per sviluppatori offerti da Waze sono gratuiti, si è scelto di sfruttare tali dati ma prendendoli per vie laterali, direttamente dalla pagina web \url{https://www.waze.com/live-map}. La maggior parte dei browser disponibili sul web come Mozilla Firefox offrono, oltre al browser in sè, gli strumenti di debugging usati principalmente dagli sviluppatori di siti web. Tra questi vi è la console da sviluppatore, apribile tramite una scorciatoia da tastiera Ctrl+Shift+K. Con questa console è possibile vedere le richieste di rete che il sito effettua in background per il suo funzionamento. L'applicazione web di Waze è un'applicazione a singola pagina e per il suo funzionamento effettua delle richieste tramite il linguaggio di programmazione JavaScript in modo asincrono direttamente ai loro server. Questa pratica prende il nome di AJAX (Asynchronous JavaScript and XML)\footnote{\url{https://en.wikipedia.org/wiki/Ajax_(programming)}. Accessed: 20/01/2021}. Guardando i comportamenti a livello di rete del sito web, mentre si svolge una richiesta per un viaggio a Waze, si presenta subito un URL di riferimento usato come punto di ricevimento delle richieste di routing, come mostrato nella figura \ref{image:1}.
+Dato che i servizi per sviluppatori offerti da Waze sono gratuiti, si è scelto di sfruttare tali dati ma prendendoli per vie laterali, direttamente dall'applicazione web \url{https://www.waze.com/live-map}. La maggior parte dei browser disponibili sul web come Mozilla Firefox offrono, oltre al browser in sè, gli strumenti di debugging usati principalmente dagli sviluppatori di siti web. Tra questi vi è la console da sviluppatore, apribile tramite una scorciatoia da tastiera Ctrl+Shift+K. Con questa console è possibile vedere le richieste di rete che il sito effettua in background per il suo funzionamento. L'applicazione web di Waze è un'applicazione a singola pagina e per il suo funzionamento effettua delle richieste tramite il linguaggio di programmazione JavaScript in modo asincrono direttamente ai loro server. Questa pratica prende il nome di AJAX (Asynchronous JavaScript and XML)\footnote{\url{https://en.wikipedia.org/wiki/Ajax_(programming)}. Accessed: 20/01/2021}. Guardando i comportamenti a livello di rete del sito web, mentre si svolge una richiesta per un viaggio a Waze, si presenta subito un URL di riferimento usato come punto di ricevimento delle richieste di routing, come mostrato nella figura \ref{image:1}.
 
 \begin{figure}[H]
 	\includegraphics[scale=0.6]{waze_scraping}
@@ -82,7 +82,50 @@ Dato che i servizi per sviluppatori offerti da Waze sono gratuiti, si è scelto 
 	\label{image:1}
 \end{figure}
 
-In particolare, la richiesta \url{https://www.waze.com/live-map/routing/?} contiene esattamente il punto di partenza e di arrivo richiesti parametrizzati nell'URL e il risultato restituito è in formato JSON (JavaScript Object Notation)\footnote{\url{https://en.wikipedia.org/wiki/JSON}. Accessed: 20/01/2021}. Per proteggere i loro server da sovraccarichi, Waze risponde a questo URL solamente se si possiede il permesso ricevuto preventivamente tramite un token, ovvero una stringa di caratteri che funge da chiave segreta. Per ottenere questa chiave e raggiungere l'obbiettivo finale di avere delle API per interrogare il servizio, è stato scritto un programma in Golang per emulare l'interazione col sito web e ricevere il token necessario per effettuare le richieste successive. Questo processo ha richiesto tempo sia per la codifica dei parametri e che per la decodifica del risultato stesso e dei risultati intermedi per la richiesta del token. In altre parole, è stato fatto il reverse engineering della web app.
+In particolare, la richiesta \url{https://www.waze.com/live-map/routing/?} contiene esattamente il punto di partenza e di arrivo richiesti parametrizzati nell'URL e il risultato restituito è in formato JSON (JavaScript Object Notation)\footnote{\url{https://en.wikipedia.org/wiki/JSON}. Accessed: 20/01/2021}. Per proteggere i loro server da sovraccarichi, Waze risponde a questo URL solamente se si possiede il permesso ricevuto preventivamente tramite un token, ovvero una stringa di caratteri che funge da chiave segreta. Per ottenere questa chiave e raggiungere l'obbiettivo finale di avere delle API per interrogare il servizio, è stato scritto un programma in Golang per emulare l'interazione col sito web e ricevere il token necessario per effettuare le richieste successive. Questo processo ha richiesto tempo sia per la codifica dei parametri e che per la decodifica del risultato stesso e dei risultati intermedi per la richiesta del token. In altre parole, è stato fatto il reverse engineering dell'applicazione web.
+
+\subsubsection{Pseudocodice dello scraper di Waze}
+
+Nel listato che segue, nel linguaggio di programmazione Go, è riportata la funzione principale addetta a interrogare i server dietro il relativo sito web per la tratta richiesta sotto forma di coordinate geografiche di partenza e arrivo, per restituirne il risultato, successivamente elaborato e salvato da un altro modulo del programma. Per questioni di leggibilità sono stati omessi i controlli di errore presenti dopo ogni richiesta.
+
+\begin{lstlisting}[language=Go]
+func
+GetRoutes(startLat, startLon, endLat, endLon string) Result {
+	// Richiesta del nome canonico della via corrispondente
+	// perche' i server non accettano coordinate
+	//
+	// Esempio:
+	// (45.145955, 9.18349) -> "Via Celoria 18, 20133 Milano"
+	from := LocationName(startLat, startLon)
+	to :=   LocationName(endLat, endLon)
+	
+	// Richiesta di parametri per fare richieste ai server.
+	// Senza di essi i server non altre interazioni
+	HTTPHeaders := HeadersNeededForHTTP(from, to)
+	cookie      := MagicCookie(HTTPHeaders)
+	fromData    := LocationInfo(from, HTTPHeaders, cookie)
+	toData      := LocationInfo(to, HTTPHeaders, cookie)
+	
+	token  := MagicToken(fromData, toData, HTTPHeaders, cookie)
+	routes := SuggestedRoutes(fromData, toData, token, cookie)
+
+	return routes
+}
+\end{lstlisting}
+
+\subsection{Lo scraping di Moovit (scartato)}
+
+Inizialmente, prima di usare le API di Here per stime statiche dei tragitti coi mezzi pubblici, si è tanto lo scraping dell'applicazione web di Moovit \url{https://moovitapp.com/} per via della qualità migliore delle stime di percorrenza, basate su dati in tempo reale. Come per lo scraping di Waze, è stato eseguito lo stesso procedimento, guardando tramite la console da sviluppatore del browser le richieste HTTP svolte in background dal sito, studiando tutte le interazioni e decodificando le risposte. Sfortunatamente l'applicazione web è risultata molto più complessa del previsto. Dopo diversi giorni di studio è stato scritto un software per emulare le interazioni della pagina web coi server di Moovit ed è stato affiancato agli altri moduli per risolvere le richieste di tragitto. Le stime di percorrenza relative a Moovit raccolte nella prima settimana di esecuzione del programma sono risultate nulle nell'80\% delle risposte. Visti gli scarsi risultati e vista l'enorme complessità del programma di scraping, si è scelto di optare per le API di Here al costo di perdere precisione nelle stime per i mezzi pubblici.
+
+\subsubsection{Pseudocodice dello scraper di Moovit}
+
+Nel listato che segue è riportata la funzione principale addetta a restituire l'elenco dei risultati proposti per la tratta richiesta sotto forma di coordinate geografiche della partenza e dell'arrivo richiesto.
+
+
+
+
+
+
 
 \subsection{Stima del percorso per il car sharing}
 
@@ -104,7 +147,7 @@ Prima ancora di scrivere una funzione per generare tratte a random è stata scel
 
 Le richieste sono state programmate per essere effettuate dalle 7:00 alle 23:59 di ogni giorno. La scelta di questo intervallo è stata vincolata dall'orario di servizio dei mezzi pubblici ATM in cui viene garantito il pieno regime. Per rispettare i limiti giornalieri delle varie API si è scelto di effettuare 1 richiesta al minuto, dove ogni richiesta rappresenta un tragitto generato a random mandato simultaneamente a ogni servizio di navigazione per ottenere una stima da ognuno di essi, per un totale di circa 1000 richieste al giorno. Oltre ai valori delle stime di percorrenza per ogni mezzo, insieme alla richiesta sono stati salvati altri dati come il numero di auto libere Enjoy al momento della richiesta, la distanza aerea della tratta e quella calcolata a piedi. 
 
-\section{Pseudocodice del programma}
+\section{Codice del programma}
 
 \begin{lstlisting}[language=Go]
 var a, b, c coordinate
