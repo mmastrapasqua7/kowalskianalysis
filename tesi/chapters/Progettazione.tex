@@ -84,13 +84,21 @@ Dato che i servizi per sviluppatori offerti da Waze sono gratuiti, si è scelto 
 
 In particolare, la richiesta \url{https://www.waze.com/live-map/routing/?} contiene esattamente il punto di partenza e di arrivo richiesti parametrizzati nell'URL e il risultato restituito è in formato JSON (JavaScript Object Notation)\footnote{\url{https://en.wikipedia.org/wiki/JSON}. Accessed: 20/01/2021}. Per proteggere i loro server da sovraccarichi, Waze risponde a questo URL solamente se si possiede il permesso ricevuto preventivamente tramite un token, ovvero una stringa di caratteri che funge da chiave segreta. Per ottenere questa chiave e raggiungere l'obbiettivo finale di avere delle API per interrogare il servizio, è stato scritto un programma in Golang per emulare l'interazione col sito web e ricevere il token necessario per effettuare le richieste successive. Questo processo ha richiesto tempo sia per la codifica dei parametri e che per la decodifica del risultato stesso e dei risultati intermedi per la richiesta del token. In altre parole, è stato fatto il reverse engineering dell'applicazione web.
 
-\subsubsection{Codice dello scraper di Waze}
 
-Nel listato che segue, nel linguaggio di programmazione Go, è riportata la funzione principale addetta a interrogare i server dietro il relativo sito web per la tratta richiesta sotto forma di coordinate geografiche di partenza e arrivo, per restituirne il risultato, successivamente elaborato e salvato da un altro modulo del programma. Per questioni di leggibilità sono stati omessi i controlli di errore presenti dopo ogni richiesta.
+\subsection{Lo scraping di Moovit (scartato)}
+
+Inizialmente, prima di usare le API di Here per stime statiche dei tragitti coi mezzi pubblici, si è tanto lo scraping dell'applicazione web di Moovit \url{https://moovitapp.com/} per via della qualità migliore delle stime di percorrenza, basate su dati in tempo reale. Come per lo scraping di Waze, è stato eseguito lo stesso procedimento, guardando tramite la console da sviluppatore del browser le richieste HTTP svolte in background dal sito, studiando tutte le interazioni e decodificando le risposte. Sfortunatamente l'applicazione web è risultata molto più complessa del previsto. Dopo diversi giorni di studio è stato scritto un software per emulare le interazioni della pagina web coi server di Moovit ed è stato affiancato agli altri moduli per risolvere le richieste di tragitto. Le stime di percorrenza relative a Moovit raccolte nella prima settimana di esecuzione del programma sono risultate nulle nell'80\% delle risposte. Visti gli scarsi risultati e vista l'enorme complessità del programma di scraping, si è scelto di optare per le API di Here al costo di perdere precisione nelle stime per i mezzi pubblici.
+
+\subsection{Estratti del codice sorgente degli scraper}
+
+Nel listato che segue, scritto nel linguaggio di programmazione Go, è riportata la funzione principale addetta a interrogare i server di Waze dietro il relativo sito web per la tratta richiesta, espressa sotto forma di coordinate geografiche di partenza e arrivo, il cui risultato viene successivamente elaborato e salvato da un altro modulo del programma. Per questioni di leggibilità sono stati omessi i controlli di errore presenti dopo ogni richiesta.
+
+\newpage
+\subsubsection{Codice dello scraper di Waze}
 
 \begin{lstlisting}[language=Go]
 func
-GetRoutes(fromLat, startLon, endLat, endLon string) Result {
+GetRoutes(startLat, startLon, endLat, endLon string) Result {
 	// Richiesta dei cookies necessari per effettuare
 	// le richieste di routing
 	cookies := Cookies()
@@ -98,28 +106,17 @@ GetRoutes(fromLat, startLon, endLat, endLon string) Result {
 	
 	// Richiesta di tragitti e stime di percorrenza per la
 	// tratta desiderata
-	routes := Routes(startLat, startLon, endLat, endLon, cookies)
-	
-	return routes
+	return Routes(startLat, startLon, endLat, endLon, cookies)
 }
 \end{lstlisting}
 
-\subsection{Lo scraping di Moovit (scartato)}
-
-Inizialmente, prima di usare le API di Here per stime statiche dei tragitti coi mezzi pubblici, si è tanto lo scraping dell'applicazione web di Moovit \url{https://moovitapp.com/} per via della qualità migliore delle stime di percorrenza, basate su dati in tempo reale. Come per lo scraping di Waze, è stato eseguito lo stesso procedimento, guardando tramite la console da sviluppatore del browser le richieste HTTP svolte in background dal sito, studiando tutte le interazioni e decodificando le risposte. Sfortunatamente l'applicazione web è risultata molto più complessa del previsto. Dopo diversi giorni di studio è stato scritto un software per emulare le interazioni della pagina web coi server di Moovit ed è stato affiancato agli altri moduli per risolvere le richieste di tragitto. Le stime di percorrenza relative a Moovit raccolte nella prima settimana di esecuzione del programma sono risultate nulle nell'80\% delle risposte. Visti gli scarsi risultati e vista l'enorme complessità del programma di scraping, si è scelto di optare per le API di Here al costo di perdere precisione nelle stime per i mezzi pubblici.
-
 \subsubsection{Codice dello scraper di Moovit}
-
-Nel listato che segue è riportata la funzione principale addetta a restituire l'elenco dei risultati proposti per la tratta richiesta sotto forma di coordinate geografiche della partenza e dell'arrivo richiesto.
 
 \begin{lstlisting}[language=Go]
 func
 GetRoutes(startLat, startLon, endLat, endLon string) Result {
 	// Richiesta del nome canonico della via corrispondente
 	// perche' i server non accettano coordinate
-	//
-	// Esempio:
-	// (45.145955, 9.18349) -> "Via Celoria 18, 20133 Milano"
 	from := LocationName(startLat, startLon)
 	to   :=   LocationName(endLat, endLon)
 	
@@ -141,9 +138,7 @@ GetRoutes(startLat, startLon, endLat, endLon string) Result {
 	
 	// Richiesta di tragitti e stime di percorrenza per la
 	// tratta desiderata
-	routes := Routes(fromData, toData, token, cookie)
-	
-	return routes
+	return Routes(fromData, toData, token, cookie)
 }
 \end{lstlisting}
 
