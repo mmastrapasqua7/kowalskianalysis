@@ -67,10 +67,10 @@ Nonostante OSRM non offra soluzioni in tempo reale è stato scelto ugualmente pe
 Le API REST di Here e quelle di OpenStreetMap sono nella seguente forma:
 
 \begin{lstlisting}[language=Go]
-func stimaTragitto(a, b coordinate) durata
+func stimaTragitto(a, b coordinate) risultato
 \end{lstlisting}
 
-Chiedono in input le coordinate di partenza e di destinazione e restituiscono in output una stima di percorrenza del tragitto in formato JSON di quel determinato momento.
+Chiedono in input le coordinate di partenza e di destinazione e restituiscono in output una stima di percorrenza del tragitto in formato JSON di quel determinato momento, oltre ad altri dati relativi alla tratta consigliata.
 
 \subsection{Lo scraping di Waze}
 
