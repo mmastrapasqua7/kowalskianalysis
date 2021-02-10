@@ -13,7 +13,8 @@
 \usepackage{afterpage}
 \usepackage{fancyhdr}
 
-\renewcommand{\chaptername}{Capitolo}
+\usepackage[italian]{babel}
+\renewcommand{\chaptername}{Capitolo} % bastava aggiungere babel...
 
 \newcommand\blankpage{
 	\null
@@ -96,7 +97,7 @@
 \afterpage{\blankpage}
 
 \tableofcontents
-%\listoftodos
+\listoftodos
 
 \chapter{Introduzione}
 \input{chapters/Introduzione}
