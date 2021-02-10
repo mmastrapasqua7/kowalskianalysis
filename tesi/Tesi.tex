@@ -8,26 +8,35 @@
 \usepackage{cleveref}
 \usepackage{textcomp}
 \usepackage{float}
-
+\usepackage{todonotes}
 \usepackage{hyperref}
-\def\UrlBreaks{\do\/\do-}
+\usepackage{afterpage}
+\usepackage{fancyhdr}
+
+\renewcommand{\chaptername}{Capitolo}
+
+\newcommand\blankpage{
+	\null
+	\addtocounter{page}{-1}
+	\thispagestyle{empty}
+	\newpage
+}
+
+\newcommand\blankpagen{
+	\null
+	%\thispagestyle{empty}
+	\addtocounter{page}{0}
+	\newpage
+}
 
 \graphicspath{{img/}}
+\def\UrlBreaks{\do\/\do-}
 
-% draft più leggibile
-%\usepackage[a4paper,top=2cm,bottom=2cm,outer=5cm,verbose,headheight=1cm,heightrounded]{geometry}
-
-% Commentato per vedere risultato layout finale
-\usepackage{todonotes}
-%\usepackage[disable]{todonotes}
-%\setlength{\marginparwidth}{4.5cm} %per farci stare todonotes
-
-% copia e incolla da overleaf
+% Per sorgenti codice
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
 \definecolor{backcolour}{rgb}{0.98, 0.98, 0.98}
-
 \lstdefinestyle{mystyle}{
 	language=Go,
 	backgroundcolor=\color{backcolour},   
@@ -46,47 +55,45 @@
 	showtabs=false,                  
 	tabsize=2
 }
-
 \lstset{style=mystyle}
 
 \begin{document}
 \begin{titlepage}
-	\begin{center}
-		\includegraphics[width=\textwidth]{Logo.jpg}
-		\large{Corso di Laurea Triennale in Informatica}
-		
-		\vspace{1.8cm}
-		
-		\Large{\textbf{CONFRONTO TRA AUTOMOBILE E MEZZI DI TRASPORTO ALTERNATIVI NEL COMUNE DI MILANO BASATO SU STIME DI TEMPI DI PERCORRENZA}}
-		
-		\vspace{1.4cm}
-		
-		\large{Tesi di Laurea di} \\
-		\large{\textbf{MAURO MASTRAPASQUA}} \\
-		\large{Matricola 892629}
-	\end{center}
+\begin{center}
+\includegraphics[width=\textwidth]{Logo.jpg}
+\large{Corso di Laurea Triennale in Informatica}
 
-	\begin{flushleft}
-		\vspace{1.4cm}
-		
-		\normalsize{Relatore} \\
-		\normalsize{\textbf{Andrea Trentini}}
+\vspace{1.6cm}
 
-		\vspace{0.4cm}
+\Large{\textbf{CONFRONTO TRA AUTOMOBILE E MEZZI DI TRASPORTO ALTERNATIVI NEL COMUNE DI MILANO BASATO SU STIME DI TEMPI DI PERCORRENZA}}
 
-		\normalsize{Correlatore} \\
-		\normalsize{\textbf{Dario Malchiodi}}
-	\end{flushleft}
+\vspace{1.4cm}
 
-	\begin{center}
-		\vspace{1.4cm}
-		
-		\large{Anno Accademico 2020/2021}
-	\end{center}
+\large{Tesi di Laurea di} \\
+\large{\textbf{MAURO MASTRAPASQUA}} \\
+\large{Matricola 892629}
+\end{center}
+
+\begin{flushleft}
+\vspace{1.6cm}
+
+\normalsize{Relatore} \\
+\normalsize{\textbf{Andrea Trentini}}
+
+\vspace{0.4cm}
+
+\normalsize{Correlatore} \\
+\normalsize{\textbf{Dario Malchiodi}}
+\end{flushleft}
+
+\begin{center}
+\vspace{1.6cm}
+
+\large{Anno Accademico 2020/2021}
+\end{center}
 \end{titlepage}
 
-
-\pagediscards
+\afterpage{\blankpage}
 
 \tableofcontents
 %\listoftodos
@@ -97,8 +104,12 @@
 \chapter{Metodi}
 \input{chapters/Dati}
 
+\afterpage{\blankpagen}
+
 \chapter{Progettazione}
 \input{chapters/Progettazione}
+
+\afterpage{\blankpagen}
 
 \chapter{Risultati}
 \input{chapters/Risultati}
