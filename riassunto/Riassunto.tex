@@ -1,4 +1,9 @@
-\documentclass{article}
+\documentclass[a4paper,11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{refcheck}
+\usepackage{cleveref}
+\usepackage{hyperref}
 
 \title{{\Large\textbf{CONFRONTO TRA AUTOMOBILE E MEZZI DI TRASPORTO ALTERNATIVI NEL COMUNE DI MILANO BASATO SU STIME DI TEMPI DI PERCORRENZA}}}
 \author{\LARGE{Mauro Mastrapasqua - 892629}}
@@ -25,19 +30,43 @@ Nella sezione "proposte tesi" del sito web di Andrea Trentini veniva proposta un
 \section{Obiettivi del lavoro}
 
 \large{
-
+L'obiettivo del tirocinio era quello di confrontare mezzi pubblici e privati sulla base di stime di percorrenza all'interno della città. Il progetto di base era quello di usare i dati messi a disposizione dal Prof. Trentini e da un suo tesista riguardanti i dati di campionamento delle stazioni del bike sharing BikeMi e quelli delle auto libere dei servizi di car sharing Car2Go, Enjoy e Sharengo per estrarre delle tratte realmente effettuate dagli utenti e usarle come base per raccogliere stime di percorrenza riguardanti altri mezzi, tramite servizi di navigazione in grado di offrire stime di percorrenza in tempo reale, al fine di calcolare le performance e le variazioni lungo l'arco della giornata e delle settimane di ogni singolo mezzo per metterle a confronto.
 }
 
+\section{Descrizione lavoro svolto}
 
+\large{
+Per diversi problemi riguardanti la comunicazione e la documentazione dei dati raccolti e, successivamente, per una decisione personale basata su argomentazioni a favore di un approccio diverso, si è scelto di non usare questi dati raccolti per basare il confronto ma di partire da zero, creando una collezione di dati riguardanti viaggi creati a random. In particolare, sono stati generati dei percorsi totalmente random all'interno del Comune di Milano, a tutte le ore del giorno e sempre diversi uno dall'altro, e per ognuno di essi è stato chiesto a diversi servizi di navigazione, in grado di fornire stime di percorrenza dei tragitti, di stimare il tempo di percorrenza di tale tratta con un determinato mezzo.
 
+Sono stati scelti i seguenti mezzi di trasporto: automobile privata, automobile condivisa in car sharing Enjoy, bicicletta di proprietà, mezzi pubblici ATM e infine il percorso a piedi. Una volta scelti i mezzi da mettere a confronto si è cercato un servizio per ognuno di questi mezzi che fornisse un'API dal quale fare richiesta dei percorsi. Sfortunatamente sono state trovate delle API solamente per i mezzi pubblici, offerte dall'azienda \textit{Here}. Per i mezzi di trasporto restanti si è scelto di effettuare dello scraping da applicazioni web che offrono questo servizio di stima di percorrenza, come \textit{Waze} per il percorso in auto e in car sharing, \textit{OpenStreetMap} per il percorso in bicicletta e a piedi e uno scraper offerto dal tesista citato prima per acquisire i dati delle auto libere del car sharing \textit{Enjoy}, per simulare un percorso per raggiungere l'auto a piedi e per finire il tragitto in auto. Si è proceduto dunque alla progettazione e codifica di un programma per creare tragitti random a ritmo di 1 al minuto e per chiedere di risolvere tali tragitti con ogni mezzo di percorrenza scelto, tramite il servizio o scraper associato. La raccolta dati è iniziata il 1 marzo 2020 ed è terminata il 27 giugno 2020. Per questioni di coerenza sono stati presi in considerazione solamente i dati a partire dal 4 maggio 2020, data che coincide con l'inizio dell'allentamento delle misure di restrizione dovute all'emergenza COVID-19 che hanno completamente azzerato il traffico durante il lockdown. I risultati sono stati raccolti in file JSON e successivamente tradotti in un unico file CSV. Tramite l'utilizzo del notebook Jupyter, un ambiente creato apposta per effettuare analisi statistiche e grafici, sono stati elaborati i dati raccolti, prima guardati nel loro insieme, successivamente puliti dagli errori e infine utilizzati per diversi calcoli. Si citano la variazione della velocità media di ora in ora per ogni mezzo, la differenza di velocità tra il pre e il post lockdown, la differenza di velocità in base alla lunghezza della tratta e infine il confronto vero e proprio tra auto privata e mezzi alternativi, andando a misurare il numero di volte in cui un mezzo alternativo ha pareggiato o vinto, in termini di tempo di percorrenza, sullo stesso tragitto percorso in auto.
+}
 
+\section{Tecnologie coinvolte}
 
+Per effettuare questo studio sono state coinvolte le seguenti tecnologie: linguaggio di programmazione Go e le librerie per il networking; console da sviluppatore di Firefox per il reverse engineering delle applicazioni web; notebook Jupyter per l'elaborazione dei dati raccolti e la creazioni di grafici per l'esposizione di risultati statistici; bash scripting per le operazioni di routine da svolgere sul server gentilmente offerto dal Prof. Trentini per mandare in esecuzione il programma giorno e notte. Tutte queste tecnologie citate erano già state acquisite precedentemente ma in maniera molto ridotta. Per questo studio infatti sono state studiate più a fondo e si sono acquisite altre competenze laterali.
 
+\section{Competenze e risultati raggiunti}
 
+\subsection{Quali risultati sono stati raggiunti rispetto agli obiettivi iniziali?}
 
+Sono stati raggiunti tutti gli obiettivi iniziali. In particolare, si è riuscito a fare delle analisi e a comparare tutti i mezzi di trasporto sulla base di stime di percorrenza, su diversi tragitti di diverse lunghezze e a tutte le ore del giorno. Tra i risultati più interessanti si citano: l'automobile di proprietà vince su ogni percorso, a qualsiasi ora del giorno e per tutti i tipi di tragitti contro ogni mezzo di trasporto alternativo considerato; il car sharing \textit{Enjoy} ha perso il 35\% delle volte contro la bicicletta sulle tratte brevi dai 2 ai 5 km di lunghezza, percentuale che aumenta al 45\% se considerati solamente gli orari di picco del traffico delle 8:00 e 18:00; molto minore è la percentuale di sconfitte del car sharing da parte dei mezzi pubblici, di solo il 9\% delle volte.
 
+\subsection{Quali insegnamenti si possono trarre dall'esperienza effettuata?}
 
+Questa esperienza è stata molto educativa e significativa nel percorso di formazione professionale. Tra le principali competenze che si ha avuto modo di testare e allenare vi è sicuramente quella legata all'ingegneria del software. Questo progetto infatti ha richiesto la progettazione e la suddivisione logica di diversi componenti software atti a raccogliere i dati dai siti web. Inizialmente è stato difficile, perché è stata la prima volta che si è passati dalla teoria alla pratica in proprio, senza aiuto di professori o altri compagni di corso. Un'altra competenza acquisita vi è quella della ricerca di articoli accademici e sviluppo di capacità critica. Personalmente infatti è stato molto difficile scontrarsi con i propri preconcetti e le proprie idee, che spesso sono state contraddette dalla realtà fatta di studi scientifici e argomentazioni logiche.
 
+\subsection{Quali i problemi incontrati? Quali risolti e quali no? Perché?}
 
-	
+Sono stati incontrati numerosi problemi riguardo lo scraping delle web app. Il primo sito web usato per raccogliere dati sui mezzi pubblici è stato \textit{Moovit}, che si è rivelato molto complesso e che ha richiesto un mese tra lo studio e la programmazione del modulo addetto alle richieste. Difatti, nella prima settimana di raccolta dati, ben l'80\% delle richieste di tragitto ha avuto risposta nulla, ovvero con stima di percorrenza pari a zero, difatti è stato subito scartato. Successivamente si è provveduto a reperire un altro servizio per i mezzi pubblici e sono state trovate le API messe a disposizione da \textit{Here}. Nonostante questo si sono riscontrati problemi anche qui, per colpa di un errore nella documentazione riguardo i parametri delle richieste da effettuare per ottenere i token, ovvero delle parole chiave da inserire per avere accesso al servizio. Si è proceduto per tentativi e dopo qualche giorno si è riusciti a ottenere l'accesso. In generale, il grande problema di questo studio è stato quello del reperire servizi di navigazione basati su dati in tempo reale per avere delle stime di percorrenza molto precise, e solamente nel caso dei mezzi pubblici e del percorso in bici non si è riusciti nell'intento, accontentandosi solamente di stime basate su dati statici, ovvero sempre uguali indipendentemente dalle condizioni di traffico, dall'orario e dal giorno. Nel complesso però sono risultati sufficienti e in linea con le risorse adottate da altri studi.
+
+\section{Bibliografia}
+\cite{isfortaudimob}
+\cite{ellison2011travel}
+\cite{faghih2017hail}
+\cite{pagani2017knowledge}
+\cite{chien2003dynamic}
+
+\bibliographystyle{plain}
+\bibliography{Biblio}
+
 \end{document}
