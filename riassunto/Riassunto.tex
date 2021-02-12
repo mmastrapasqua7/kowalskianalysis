@@ -5,7 +5,7 @@
 \usepackage{cleveref}
 \usepackage{hyperref}
 
-\title{{\Large\textbf{CONFRONTO TRA AUTOMOBILE E MEZZI DI TRASPORTO ALTERNATIVI NEL COMUNE DI MILANO BASATO SU STIME DI TEMPI DI PERCORRENZA}}}
+\title{{\Large\textbf{CONFRONTO TRA AUTOMOBILE E \linebreak MEZZI DI TRASPORTO ALTERNATIVI \linebreak NEL COMUNE DI MILANO BASATO SU \linebreak STIME DI TEMPI DI PERCORRENZA}}}
 \author{\LARGE{Mauro Mastrapasqua - 892629}}
 \date{\Large{27/01/2021}}
 
@@ -15,35 +15,25 @@
 	\maketitle
 	\vspace{1cm}
 	
-\section{Ente presso cui è stato svolto il lavoro di stage}
+\section{Obiettivo del lavoro}
 
 \large{
-Questo stage è stato un tirocinio interno svolto presso l'Università degli Studi di Milano, dipartimento di informatica, con relatore il professor Andrea Trentini e correlatore Dario Malchiodi. Vista la situazione di emergenza è stato svolto completamente nella propria personale residenza e con riunioni a distanza
-}
-
-\section{Contesto iniziale}
-
-\large{
-Nella sezione "proposte tesi" del sito web di Andrea Trentini veniva proposta una tesi dal seguente titolo: "Confronto fra mezzi pubblici e mezzi privati sulla base dei dati Google e ATM". Sono molti gli studi basati su dati relativi a un singolo mezzo prelevati tramite scraping di siti web a scopo di analisi generiche, soprattutto nel contesto mobilità condivisa, ma sono pochi invece quelli che hanno messo a confronto uno a uno diversi mezzi di trasporto, basandosi su questi dati, per capirne le dinamiche, come le performance nella breve e lunga distanza, o come l'accessibilità e il costo, o per sapere i margini di vittoria di uno o dell'altro mezzo.
-}
-
-\section{Obiettivi del lavoro}
-
-\large{
-L'obiettivo del tirocinio era quello di confrontare mezzi pubblici e privati sulla base di stime di percorrenza all'interno della città. Il progetto di base era quello di usare i dati messi a disposizione dal Prof. Trentini e da un suo tesista riguardanti i dati di campionamento delle stazioni del bike sharing BikeMi e quelli delle auto libere dei servizi di car sharing Car2Go, Enjoy e Sharengo per estrarre delle tratte realmente effettuate dagli utenti e usarle come base per raccogliere stime di percorrenza riguardanti altri mezzi, tramite servizi di navigazione in grado di offrire stime di percorrenza in tempo reale, al fine di calcolare le performance e le variazioni lungo l'arco della giornata e delle settimane di ogni singolo mezzo per metterle a confronto.
+Confrontare mezzi pubblici e privati sulla base di stime di percorrenza all'interno del Comune di Milano. Il progetto di base era quello di usare dati di campionamento delle stazioni del bike sharing BikeMi e quelli delle auto libere dei servizi di car sharing Car2Go, Enjoy e Sharengo per estrarre da essi i tragitti effettuati dagli utenti, calcolarne il tempo impiegato a percorrerli e usare servizi di navigazione per calcolare stime di percorrenza degli stessi tragitti ma con mezzi di trasporto alternativi al fine di confrontarli e di analizzarne le performance singolarmente, con un particolare riguardo all'automobile di proprietà.
 }
 
 \section{Descrizione lavoro svolto}
 
 \large{
-Per diversi problemi riguardanti la comunicazione e la documentazione dei dati raccolti e, successivamente, per una decisione personale basata su argomentazioni a favore di un approccio diverso, si è scelto di non usare questi dati raccolti per basare il confronto ma di partire da zero, creando una collezione di dati riguardanti viaggi creati a random. In particolare, sono stati generati dei percorsi totalmente random all'interno del Comune di Milano, a tutte le ore del giorno e sempre diversi uno dall'altro, e per ognuno di essi è stato chiesto a diversi servizi di navigazione, in grado di fornire stime di percorrenza dei tragitti, di stimare il tempo di percorrenza di tale tratta con un determinato mezzo.
+Per evitare di analizzare la mobilità dal punto di vista di una sola utenza e per problemi legati alle condizioni di traffico stradale, che variano per giorno e orario, si è deciso di non usare questi dati storici.
 
-Sono stati scelti i seguenti mezzi di trasporto: automobile privata, automobile condivisa in car sharing Enjoy, bicicletta di proprietà, mezzi pubblici ATM e infine il percorso a piedi. Una volta scelti i mezzi da mettere a confronto si è cercato un servizio per ognuno di questi mezzi che fornisse un'API dal quale fare richiesta dei percorsi. Sfortunatamente sono state trovate delle API solamente per i mezzi pubblici, offerte dall'azienda \textit{Here}. Per i mezzi di trasporto restanti si è scelto di effettuare dello scraping da applicazioni web che offrono questo servizio di stima di percorrenza, come \textit{Waze} per il percorso in auto e in car sharing, \textit{OpenStreetMap} per il percorso in bicicletta e a piedi e uno scraper offerto dal tesista citato prima per acquisire i dati delle auto libere del car sharing \textit{Enjoy}, per simulare un percorso per raggiungere l'auto a piedi e per finire il tragitto in auto. Si è proceduto dunque alla progettazione e codifica di un programma per creare tragitti random a ritmo di 1 al minuto e per chiedere di risolvere tali tragitti con ogni mezzo di percorrenza scelto, tramite il servizio o scraper associato. La raccolta dati è iniziata il 1 marzo 2020 ed è terminata il 27 giugno 2020. Per questioni di coerenza sono stati presi in considerazione solamente i dati a partire dal 4 maggio 2020, data che coincide con l'inizio dell'allentamento delle misure di restrizione dovute all'emergenza COVID-19 che hanno completamente azzerato il traffico durante il lockdown. I risultati sono stati raccolti in file JSON e successivamente tradotti in un unico file CSV. Tramite l'utilizzo del notebook Jupyter, un ambiente creato apposta per effettuare analisi statistiche e grafici, sono stati elaborati i dati raccolti, prima guardati nel loro insieme, successivamente puliti dagli errori e infine utilizzati per diversi calcoli. Si citano la variazione della velocità media di ora in ora per ogni mezzo, la differenza di velocità tra il pre e il post lockdown, la differenza di velocità in base alla lunghezza della tratta e infine il confronto vero e proprio tra auto privata e mezzi alternativi, andando a misurare il numero di volte in cui un mezzo alternativo ha pareggiato o vinto, in termini di tempo di percorrenza, sullo stesso tragitto percorso in auto.
+Si è deciso invece di cercare servizi di navigazione in grado di offrire stime di percorrenza in tempo reale per tutti i mezzi di trasporto presi in considerazione, e al posto di usare tragitti realmente percorsi si è deciso di crearli con una funzione random. In assenza di API, per alcuni servizi si è effettuato lo scraping dall'applicazione web. Per il confronto sono stati scelti i seguenti mezzi di trasporto: automobile privata; car sharing Enjoy; mezzi pubblici ATM; bicicletta di proprietà; percorso a piedi. La raccolta dati è avvenuta per mezzo dei seguenti servizi: scraping di Waze, OpenStreetMap ed EnjoyMap; API di Here.
+
+Si è proceduto alla progettazione e codifica di un programma per creare tragitti random a ritmo di 1 al minuto e per chiedere di risolvere tali tragitti con ogni mezzo di percorrenza scelto, tramite il servizio o scraper associato. La raccolta dati è iniziata il 1 marzo 2020 ed è terminata il 27 giugno 2020. Per questioni di coerenza sono stati presi in considerazione solamente i dati a partire dal 4 maggio 2020, data che coincide con l'inizio dell'allentamento delle misure di restrizione dovute all'emergenza COVID-19 che hanno completamente azzerato il traffico durante il lockdown. I risultati sono stati raccolti in file JSON e successivamente tradotti in un unico file CSV. Tramite l'utilizzo del notebook Jupyter sono stati elaborati i dati raccolti, prima analizzati nel loro insieme, successivamente puliti dagli errori e infine utilizzati per diversi calcoli. Si citano la variazione della velocità media di ora in ora per ogni mezzo, la differenza di velocità tra il pre e il post lockdown, la differenza di velocità in base alla lunghezza della tratta e infine il confronto vero e proprio tra auto privata e mezzi alternativi.
 }
 
 \section{Tecnologie coinvolte}
 
-Per effettuare questo studio sono state coinvolte le seguenti tecnologie: linguaggio di programmazione Go e le librerie per il networking; console da sviluppatore di Firefox per il reverse engineering delle applicazioni web; notebook Jupyter per l'elaborazione dei dati raccolti e la creazioni di grafici per l'esposizione di risultati statistici; bash scripting per le operazioni di routine da svolgere sul server gentilmente offerto dal Prof. Trentini per mandare in esecuzione il programma giorno e notte. Tutte queste tecnologie citate erano già state acquisite precedentemente ma in maniera molto ridotta. Per questo studio infatti sono state studiate più a fondo e si sono acquisite altre competenze laterali.
+Linguaggio di programmazione Go e librerie di networking; console da sviluppatore di Firefox; notebook Jupyter; Bash scripting.
 
 \section{Competenze e risultati raggiunti}
 
