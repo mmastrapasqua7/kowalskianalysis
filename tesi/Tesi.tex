@@ -14,7 +14,7 @@
 \usepackage{fancyhdr}
 
 \usepackage[italian]{babel}
-\renewcommand{\chaptername}{Capitolo} % bastava aggiungere babel...
+\renewcommand{\chaptername}{Capitolo}
 
 \newcommand\blankpage{
 	\null
@@ -25,7 +25,6 @@
 
 \newcommand\blankpagen{
 	\null
-	%\thispagestyle{empty}
 	\addtocounter{page}{0}
 	\newpage
 }
@@ -93,11 +92,9 @@
 \large{Anno Accademico 2020/2021}
 \end{center}
 \end{titlepage}
-
 \afterpage{\blankpage}
 
 \tableofcontents
-\listoftodos
 
 \chapter{Introduzione}
 \input{chapters/Introduzione}
