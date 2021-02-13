@@ -145,11 +145,11 @@ Nel grafico \ref{image:27} sono stati usati i box plot per descrivere la distrib
 
 \begin{figure}[H]
 \includegraphics[scale=0.75]{heatmap_auto}
-\caption{Velocità media in auto [km/h] in base alla lunghezza tratta, di ora in ora}
+\caption{Velocità media in auto [km/h] di ora in ora in base alla lunghezza della tratta}
 \label{image:6}
 \end{figure}
 
-Nel grafico \ref{image:6} sono riportati i dati della velocità media divisi per fasce d'orario e lunghezza in chilometri della tratta tramite una heatmap. Si evidenziano due gobbe in corrispondenza degli orari di picco del traffico intorno alle ore 9:00 e 18:00, e le tratte brevi lunghe dai 2 ai 3 chilometri risultano le più colpite. Si evidenzia inoltre un'altra area di forma rettangolare di colori chiari a partire dalle ore 20:00, dove la velocità media si stabilizza per tutte le fasce di lunghezza intorno ai 27 km/h.
+Nel grafico \ref{image:6} sono riportati, tramite una heatmap, i dati della velocità media divisi per fasce d'orario e per lunghezza della tratta. Si evidenziano due gobbe in corrispondenza degli orari di picco del traffico intorno alle ore 9:00 e 18:00, e le tratte brevi, lunghe dai 2 ai 3 chilometri, risultano le più colpite. Si evidenzia inoltre un'area di forma rettangolare di colori chiari a partire dalle ore 20:00, dove la velocità media si stabilizza intorno ai 27 km/h per le tratte superiori ai 3 km.
 
 \subsection{Enjoy}
 
@@ -157,47 +157,47 @@ Nel grafico \ref{image:6} sono riportati i dati della velocità media divisi per
 
 \begin{figure}[H]
 \includegraphics[scale=0.8]{vmedia_oraria_enjoy}
-\caption{Velocità media usando Enjoy [km/h], di ora in ora.  I baffi neri rappresentano la deviazione standard campionaria $\sigma$ rispettiva di ogni barra}
+\caption{Velocità media usando il car sharing Enjoy [km/h] di ora in ora.  I baffi neri rappresentano la deviazione standard campionaria $\sigma$ rispettiva di ogni barra}
 \label{image:7}
 \end{figure}
 
-I tragitti col servizio di car sharing Enjoy hanno subito una lieve variazione di velocità media nell'arco 8:00-11:00 e in quello delle 17:00-19:00 come per l'auto di proprietà, in cui si registra la velocità media minima di 16 km/h, seppur la massima registrata sia stata di 17 km/h. La variazione è all'atto pratico poco significativa. La deviazione standard rimane costante per tutte le fasce di orario. Rispetto al grafico \ref{image:3} della velocità media in auto, la curva risulta molto simile, traslata verticalmente di 6 km/h. Anche in questo caso è stata usata la deviazione standard invece dell'errore standard per motivi di leggibilità, data l'elevata numerosità del campione. Tutti i grafici che seguiranno riporteranno la deviazione standard per lo stesso motivo.
+I tragitti col servizio di car sharing Enjoy hanno subito una lieve variazione di velocità media nell'arco 8:00-11:00 e in quello delle 17:00-19:00 in cui si è registrata la velocità media minima di 16 km/h e di 17 km/h di massima. La variazione è all'atto pratico poco significativa. La deviazione standard rimane costante per tutte le fasce di orario. Rispetto al grafico \ref{image:3} della velocità media in auto, la curva risulta molto simile, traslata verticalmente di 6 km/h. Anche in questo caso è stata usata la deviazione standard invece dell'errore standard per motivi di leggibilità, data l'elevata numerosità del campione.
 
 \subsubsection{Velocità media lunedì-venerdì e sabato-domenica}
 
 \begin{figure}[H]
 	\includegraphics[scale=0.8]{vmedia_oraria_enjoy_weekend}
-	\caption{Velocità media usando Enjoy [km/h], di ora in ora. Ingrandimento sull'asse delle ordinate ai valori 12 di minimo e 21 di massimo}
+	\caption{Velocità media usando il car sharing Enjoy [km/h] di ora in ora. Ingrandimento sull'asse delle ordinate ai valori 12 di minimo e 21 di massimo}
 	\label{image:20}
 \end{figure}
 
-Non sono state registrate particolari differenze effettuando la ripartizione dei dati in base al giorno della settimana, come mostrato nella figura \ref{image:20}. La velocità media rimane costante, con una lieve differenza nella fascia oraria delle 8:00. La deviazione standard, rimane costante e identica a quella del grafico \ref{image:7}.
+Non sono state registrate particolari differenze effettuando la ripartizione dei dati in base ai giorni intrasettimanali e del fine settimana, come mostrato nella figura \ref{image:20}. La velocità media rimane costante, con una lieve differenza nella fascia oraria delle 8:00. La deviazione standard, rimane costante e identica a quella del grafico \ref{image:7} per tutte le fasce di orario.
 
 \subsubsection{Velocità media settimana dopo settimana da fine lockdown}
 
 \begin{figure}[H]
 	\includegraphics[scale=0.8]{vmedia_oraria_enjoy_weeks}
-	\caption{Frequenza relativa vittorie bicicletta su Enjoy di ora in ora. Ingrandimento sull'asse delle ordinate ai valori 12 di minimo e 21 di massimo}
+	\caption{Velocità media in car sharing Enjoy [km/h] di ora in ora. Ingrandimento sull'asse delle ordinate ai valori 12 di minimo e 21 di massimo}
 	\label{image:16}
 \end{figure}
 
 \begin{figure}[H]
 	\includegraphics[scale=0.9]{vmedia_enjoy_weeks}
-	\caption{Frequenza relativa vittorie bicicletta su Enjoy di ora in ora}
+	\caption{Distribuzione della velocità media in car sharing Enjoy [km/h] calcolata a gruppi di 2 settimane dalla fine del lockdown}
 	\label{image:28}
 \end{figure}
 
-Anche per il car sharing risulta evidente una degradazione della velocità media generale e lineare rispetto al passare delle settimane, come riportato nel grafico \ref{image:16}. Non risultano differenze nelle fasce orarie meno trafficate dalle 12:00 alle 15:00 e dalle 21:00 alle 23:00. Le prime due settimane dall'allentamento delle restrizioni risultano più veloci di circa 1 km/h di media dalle altre settimane. Nel grafico \ref{image:28}, come per l'automobile di proprietà, il quartile zero, primo, secondo e terzo risultano uguali, con un andamento decrescente del baffo del quarto quartile dentro cui ricadono i valori massimi di velocità media per tragitto, sempre dovuto con molta probabilità al traffico.
+Anche per il car sharing risulta evidente una degradazione della velocità media generale e lineare rispetto al passare delle settimane, come riportato nel grafico \ref{image:16}. Non risultano differenze nelle fasce orarie meno trafficate dalle 12:00 alle 15:00 e dalle 21:00 alle 23:00. Le prime due settimane dall'allentamento delle restrizioni risultano più veloci di circa 1 km/h di media dalle altre settimane. Nel grafico \ref{image:28}, come per l'automobile di proprietà, il quartile zero, primo, secondo e terzo risultano uguali, con un andamento decrescente del baffo del quarto quartile entro cui ricadono i valori massimi di velocità media per tragitto, sempre dovuto con molta probabilità al traffico.
 
 \subsubsection{Velocità media in base alla lunghezza del tragitto}
 
 \begin{figure}[H]
 	\includegraphics[scale=0.75]{heatmap_enjoy}
-	\caption{Velocità media in auto [km/h] in base alla lunghezza tratta, di ora in ora}
+	\caption{Velocità media in car sharing Enjoy [km/h] di ora in ora in base alla lunghezza della tratta}
 	\label{image:30}
 \end{figure}
 
-Nel grafico \ref{image:30} sono riportati i dati della velocità media divisi per fasce d'orario e lunghezza in chilometri della tratta tramite una heatmap. In questo caso, a differenza della heatmap dell'auto di proprietà, corrispondente alla figura \ref{image:6}, non risultano evidenziate delle forme a gobba molto evidenti negli orari di picco del traffico, ma le velocità medie risultano mediamente costanti in base alla lunghezza della tratta, indipendentemente dall'orario, con lievi diminuzioni nelle ore intorno alle 9:00 e 18:00. A differenza dell'auto, la velocità media sembra non aumentare in corrispondenza degli orari notturni, questo probabilmente è dovuto al grande impatto che ha il tratto a piedi per raggiungere un mezzo libero della flotta.
+Nel grafico \ref{image:30} sono riportati, tramite una heatmap, i dati della velocità media divisi per fasce d'orario e per lunghezza della tratta. In questo caso, a differenza della heatmap dell'auto di proprietà, corrispondente alla figura \ref{image:6}, le velocità medie risultano mediamente costanti in base alla lunghezza della tratta, indipendentemente dall'orario, con lievi diminuzioni nelle ore intorno alle 9:00 e 18:00. A differenza dell'auto, la velocità media sembra non aumentare in corrispondenza degli orari notturni, questo probabilmente è dovuto al grande impatto che ha il tratto a piedi per raggiungere un mezzo libero della flotta.
 
 \subsubsection{Auto libere e tempo medio per raggiungerle}
 
@@ -218,12 +218,12 @@ Nel grafico \ref{image:30} sono riportati i dati della velocità media divisi pe
 \end{table}
 
 \begin{figure}[H]
-	\includegraphics[scale=0.7]{tmedio_raggiungimento_auto_enjoy}
-	\caption{Tempo medio per raggiungere auto libera [min]}
+	\includegraphics[scale=0.8]{tmedio_raggiungimento_auto_enjoy}
+	\caption{Distribuzione del tempo impiegato a raggiungere auto libera [min]}
 	\label{image:8}
 \end{figure}
 
-Sottraendo il tempo impiegato in auto da quello impiegato col car sharing Enjoy è stata ottenuta una stima indicativa del tempo medio per raggiungere un'auto libera a piedi. Dai calcoli è risultato che il tempo medio oscilla intorno ai 6 minuti, come riportato dalla tabella \ref{table:4}. Il box plot della figura \ref{image:8} evidenzia il range interquartile nell'intervallo dai 3 ai 9 minuti, con una mediana di 6. Il tempo medio per raggiungere un'auto Enjoy, di 6.6 minuti, sembra coincidere con la differenza di velocità media rispetto ai dati dell'auto privata, citata sotto il grafico \ref{image:7}.
+Sottraendo il tempo impiegato in auto da quello impiegato col car sharing Enjoy è stata ottenuta una stima indicativa del tempo medio per raggiungere un'auto libera a piedi. Dai calcoli è risultato che il tempo medio oscilla intorno ai 6 minuti, come riportato dalla tabella \ref{table:4}. Il box plot della figura \ref{image:8} evidenzia il range interquartile nell'intervallo dai 3 ai 9 minuti, con una mediana di 6. Il tempo medio per raggiungere un'auto Enjoy, di 6.6 minuti, sembra coincidere con la differenza di velocità media rispetto ai dati dell'auto privata, citata a riguardo del grafico \ref{image:7}.
 
 \begin{figure}[H]
 	\includegraphics[scale=0.8]{tmedio_raggiungimento_auto_enjoy_weekend}
@@ -231,7 +231,7 @@ Sottraendo il tempo impiegato in auto da quello impiegato col car sharing Enjoy 
 	\label{image:21}
 \end{figure}
 
-Anche per questa analisi i dati sono stati partizionati per i giorni da lunedì a venerdì e per sabato e domenica. Il grafico \ref{image:21} mostra una lieve differenza nel tempo medio per raggiungere un'auto libera Enjoy di circa 1 minuto a sfavore dei giorni del fine settimana. Dunque, in settimana le auto sono risultate più vicine o più facilmente raggiungibili.
+Anche per questa analisi i dati sono stati partizionati per i giorni da lunedì a venerdì e per sabato e domenica. Il grafico \ref{image:21} mostra una lieve differenza nel tempo medio per raggiungere un'auto libera Enjoy di circa 1 minuto a sfavore dei giorni del fine settimana. Dunque, in settimana, le auto sono risultate più facilmente raggiungibili.
 
 \begin{figure}[H]
 \includegraphics[scale=0.9]{variazione_auto_libere_enjoy_weekend}
@@ -239,7 +239,7 @@ Anche per questa analisi i dati sono stati partizionati per i giorni da lunedì 
 \label{image:9}
 \end{figure}
 
-Per contestualizzare il tempo medio per raggiungere un'auto Enjoy è stato usato il dato sul numero delle macchine libere salvato per ogni query ai servizi. Il massimo numero di auto libere in circolazione è stato di 870. Nel grafico \ref{image:9} viene mostrata in media la variazione di questo conteggio lungo l'arco della giornata, ripartito per lunedì-venerdì e sabato-domenica. Si può notare come il picco di utilizzo del servizio, denotato da un calo delle auto libere a disposizione, inizia verso le 15:00 e finisce verso le 21:00 indipendentemente dal giorno. L'unica differenza tra i due gruppi si può notare nelle ore del mattino, che vede meno auto libere durante la settimana.
+Per contestualizzare il tempo medio per raggiungere un'auto Enjoy è stato usato il dato sul numero delle auto libere salvato per ogni query ai servizi. Il massimo numero di auto libere in circolazione è stato di 870. Nel grafico \ref{image:9} viene mostrata in media la variazione di questo conteggio lungo l'arco della giornata, ripartito per lunedì-venerdì e sabato-domenica. Si può notare come il picco di utilizzo del servizio, denotato da un calo delle auto libere a disposizione, inizia verso le 15:00 e finisce verso le 21:00 indipendentemente dal giorno. L'unica differenza tra i due gruppi si può notare nelle ore del mattino, che vede meno auto libere durante la settimana.
 
 \begin{figure}[H]
 \includegraphics[scale=0.9]{variazione_auto_libere_enjoy_weeks}
@@ -255,25 +255,25 @@ Il grafico \ref{image:10} mostra chiaramente come il numero delle auto libere a 
 
 \begin{figure}[H]
 	\includegraphics[scale=0.8]{vmedia_oraria_bici}
-	\caption{Velocità media in bici [km/h], di ora in ora. I baffi neri rappresentano la deviazione standard campionaria $\sigma$ rispettiva di ogni barra}
+	\caption{Velocità media in bici [km/h] di ora in ora. I baffi neri rappresentano la deviazione standard campionaria $\sigma$ rispettiva di ogni barra}
 	\label{image:11}
 \end{figure}
 
 \begin{figure}[H]
 	\includegraphics[scale=0.8]{vmedia_oraria_atm}
-	\caption{Velocità media coi mezzi pubblici [km/h], di ora in ora. I baffi neri rappresentano la deviazione standard campionaria $\sigma$ rispettiva di ogni barra}
+	\caption{Velocità media coi mezzi pubblici [km/h] di ora in ora. I baffi neri rappresentano la deviazione standard campionaria $\sigma$ rispettiva di ogni barra}
 	\label{image:17}
 \end{figure}
 
 \begin{figure}[H]
 	\includegraphics[scale=0.8]{vmedia_oraria_piedi}
-	\caption{Velocità media a piedi [km/h], di ora in ora. I baffi neri rappresentano la deviazione standard campionaria $\sigma$ rispettiva di ogni barra}
+	\caption{Velocità media a piedi [km/h] di ora in ora. I baffi neri rappresentano la deviazione standard campionaria $\sigma$ rispettiva di ogni barra}
 	\label{image:18}
 \end{figure}
 
 \begin{figure}[H]
 	\includegraphics[scale=0.9]{vmedia_atm_weeks}
-	\caption{Frequenza relativa vittorie bicicletta su Enjoy di ora in ora}
+	\caption{Distribuzione della velocità media coi mezzi pubblici [km/h] calcolata a gruppi di 2 settimane dalla fine del lockdown}
 	\label{image:29}
 \end{figure}
 
@@ -313,9 +313,7 @@ Nonostante la grande influenza del traffico sui tempi di percorrenza, i tragitti
 \label{image:13}
 \end{figure}
 
-I risultati del confronto tra i mezzi pubblici ATM e il servizio di car sharing Enjoy illustrati nella tabella \ref{table:5} mostrano una percentuale di vittorie di circa il 9\%, dove per vittoria si intende che il tempo impiegato a percorrere una tratta coi mezzi pubblici è stato minore o uguale al tempo impiegato utilizzando il car sharing. Nel grafico \ref{image:13} viene visualizzata la distribuzione di queste vittorie di ora in ora. Si può notare come vicino alle ore di picco del traffico individuate nell'analisi delle performance dell'auto, ovvero le ore 8:00-10:00 e 17:00-20:00, si concentri la percentuale maggiore di sconfitte da parte del car sharing.
-
-Per esempio, su tutte le tratte richieste nelle ore 8:00, nell'11\% delle volte i mezzi pubblici hanno pareggiato o superato la performance del car sharing. Al contrario, al di fuori degli orari di picco del traffico, la percentuale di vittorie è vicina allo 0. Dalla tabella \ref{table:5} si evince anche che dell'8.7\% di queste vittorie, circa metà di esse sono tratte brevi dai 2 ai 5 km.
+I risultati del confronto tra i mezzi pubblici ATM e il servizio di car sharing Enjoy illustrati nella tabella \ref{table:5} mostrano una percentuale di vittorie di circa il 9\%, dove per vittoria si intende che il tempo impiegato a percorrere una tratta coi mezzi pubblici è stato minore o uguale al tempo impiegato utilizzando il car sharing. Nel grafico \ref{image:13} viene visualizzata la distribuzione di queste vittorie di ora in ora. Si può notare come vicino alle ore di picco del traffico individuate nell'analisi delle performance dell'auto, ovvero le ore 8:00-10:00 e 17:00-20:00, si concentri la percentuale maggiore di sconfitte da parte del car sharing. Per esempio, su tutte le tratte richieste nelle ore 8:00, nell'11\% delle volte i mezzi pubblici hanno pareggiato o superato la performance del car sharing. Al contrario, al di fuori degli orari di picco del traffico, la percentuale di vittorie è vicina allo 0. Dalla tabella \ref{table:5} si evince anche che dell'8.7\% di queste vittorie, circa metà di esse sono tratte brevi dai 2 ai 5 km.
 
 \subsubsection{Bicicletta vs. Enjoy}
 
@@ -336,18 +334,16 @@ Per esempio, su tutte le tratte richieste nelle ore 8:00, nell'11\% delle volte 
 \end{table}
 
 \begin{figure}[H]
-\includegraphics[scale=0.8]{confronto_bike_enjoy}
+\includegraphics[scale=0.9]{confronto_bike_enjoy}
 \caption{Frequenza relativa vittorie bicicletta su Enjoy di ora in ora}
 \label{image:14}
 \end{figure}
 
-Risultato ancora più interessante è quello del confronto tra bicicletta di proprietà e car sharing. La tabella \ref{table:6} mostra una percentuale delle vittorie del 36\% sul totale, poco più di un terzo del totale delle tratte. La maggior parte di queste vittorie è concentrata nelle tratte brevi dai 2 ai 5 km.
-
-Anche in questo confronto è emerso che negli orari di picco si accentua la percentuale di vittorie che arriva a toccare quasi il 45\% del totale nelle ore 8:00 e 18:00 come riportato dal grafico \ref{image:14}. Al contrario dei mezzi pubblici, questa percentuale resta alta anche al di fuori degli orari di punta, restando sempre intorno al 30\%.
+Risultato ancora più interessante è quello del confronto tra bicicletta di proprietà e car sharing. La tabella \ref{table:6} mostra una percentuale delle vittorie del 36\% sul totale, poco più di un terzo del totale delle tratte. La maggior parte di queste vittorie è concentrata nelle tratte brevi dai 2 ai 5 km. Anche in questo confronto è emerso che negli orari di picco si accentua la percentuale di vittorie che arriva a toccare quasi il 45\% del totale nelle ore 8:00 e 18:00 come riportato dal grafico \ref{image:14}. Al contrario dei mezzi pubblici, questa percentuale resta alta anche al di fuori degli orari di punta, restando sempre intorno al 30\%.
 
 \section{Confronto pre e post lockdown}
 
-Nonostante le prime versioni del programma di raccolta dati abbiano portati a diversi dati nulli, le stime relative al percorso in automobile e car sharing sono sempre state corrette. Si è deciso quindi di analizzare l'unica settimana a disposizione prima del lockdown, dal lunedì 2 a domenica 8 marzo 2020, rappresentativa di una giornata tipo a livello di traffico stradale, con una delle settimane più trafficate dopo il lockdown, che dalle analisi riportate dalla figura \ref{image:5} e \ref{image:16} sono risultate corrispondenti al periodo dal 15 al 27 giugno 2020.
+Nonostante le prime versioni del programma di raccolta dati abbiano portato a diversi errori nelle stime, quelle relative al percorso in automobile e car sharing sono sempre state corrette. Si è deciso quindi di analizzare l'unica settimana a disposizione prima del lockdown, dal lunedì 2 a domenica 8 marzo 2020, con una delle settimane più trafficate dopo il lockdown, che dalle analisi riportate dalle figure \ref{image:5} e \ref{image:16} sono risultate corrispondenti al periodo dal 15 al 27 giugno 2020.
 
 \subsection{Automobile}
 
@@ -357,7 +353,7 @@ Nonostante le prime versioni del programma di raccolta dati abbiano portati a di
 	\label{image:22}
 \end{figure}
 
-Nel grafico \ref{image:22} si può notare una lieve differenza di km/h di media tra una settimana pre e post lockdown intrasettimanale. Questa differenza risulta più evidente negli orari di picco del traffico vicino alle 8:00 e alle 18:00, con una differenza di 2 km/h di media. Risulta evidente inoltre la differenza di velocità media nel pre lockdown tra le 8:00, dove si tocca il minimo di 17.5 km/h, alle 23:00, dove si trova il massimo di 24.5 km/h, una differenza di velocità del 28\%.
+Nel grafico \ref{image:22} si può notare una lieve differenza di km/h di media tra una settimana pre e post lockdown intrasettimanale. Questa differenza risulta più evidente negli orari di picco del traffico vicino alle 8:00 e alle 18:00, con una differenza di 2 km/h di media. Risulta evidente inoltre la differenza di velocità media nel pre lockdown tra le ore 8:00, dove si tocca il minimo di 17.5 km/h, e le ore 23:00, dove si trova il massimo di 24.5 km/h, una differenza di velocità del 28\%.
 
 \subsection{Enjoy}
 
