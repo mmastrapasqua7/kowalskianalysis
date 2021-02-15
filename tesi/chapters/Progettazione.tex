@@ -65,7 +65,7 @@ Nonostante OSRM non offra soluzioni in tempo reale è stato scelto ugualmente pe
 
 \subsection{Lo scraping di Waze}
 
-Dato che i servizi per sviluppatori offerti da Waze sono gratuiti, si è scelto di sfruttare tali dati ma prendendoli per vie laterali, direttamente dall'applicazione web \url{https://www.waze.com/live-map}. La maggior parte dei browser disponibili sul web come Mozilla Firefox offrono, oltre al browser in sè, gli strumenti di debugging usati principalmente dagli sviluppatori di siti web. Tra questi vi è la console da sviluppatore, apribile tramite la scorciatoia da tastiera Ctrl+Shift+K. Con questa console è possibile vedere le richieste di rete che il sito effettua in background per il suo funzionamento. L'applicazione web di Waze è un'applicazione a singola pagina e per il suo funzionamento effettua delle richieste tramite il linguaggio di programmazione JavaScript in modo asincrono direttamente ai loro server. Questa pratica prende il nome di Asynchronous JavaScript and XML (AJAX)\footnote{\url{https://en.wikipedia.org/wiki/Ajax_(programming)}. Accessed: 20/01/2021}. Guardando i comportamenti a livello di rete del sito web mentre si svolge una richiesta per un viaggio a Waze si presenta subito un URL di riferimento usato come punto di ricevimento delle richieste di routing, come mostrato nella Figura \ref{image:1}.
+Dato che i servizi per sviluppatori offerti da Waze sono gratuiti, si è scelto di sfruttare tali dati ma prendendoli per vie laterali, direttamente dall'applicazione web \url{https://www.waze.com/live-map}. La maggior parte dei browser disponibili sul web come Mozilla Firefox offrono, oltre al browser in sè, gli strumenti di debugging usati principalmente dagli sviluppatori di siti web. Tra questi vi è la console da sviluppatore, apribile tramite la scorciatoia da tastiera Ctrl+Shift+K. Con questa console è possibile vedere le richieste di rete che il sito effettua in background per il suo funzionamento. L'applicazione web di Waze è un'applicazione a singola pagina e per il suo funzionamento effettua delle richieste tramite il linguaggio di programmazione JavaScript in modo asincrono direttamente ai loro server. Questa pratica prende il nome di Asynchronous JavaScript and XML (AJAX)\footnote{\url{https://en.wikipedia.org/wiki/Ajax_(programming)}. Accessed: 20/01/2021}. Guardando i comportamenti a livello di rete del sito web mentre si svolge una richiesta per un viaggio a Waze si presenta subito un URL di riferimento usato come punto di ricevimento delle richieste di routing, come mostrato nella Figura \ref{image:1}. In particolare, la richiesta \url{https://www.waze.com/live-map/routing/?} contiene esattamente il punto di partenza e di arrivo richiesti parametrizzati nell'URL e il risultato restituito è in formato JSON (JavaScript Object Notation)\footnote{\url{https://en.wikipedia.org/wiki/JSON}. Accessed: 20/01/2021}. Per proteggere i loro server da sovraccarichi, Waze risponde a questo URL solamente se si possiede il permesso ricevuto preventivamente tramite un token, ovvero una stringa di caratteri che funge da chiave segreta. Per ottenere questa chiave e raggiungere l'obbiettivo finale di avere delle API per interrogare il servizio, è stato scritto un programma in Go\footnote{\url{https://golang.org/}. Accessed: 20/01/2021} per emulare l'interazione col sito web e ricevere il token necessario per effettuare le richieste successive. 
 
 \begin{figure}[H]
 	\includegraphics[scale=0.6]{waze_scraping}
@@ -73,7 +73,7 @@ Dato che i servizi per sviluppatori offerti da Waze sono gratuiti, si è scelto 
 	\label{image:1}
 \end{figure}
 
-In particolare, la richiesta \url{https://www.waze.com/live-map/routing/?} contiene esattamente il punto di partenza e di arrivo richiesti parametrizzati nell'URL e il risultato restituito è in formato JSON (JavaScript Object Notation)\footnote{\url{https://en.wikipedia.org/wiki/JSON}. Accessed: 20/01/2021}. Per proteggere i loro server da sovraccarichi, Waze risponde a questo URL solamente se si possiede il permesso ricevuto preventivamente tramite un token, ovvero una stringa di caratteri che funge da chiave segreta. Per ottenere questa chiave e raggiungere l'obbiettivo finale di avere delle API per interrogare il servizio, è stato scritto un programma in Go\footnote{\url{https://golang.org/}. Accessed: 20/01/2021} per emulare l'interazione col sito web e ricevere il token necessario per effettuare le richieste successive. Questo processo ha richiesto tempo sia per la codifica dei parametri e sia per la decodifica del risultato stesso e dei risultati intermedi per la richiesta del token. In altre parole, è stato fatto il reverse engineering dell'applicazione web.
+Questo processo ha richiesto tempo sia per la codifica dei parametri e sia per la decodifica del risultato stesso e dei risultati intermedi per la richiesta del token. In altre parole, è stato fatto il reverse engineering dell'applicazione web.
 
 
 \subsection{Lo scraping di Moovit (scartato)}
@@ -82,9 +82,8 @@ Inizialmente, prima di usare le API di Here, che offre stime statiche dei tragit
 
 \subsection{Estratti del codice sorgente degli scraper}
 
-Nei listati seguenti sono riportate le funzioni principali, scritte in Go, addette a interrogare i server dietro ai relativi siti web dei servizi per la tratta richiesta, espressa sotto forma di coordinate geografiche di partenza e arrivo, il cui risultato viene successivamente elaborato e salvato da un altro modulo del programma. Per questioni di leggibilità sono stati omessi i controlli di errore presenti dopo ogni richiesta ed è stata semplificata la sintassi del linguaggio.
+Nei listati seguenti sono riportate le funzioni principali, scritte in Go, addette a interrogare i server dietro ai relativi siti web dei servizi per la tratta richiesta, espressa sotto forma di coordinate geografiche di partenza e arrivo, il cui risultato viene successivamente elaborato e salvato da un altro modulo del programma. Per questioni di leggibilità sono stati omessi i controlli di errore presenti dopo ogni richiesta ed è stata semplificata la sintassi del linguaggio. Ogni chiamata di funzione corrisponde una richiesta HTTP appositamente preparata e compilata coi parametri indicati per ottenere in risposta i dati necessari da inserire nella richiesta dopo, al fine di avere accesso al servizio di routing nascosto dietro il sito web.
 
-\newpage
 \subsubsection{Codice dello scraper di Waze}
 
 \begin{lstlisting}[language=Go]
@@ -100,6 +99,8 @@ GetRoutes(startLat, startLon, endLat, endLon string) Result {
 	return Routes(startLat, startLon, endLat, endLon, cookies)
 }
 \end{lstlisting}
+
+\pagebreak
 
 \subsubsection{Codice dello scraper di Moovit}
 
@@ -132,6 +133,8 @@ GetRoutes(startLat, startLon, endLat, endLon string) Result {
 	return Routes(fromData, toData, token, cookie)
 }
 \end{lstlisting}
+
+\pagebreak
 
 \subsection{Stima del percorso per il car sharing}
 
