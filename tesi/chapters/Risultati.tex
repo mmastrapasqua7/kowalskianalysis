@@ -141,12 +141,16 @@ La differenza è nel complesso bassa, di circa 2 km/h di media, che tende a dimi
 
 La Figura \ref{image:5} mostra il risultato di una ripartizione dei dati effettuata in base alla settimana, in particolare sono stati partizionati a gruppi di 2 settimane consecutive i tragitti effettuati a partire dal 4 maggio 2020, primo giorno dell'allentamento delle restrizioni imposte dal governo italiano per l'emergenza COVID-19 \cite{misuredelgovernopercovid}. Nel grafico risulta evidente una degradazione della velocità media generale e lineare rispetto al passare delle settimane. Si nota inoltre che le curve corrispondenti alle settimane successive al 17 maggio, ovvero dopo le prime 2, presentino dei flessi sempre più accentuati in prossimità degli orari di picco del traffico evidenziati dalla Figura \ref{image:3}. Anche in questo caso, non sono state riportate differenze nella deviazione standard. Nella Figura \ref{image:27} sono stati usati i box plot per descrivere la distribuzione delle velocità medie a gruppi di 2 settimane dalla fine del lockdown. Si può notare come il quartile zero, primo, secondo e terzo siano rimasti uguali, con un lieve andamento a ribasso col passare delle settimane. La differenza risulta più accentuata nel quarto quartile, che vede la diminuzione dei valori di massima velocità media per tragitto, probabilmente dovuta a un aumento del traffico, come emerso dal grafico della Figura \ref{image:5} con valori decrescenti della velocità media per ogni fascia di orario al passare delle settimane dalla fine del lockdown.
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.8]{vmedia_oraria_auto_weeks}
 	\caption{Velocità media in auto [km/h] di ora in ora. I valori sull'asse delle ordinate variano tra 16 e 30.}
 	\label{image:5}
 \end{figure}
+
+\subsubsection{Velocità media in base alla lunghezza del tragitto}
+
+Nella Figura \ref{image:6} sono riportati, tramite una heatmap, i dati della velocità media divisi per fasce d'orario e per lunghezza della tratta. Si evidenziano due gobbe in corrispondenza degli orari di picco del traffico intorno alle ore 9:00 e 18:00, e le tratte brevi, lunghe dai 2 ai 3 chilometri, risultano le più colpite. Si evidenzia inoltre un'area di forma rettangolare di colori chiari a partire dalle ore 20:00, dove la velocità media si stabilizza intorno ai 27 km/h per le tratte superiori ai 3 km.
 
 \begin{figure}
 	\centering
@@ -162,9 +166,7 @@ La Figura \ref{image:5} mostra il risultato di una ripartizione dei dati effettu
 	\label{image:6}
 \end{figure}
 
-\subsubsection{Velocità media in base alla lunghezza del tragitto}
 
-Nella Figura \ref{image:6} sono riportati, tramite una heatmap, i dati della velocità media divisi per fasce d'orario e per lunghezza della tratta. Si evidenziano due gobbe in corrispondenza degli orari di picco del traffico intorno alle ore 9:00 e 18:00, e le tratte brevi, lunghe dai 2 ai 3 chilometri, risultano le più colpite. Si evidenzia inoltre un'area di forma rettangolare di colori chiari a partire dalle ore 20:00, dove la velocità media si stabilizza intorno ai 27 km/h per le tratte superiori ai 3 km.
 
 
 
@@ -349,7 +351,7 @@ Risultato ancora più interessante è quello del confronto tra bicicletta di pro
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.7]{confronto_atm_enjoy}
-	\caption{Frequenza relativa vittorie ATM su Enjoy di ora in ora.}
+	\caption{Frequenza relativa vittorie dei mezzi pubblici su Enjoy di ora in ora.}
 	\label{image:13}
 \end{figure}
 
@@ -374,7 +376,7 @@ Risultato ancora più interessante è quello del confronto tra bicicletta di pro
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.7]{confronto_bike_enjoy}
-	\caption{Frequenza relativa vittorie bicicletta su Enjoy di ora in ora.}
+	\caption{Frequenza relativa vittorie della bicicletta su Enjoy di ora in ora.}
 	\label{image:14}
 \end{figure}
 
