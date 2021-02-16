@@ -4,17 +4,17 @@ I dati riguardanti la simulazione sono stati raccolti a partire dall'1 marzo 202
 
 \subsection{Le problematiche}
 
-Sebbene questo studio fosse stato pensato per un confronto in condizioni di traffico e congestione stradale abituali che caratterizzano Milano, a influenzare questo studio è stato da subito l'emergenza epidemiologica da COVID-19. Il 22 gennaio 2020 il Governo Italiano ha dichiarato lo stato di emergenza, mettendo in atto le prime misure di contenimento in alcuni Comuni dove si sono verificati i primi casi del contagio. A partire dal 23 febbraio sono stati emanati DPCM (decreto del Presidente del Consiglio dei ministri) sempre più stringenti riguardo la circolazione e lo svolgimento delle attività commerciali, fino a ordinare un lockdown nazionale l'11 marzo 2020 \cite{misuredelgovernopercovid}. Nonostante lo studio sia stato fortemente influenzato da questo fattore, per via della circolazione ridotta se non totalmente assente durante il lockdown e per la riduzione del numero dei mezzi pubblici ATM, si è deciso comunque di procedere, tenendo conto dell'avvenuto sul giudizio finale dei risultati. A ostacolare lo studio, inoltre, nei primi giorni di utilizzo del programma per eseguire le richieste, è stato il servizio precedentemente utilizzato per i mezzi pubblici, ovvero Moovit, che ha risposto alle richieste con valori nulli o totalmente fuori scala. Per questo motivo è stato sostituito il servizio con quello offerto da Here e sono stati scartati i risultati precedentemente raccolti.
+Sebbene questo studio fosse stato pensato per un confronto in condizioni di traffico e congestione stradale abituali che caratterizzano Milano, a influenzare questo studio è stata da subito l'emergenza epidemiologica da COVID-19. Il 22 gennaio 2020 il Governo Italiano ha dichiarato lo stato di emergenza, mettendo in atto le prime misure di contenimento in alcuni Comuni dove si sono verificati i primi casi del contagio. A partire dal 23 febbraio sono stati emanati DPCM (decreto del Presidente del Consiglio dei ministri) sempre più stringenti riguardo la circolazione e lo svolgimento delle attività commerciali, fino a ordinare un lockdown nazionale l'11 marzo 2020 \cite{misuredelgovernopercovid}. Nonostante lo studio sia stato fortemente influenzato da questo fattore, per via della circolazione ridotta se non totalmente assente durante il lockdown e per la riduzione del numero dei mezzi pubblici ATM, si è deciso comunque di procedere, tenendo conto dell'avvenuto sul giudizio finale dei risultati. A ostacolare lo studio, inoltre, nei primi giorni di utilizzo del programma per eseguire le richieste, è stato il servizio precedentemente utilizzato per i mezzi pubblici, ovvero Moovit, che ha risposto alle richieste con valori nulli o totalmente fuori scala. Per questo motivo è stato sostituito il servizio con quello offerto da Here e sono stati scartati i risultati precedentemente raccolti.
 
 \subsection{Filtro dati errati}
 
-I dati raccolti dalla prima esecuzione del programma, avvenuta l'1 marzo 2020, fino all'entrata in vigore dello stato di lockdown nazionale, il 12 marzo 2020, sono risultati per la maggior parte errati, ovvero con stime di percorrenza nulle, causati dai problemi con lo scraper di Moovit. Successivamente a questo evento si è cercato e trovato un servizio alternativo che sostituisse la stima del percorso coi mezzi pubblici, ovvero Here, che sfortunatamente non offre stime in tempo reale ma solo statiche. I dati raccolti nel periodo di lockdown dal 13 marzo 2020 al 3 maggio 2020 compresi sono stati scartati per via della circolazione dei mezzi pubblici e privati quasi totalmente assente, e quindi poco utili nell'obbiettivo finale dello studio di confrontare i mezzi di trasporto in situazioni di traffico caratteristico della città. Per questo motivo si è scelto di usare solamente i dati a partire dall'allentamento delle misure di restrizioni da emergenza sanitaria, ovvero quelli a partire dal 4 maggio 2020. Anche i dati presi in considerazione da quest'ultima data contengono delle stime nulle. Questo fenomeno è stato probabilmente dovuto alla generazione a random delle coordinate di partenza e arrivo, che ha permesso richieste in qualsiasi punto della mappa, compresi punti non situati direttamente sulla strada come in giardini pubblici, condomini e altre zone private, o semplicemente dovuto a disservizi. Per un confronto alla pari sono state considerate solo le righe prive di zeri nel file formato CSV. Come indicato dalla Tabella \ref{table:1} su circa 68000 richieste, 50000 sono prive di errori, circa il 73\% del totale, e quindi adatte per un confronto 1 a 1 tra mezzi di trasporto.
+I dati raccolti dalla prima esecuzione del programma, avvenuta l'1 marzo 2020, fino all'entrata in vigore dello stato di lockdown nazionale, il 12 marzo 2020, sono risultati per la maggior parte errati, ovvero con stime di percorrenza nulle, causati dai problemi con lo scraper di Moovit. Successivamente a questo evento si è cercato e trovato un servizio alternativo che sostituisse la stima del percorso coi mezzi pubblici, ovvero Here, che sfortunatamente non offre stime in tempo reale ma solo statiche. I dati raccolti nel periodo di lockdown dal 13 marzo 2020 al 3 maggio 2020 compresi sono stati scartati per via della circolazione dei mezzi pubblici e privati quasi totalmente assente, e quindi poco utili nell'obbiettivo finale dello studio di confrontare i mezzi di trasporto in situazioni di traffico caratteristico della città. Per questo motivo si è scelto di usare solamente i dati a partire dall'allentamento delle misure di restrizioni da emergenza sanitaria, ovvero quelli a partire dal 4 maggio 2020. Anche i dati presi in considerazione da quest'ultima data contengono delle stime nulle. Questo fenomeno è stato probabilmente dovuto alla generazione a random delle coordinate di partenza e arrivo, che ha permesso richieste in qualsiasi punto della mappa, compresi punti non situati direttamente sulla strada come in giardini pubblici, condomini e altre zone private, o semplicemente dovuto a disservizi. Per un confronto alla pari sono state considerate solo le righe prive di zeri nel file formato CSV. Come indicato dalla Tabella \ref{table:1} su circa 68000 richieste, 50000 sono risultate prive di errori, circa il 73\% del totale, e quindi adatte per un confronto 1 a 1 tra mezzi di trasporto.
 
 \begin{table}
 	\centering
 	\begin{tabular}{ | l | r | r | }
 		\hline
-		& \textbf{1 Marzo - 12 Marzo} & \textbf{4 Maggio - 27 Giugno} \\
+		& \textbf{1 marzo - 12 marzo} & \textbf{4 maggio - 27 giugno} \\
 		\hline
 		\textbf{Coerenti}& 1988 & 49560 \\  
 		\textbf{Errati} & 7962 & 18290 \\
@@ -44,7 +44,7 @@ Nella Tabella \ref{table:7} è riportato l'header del file CSV in cui sono stati
 
 \subsection{Distribuzione lunghezza tratte generate}
 
-Nella Figura \ref{image:2} e nella Tabella \ref{table:2} sono riportate le statistiche riguardo la lunghezza in via aerea delle tratte generate. Si può notare come più della metà siano lunghe meno di 5 km in linea aerea, risultato voluto e ottenuto dai vincoli imposti nella generazione riguardanti l'area del Comune di Milano e per l'ingresso e l'uscita dal centro storico al semicentro. La Figura \ref{image:19} mostra come la lunghezza delle tratte è stata equidistribuita nelle diverse fasce di orario.
+Nella Figura \ref{image:2} e nella Tabella \ref{table:2} sono riportate le statistiche riguardo la lunghezza in via aerea delle tratte generate. Si può notare come più della metà siano lunghe meno di 4 km in linea aerea, risultato voluto e ottenuto dai vincoli imposti nella generazione riguardanti l'area del Comune di Milano e per l'ingresso e l'uscita dal centro storico al semicentro. La Figura \ref{image:19} mostra come la lunghezza delle tratte è stata equidistribuita nelle diverse fasce di orario.
 
 \begin{figure}[H]
 	\centering
@@ -56,7 +56,7 @@ Nella Figura \ref{image:2} e nella Tabella \ref{table:2} sono riportate le stati
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.8]{distribuzione_tratte_oraria}
-	\caption{Frequenza assoluta lunghezza tratte in base all'orario [km].}
+	\caption{Frequenza assoluta lunghezza tratte [km] in base all'orario.}
 	\label{image:19}
 \end{figure}
 
@@ -120,7 +120,7 @@ Una delle prime analisi effettuate per ogni mezzo è stata quella di calcolare l
 	\label{image:3}
 \end{figure}
 
-Risultano in linea con lo studio anche le ore precedenti e successive agli orari individuati come picchi. Si nota inoltre come le deviazioni standard campionarie di ogni ora, rappresentate da baffi neri incastonati nelle barre, rimangano invariate. Si è scelto di rappresentare la deviazione standard invece che l'errore standard per via dell'elevata numerosità del campione che renderebbe i baffi non visibili e quindi non distinguibili. Difatti, basandosi sui dati della Tabella \ref{table:3} che riporta una deviazione standard di 3.9 e nella Figura \ref{image:19} che mostra una media di circa 2600 tratte per ogni fascia di orario, l'errore standard per ogni barra risulterebbe di: $\frac{\sigma_x}{\sqrt{n}} = \frac{3.9}{\sqrt{2600}} = 0.07$.
+Risultano in linea con lo studio anche le ore precedenti e successive agli orari individuati come picchi. Si nota inoltre come le deviazioni standard campionarie di ogni ora, rappresentate da baffi neri incastonati nelle barre, rimangano invariate. Si è scelto di rappresentare la deviazione standard invece che l'errore standard per via dell'elevata numerosità del campione che renderebbe i baffi non visibili e quindi non distinguibili. Difatti, basandosi sui dati della Tabella \ref{table:3} che riporta una deviazione standard di 3.9 e della Figura \ref{image:19} che mostra una media di circa 2600 tratte per ogni fascia di orario, l'errore standard per ogni barra risulterebbe di: $\frac{\sigma_x}{\sqrt{n}} = \frac{3.9}{\sqrt{2600}} = 0.07$.
 
 
 
@@ -135,9 +135,9 @@ La Figura \ref{image:4} mostra il risultato di una ripartizione dei dati effettu
 	\label{image:4}
 \end{figure}
 
-La differenza è nel complesso bassa, di circa 2 km/h di media, che tende a diminuire nel primo pomeriggio e negli orari notturni e ad aumentare nella fascia oraria delle ore 8;00 e delle 16:00, con una differenza di quasi 4 km/h, equivalente a un incremento della velocità media nel fine settimana del 14.6\% in più rispetto al lunedì-venerdì. La variazione della velocità media di ora in ora nel sabato-domenica risulta meno evidente di quella del lunedì-venerdì, con i picchi di rallentamento che si spostato nelle fasce orarie 10:00-12:00 e 16:00-19:00. Anche questi dati risultano in linea con quelli dello studio di TomTom, che vede un minor livello di congestione nel weekend con dei picchi nelle ore 10:00 e 18:00. La deviazione standard delle fasce di orario del lunedì-venerdì e sabato-domenica, che sono state omesse per motivi di leggibilità del grafico, rimangono sempre costanti intorno al valore 3.7 km/h, con un errore standard di $\frac{3.7}{\sqrt{1622}} = 0.09$ per i giorni dal lunedì al venerdì e $\frac{3.7}{\sqrt{622}} = 0.14$ per i fine settimana, dove 1622 e 622 rappresentano rispettivamente la numerosità del campione di una sola fascia di orario lunedì-venerdì e di sabato-domenica.
+La differenza è nel complesso bassa, di circa 2 km/h di media, che tende a diminuire nel primo pomeriggio e negli orari notturni e ad aumentare nella fascia oraria delle ore 8:00 e delle 16:00, con una differenza di quasi 4 km/h, equivalente a un incremento della velocità media nel fine settimana del 14.6\% in più rispetto al lunedì-venerdì. La variazione della velocità media di ora in ora nel sabato-domenica risulta meno evidente di quella del lunedì-venerdì, con i picchi di rallentamento che si spostato nelle fasce orarie 10:00-12:00 e 16:00-19:00. Anche questi dati risultano in linea con quelli dello studio di TomTom, che vede un minor livello di congestione nel weekend con dei picchi nelle ore 10:00 e 18:00. La deviazione standard delle fasce di orario del lunedì-venerdì e sabato-domenica, che sono state omesse per motivi di leggibilità del grafico, rimangono sempre costanti intorno al valore 3.7 km/h, con un errore standard di $\frac{3.7}{\sqrt{1622}} = 0.09$ per i giorni dal lunedì al venerdì e $\frac{3.7}{\sqrt{622}} = 0.14$ per i fine settimana, dove 1622 e 622 rappresentano rispettivamente la numerosità del campione di una sola fascia di orario lunedì-venerdì e di sabato-domenica.
 
-\subsubsection{Velocità media settimana dopo settimana da fine lockdown}
+\subsubsection{Velocità media settimana dopo settimana dal fine lockdown}
 
 La Figura \ref{image:5} mostra il risultato di una ripartizione dei dati effettuata in base alla settimana, in particolare sono stati partizionati a gruppi di 2 settimane consecutive i tragitti effettuati a partire dal 4 maggio 2020, primo giorno dell'allentamento delle restrizioni imposte dal governo italiano per l'emergenza COVID-19 \cite{misuredelgovernopercovid}. Nel grafico risulta evidente una degradazione della velocità media generale e lineare rispetto al passare delle settimane. Si nota inoltre che le curve corrispondenti alle settimane successive al 17 maggio, ovvero dopo le prime 2, presentino dei flessi sempre più accentuati in prossimità degli orari di picco del traffico evidenziati dalla Figura \ref{image:3}. Anche in questo caso, non sono state riportate differenze nella deviazione standard. Nella Figura \ref{image:27} sono stati usati i box plot per descrivere la distribuzione delle velocità medie a gruppi di 2 settimane dalla fine del lockdown. Si può notare come il quartile zero, primo, secondo e terzo siano rimasti uguali, con un lieve andamento a ribasso col passare delle settimane. La differenza risulta più accentuata nel quarto quartile, che vede la diminuzione dei valori di massima velocità media per tragitto, probabilmente dovuta a un aumento del traffico, come emerso dal grafico della Figura \ref{image:5} con valori decrescenti della velocità media per ogni fascia di orario al passare delle settimane dalla fine del lockdown.
 
@@ -166,10 +166,6 @@ Nella Figura \ref{image:6} sono riportati, tramite una heatmap, i dati della vel
 	\label{image:6}
 \end{figure}
 
-
-
-
-
 \pagebreak
 
 \subsection{Enjoy}
@@ -187,7 +183,7 @@ I tragitti col servizio di car sharing Enjoy hanno subito una lieve variazione d
 
 \subsubsection{Velocità media lunedì-venerdì e sabato-domenica}
 
-Non sono state registrate particolari differenze effettuando la ripartizione dei dati in base ai giorni dal lunedì al venerdì e del fine settimana, come mostrato nella Figura \ref{image:20}. La velocità media rimane costante, con una lieve differenza nella fascia oraria delle 8:00. La deviazione standard, rimane costante e identica a quella della Figura \ref{image:7} per tutte le fasce di orario.
+Non sono state registrate particolari differenze effettuando la ripartizione dei dati in base ai giorni dal lunedì al venerdì e del fine settimana, come mostrato nella Figura \ref{image:20}. La velocità media rimane costante, con una lieve differenza nella fascia oraria delle 8:00. La deviazione standard rimane costante e identica a quella della Figura \ref{image:7} per tutte le fasce di orario.
 
 \begin{figure}[H]
 	\centering
@@ -196,7 +192,7 @@ Non sono state registrate particolari differenze effettuando la ripartizione dei
 	\label{image:20}
 \end{figure}
 
-\subsubsection{Velocità media settimana dopo settimana da fine lockdown}
+\subsubsection{Velocità media settimana dopo settimana dal fine lockdown}
 
 Anche per il car sharing risulta evidente una degradazione della velocità media generale e lineare rispetto al passare delle settimane, come riportato nel grafico della Figura \ref{image:16}. Non risultano differenze nelle fasce orarie meno trafficate dalle 12:00 alle 15:00 e dalle 21:00 alle 23:00. Le prime due settimane dall'allentamento delle restrizioni risultano più veloci di circa 1 km/h di media dalle altre settimane. Nel grafico della Figura \ref{image:28}, come per l'automobile di proprietà, il quartile zero, primo, secondo e terzo risultano uguali, con un andamento decrescente del baffo del quarto quartile entro cui ricadono i valori massimi di velocità media per tragitto, sempre dovuto con molta probabilità al traffico.
 
@@ -227,9 +223,7 @@ Nel grafico della Figura \ref{image:30} sono riportati, tramite una heatmap, i d
 
 \subsubsection{Auto libere e tempo medio per raggiungerle}
 
-Sottraendo il tempo impiegato in auto da quello impiegato col car sharing Enjoy è stata ottenuta una stima indicativa del tempo medio per raggiungere un'auto libera a piedi. Dai calcoli è risultato che il tempo medio oscilla intorno ai 6 minuti, come riportato dalla Tabella \ref{table:4}. Il box plot della Figura \ref{image:8} evidenzia il range interquartile nell'intervallo dai 3 ai 9 minuti, con una mediana di 6. Il tempo medio per raggiungere un'auto Enjoy, di 6.6 minuti, sembra coincidere con la differenza di velocità media rispetto ai dati dell'auto privata, citata a riguardo del grafico della Figura \ref{image:7}.
-
-Anche per questa analisi i dati sono stati partizionati per i giorni da lunedì a venerdì e per sabato e domenica. Il grafico della Figura \ref{image:21} mostra una lieve differenza nel tempo medio per raggiungere un'auto libera Enjoy di circa 1 minuto a sfavore dei giorni del fine settimana. Dunque, in settimana, le auto sono risultate più facilmente raggiungibili.
+Sottraendo il tempo impiegato in auto da quello impiegato col car sharing Enjoy è stata ottenuta una stima indicativa del tempo medio per raggiungere un'auto libera a piedi. Dai calcoli è risultato che il tempo medio oscilla intorno ai 6 minuti, come riportato dalla Tabella \ref{table:4}. Il box plot della Figura \ref{image:8} evidenzia il range interquartile nell'intervallo dai 3 ai 9 minuti, con una mediana di 6 minuti. Anche per questa analisi i dati sono stati partizionati per i giorni da lunedì a venerdì e per sabato e domenica. Il grafico della Figura \ref{image:21} mostra una lieve differenza nel tempo medio per raggiungere un'auto libera Enjoy di circa 1 minuto a sfavore dei giorni del fine settimana. Dunque, in settimana, le auto sono risultate più facilmente raggiungibili.
 
 Per contestualizzare il tempo medio per raggiungere un'auto Enjoy è stato usato il dato sul numero delle auto libere salvato per ogni richiesta ai servizi. Il massimo numero di auto libere in circolazione è stato di 870. Nella Figura \ref{image:9} viene mostrata in media la variazione di questo conteggio lungo l'arco della giornata, ripartito per lunedì-venerdì e sabato-domenica. Si può notare come il picco di utilizzo del servizio, denotato da un calo delle auto libere a disposizione, inizia verso le 15:00 e finisce verso le 21:00 indipendentemente dal giorno. L'unica differenza tra i due gruppi si può notare nelle ore del mattino, che vede meno auto libere durante la settimana. Il grafico della Figura \ref{image:10} mostra chiaramente come il numero delle auto libere a disposizione sia aumentato con la fine del lockdown. Si può notare infatti come siano state immesse circa 150 nuove auto nell'arco di un mese e altre 50 nel mese successivo. Questo dato è stato probabilmente dovuto al ritiro di una parte del parco auto da parte delle aziende per motivi di manutenzione, vista l'occasione della scarsa domanda di servizio.
 
@@ -273,7 +267,7 @@ Per contestualizzare il tempo medio per raggiungere un'auto Enjoy è stato usato
 \begin{figure}
 \centering
 \includegraphics[scale=0.8]{variazione_auto_libere_enjoy_weeks}
-\caption{Numero di auto libere Enjoy lungo settimana dopo settimana.}
+\caption{Numero di auto libere Enjoy settimana dopo settimana.}
 \label{image:10}
 \end{figure}
 
@@ -330,7 +324,7 @@ I risultati del confronto tra i mezzi pubblici ATM e il servizio di car sharing 
 
 \subsubsection{Bicicletta vs. Enjoy}
 
-Risultato ancora più interessante è quello del confronto tra bicicletta di proprietà e car sharing. La tabella \ref{table:6} mostra una percentuale delle vittorie del 36\% sul totale, poco più di un terzo del totale delle tratte. La maggior parte di queste vittorie è concentrata nelle tratte brevi dai 2 ai 5 km. Anche in questo confronto è emerso che negli orari di picco si accentua la percentuale di vittorie che arriva a toccare quasi il 45\% del totale nelle ore 8:00 e 18:00 come riportato dal grafico della Figura \ref{image:14}. Al contrario dei mezzi pubblici, questa percentuale resta alta anche al di fuori degli orari di punta, restando sempre intorno al 30\%.
+Risultato ancora più interessante è quello del confronto tra bicicletta di proprietà e car sharing. La tabella \ref{table:6} mostra una percentuale delle vittorie del 36\%, poco più di un terzo del totale delle tratte. La maggior parte di queste vittorie è concentrata nelle tratte brevi dai 2 ai 5 km. Anche in questo confronto è emerso che negli orari di picco si accentua la percentuale di vittorie che arriva a toccare quasi il 45\% del totale nelle ore 8:00 e 18:00 come riportato dal grafico della Figura \ref{image:14}. Al contrario dei mezzi pubblici, questa percentuale resta alta anche al di fuori degli orari di punta, restando sempre intorno al 30\%.
 
 \begin{table}[H]
 	\centering
