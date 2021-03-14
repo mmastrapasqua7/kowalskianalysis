@@ -1,0 +1,136 @@
+\documentclass[a4paper,12pt]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+
+% PRIMO TENTATIVO PDFA
+\usepackage[pdfa]{hyperref}
+\usepackage[a-2b,mathxmp]{pdfx}[2018/12/22]
+
+% SECONDO TENTATIVO PDFA
+%\usepackage[pdf13]{pdfx}
+
+%\usepackage{hyperref}
+%\usepackage{refcheck}
+%\usepackage[a-1b]{pdfx}
+
+\usepackage{cleveref}
+\usepackage{textcomp}
+\usepackage{float}
+\usepackage{todonotes}
+\usepackage{hyperref}
+\usepackage{afterpage}
+\usepackage{fancyhdr}
+\usepackage[italian]{babel}
+\renewcommand{\chaptername}{Capitolo}
+
+\newcommand\blankpage{
+	\null
+	\addtocounter{page}{-1}
+	\thispagestyle{empty}
+	\newpage
+}
+
+\newcommand\blankpagen{
+	\null
+	\addtocounter{page}{0}
+	\newpage
+}
+
+\graphicspath{{img/}}
+\def\UrlBreaks{\do\/\do-}
+
+% Per sorgenti codice
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.98, 0.98, 0.98}
+\lstdefinestyle{mystyle}{
+	language=Go,
+	backgroundcolor=\color{backcolour},   
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\ttfamily\footnotesize,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	keepspaces=true,                 
+	numbers=left,       
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=2
+}
+\lstset{style=mystyle}
+
+\begin{document}
+\begin{titlepage}
+\begin{center}
+\includegraphics[width=\textwidth]{Logo.jpg}
+\large{Corso di Laurea Triennale in Informatica}
+
+\vspace{1.6cm}
+
+\Large{\textbf{CONFRONTO TRA AUTOMOBILE E MEZZI DI TRASPORTO ALTERNATIVI NEL COMUNE DI MILANO BASATO SU STIME DI TEMPI DI PERCORRENZA}}
+
+\vspace{1.4cm}
+
+\large{Tesi di Laurea di} \\
+\large{\textbf{MAURO MASTRAPASQUA}} \\
+\large{Matricola 892629}
+\end{center}
+
+\begin{flushleft}
+\vspace{1.6cm}
+
+\normalsize{Relatore} \\
+\normalsize{\textbf{Andrea Trentini}}
+
+\vspace{0.4cm}
+
+\normalsize{Correlatore} \\
+\normalsize{\textbf{Dario Malchiodi}}
+\end{flushleft}
+
+\begin{center}
+\vspace{1.6cm}
+
+\large{Anno Accademico 2019/2020}
+\end{center}
+\end{titlepage}
+\afterpage{\blankpage}
+
+\tableofcontents
+
+\chapter{Introduzione}
+\input{chapters/Introduzione}
+
+\chapter{Metodi}
+\input{chapters/Dati}
+
+\chapter{Progettazione}
+\input{chapters/Progettazione}
+
+\afterpage{\blankpagen}
+
+\chapter{Risultati}
+\input{chapters/Risultati}
+
+\chapter{Conclusioni}
+\input{chapters/Conclusioni}
+
+\afterpage{\blankpagen}
+
+\bibliographystyle{plain}
+\bibliography{Biblio}
+
+\chapter*{Ringraziamenti}
+\input{chapters/Ringraziamenti}
+
+\afterpage{\blankpagen}
+\afterpage{\blankpagen}
+
+\end{document}

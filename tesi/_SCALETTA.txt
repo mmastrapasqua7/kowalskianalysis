@@ -1,9 +1,0 @@
-Metodi
-\_ Introduzione a grandi linee dello studio
-\_ Mezzi di trasporto e relativi servizi
-\_ Scelta tra percorsi random e prefissati
-\_ Generatore random dei percorsi
-\_ Pseudocodice del programma
-
-Risultati
-\_ Raccolta dati
